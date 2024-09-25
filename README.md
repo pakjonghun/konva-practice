@@ -1,46 +1,182 @@
-# Getting Started with Create React App
+## 기타 성능
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- draw layer : shape.moveTo(layer)
+- bg layer
+- cache() method
 
-## Available Scripts
+## index.html
 
-In the project directory, you can run:
+```
+   <!--//konva 최적화-->
 
-### `yarn start`
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1 user-scalable=no"
+    />
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## base shape
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+import Konva from 'konva';
 
-### `yarn test`
+export class BaseCircle extends Konva.Circle {
+  constructor(config: Konva.CircleConfig) {
+    super({ ...config, listening: false, perfectDrawEnabled: false, strokeScaleEnabled: false });
+  }
+}
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
 
-### `yarn build`
+## base stage
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+import Konva from 'konva';
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+export class BaseStage extends Konva.Stage {
+  constructor(config: Konva.StageConfig) {
+    super(config);
+    Konva.pixelRatio = 1;
+  }
+}
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## shape
 
-### `yarn eject`
+- moveTo(layer, group 다 됨 ㅋㅋ)
+- z-index
+  ```
+    https://konvajs.org/docs/groups_and_layers/zIndex.html <-- detail>
+    yellowBox.moveToTop();
+    yellowBox.moveToBottom();
+    yellowBox.moveUp();
+    yellowBox.moveDown();
+    yellowBox.setZIndex(3);
+  ```
+- multi select
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+  ```
+     resizeEnabled: false,
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    basic : https://konvajs.org/docs/select_and_transform/Basic_demo.html
+    styling : https://konvajs.org/docs/select_and_transform/Transformer_Complex_Styling.html
+  ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- event listen setting : drawHit()!!!!
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```
+   oval.listening(false);
+          layer.drawHit();
+```
 
-## Learn More
+-keydown : 오직 캔버스 parent 에 키 이벤트를 걸고, focus 일때만 작동
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+    var container = stage.container();
+    container.tabIndex = 1;
+    container.focus()
+    container.blur()
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- event width : 쉽게 클릭 가능
+  ```
+    hitStrokeWidth: 20,
+  ```
+- cornerRadius
+- 성능 line > path
+- 베지에 구현 가능 path
+- 포인터 3종셋 label > tab > text https://konvajs.org/docs/shapes/Label.html
+- image : cache 필수
+
+```
+      // main API:
+      var imageObj = new Image();
+      imageObj.onload = function () {
+        var yoda = new Konva.Image({
+          x: 50,
+          y: 50,
+          image: imageObj,
+          width: 106,
+          height: 118,
+        });
+
+        // add the shape to the layer
+        yoda.cache()
+        layer.add(yoda);
+      };
+      imageObj.src = '/assets/yoda.jpg';
+```
+
+- visible : 사라지고 이벤트도 먹통됨
+
+```
+  var pentagon = new Konva.RegularPolygon({
+        x: stage.width() / 2,
+        y: stage.height() / 2,
+        sides: 5,
+        radius: 70,
+        fill: 'red',
+        stroke: 'black',
+        strokeWidth: 4,
+        visible: false,
+      });
+      pentagon.show();
+      pentagon.hide();
+```
+
+- cursor
+
+```
+      shape1.on('mouseenter', function () {
+        stage.container().style.cursor = 'pointer';
+      });
+
+      shape1.on('mouseleave', function () {
+        stage.container().style.cursor = 'default';
+      });
+
+      shape2.on('mouseenter', function () {
+        stage.container().style.cursor = 'move';
+      });
+
+      shape2.on('mouseleave', function () {
+        stage.container().style.cursor = 'default';
+      });
+
+      shape3.on('mouseenter', function () {
+        stage.container().style.cursor = 'crosshair';
+      });
+
+      shape3.on('mouseleave', function () {
+        stage.container().style.cursor = 'default';
+      });
+```
+
+- 오버렙 될경우 처리
+
+```
+ var rect = new Konva.Rect({
+        x: 50,
+        y: 50,
+        // stroke: 'red',
+        width: 100,
+        height: 100,
+        fill: 'red',
+        draggable: true,
+        globalCompositeOperation: 'xor',
+      });
+      source-over (기본값) : 새로 그린 도형이 기존 내용 위에 겹쳐서 그려집니다. 투명도가 없으면 기존 내용을 덮어씁니다.
+```
+
+- event 테블릿 에서 사용가능하려면 아래 이벤트 써야함.
+
+```
+Pointer events: pointerdown, pointermove, pointereup, pointercancel, pointerover, pointerenter, pointerout,pointerleave, pointerclick, pointerdblclick.
+```
+
+- all event off
+
+```
+shape.off() //test need
+shape.off('click') //only click
+```

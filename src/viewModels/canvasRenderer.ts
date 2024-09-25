@@ -25,9 +25,8 @@ export class CanvasRenderer {
       this.animationFrameId = requestAnimationFrame(() => {
         this.paintLayer.batchDraw();
 
-        this.animationFrameId = null; // 다음 상태 업데이트 시 다시 호출할 수 있게 함
-        const increseRenderCount = usePositionStore((state) => state.increaseRenderCount);
-        increseRenderCount();
+        this.animationFrameId = null;
+        usePositionStore.getState().increaseRenderCount();
       });
     }
   }

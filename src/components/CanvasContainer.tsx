@@ -1,9 +1,5 @@
 import { useEffect, useRef } from 'react';
-import {
-  CustomStage,
-  CustomLayer,
-  BackgroundLayer,
-} from '../views/ConvaObjects';
+import { CustomStage, CustomLayer, BackgroundLayer } from '../views/ConvaObjects';
 import { usePositionStore } from '../store/nodeStore/positionStore';
 import { CanvasRenderer } from '../viewModels/canvasRenderer';
 
@@ -35,7 +31,7 @@ const CanvasContainer = () => {
     };
   }, []);
 
-  return <div ref={containerRef} style={{ width: '500px', height: '400px' }} />;
+  return <div ref={containerRef} style={{ width: '1000px', height: '4000px' }} />;
 };
 
 export default CanvasContainer;
