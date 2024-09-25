@@ -87,18 +87,13 @@ export class BackgroundLayer extends Konva.Layer {
 }
 
 // Layer 서브클래싱
-export class CustomLayer extends Konva.Layer {
-  constructor(config?: Konva.LayerConfig) {
-    super(config);
-  }
-}
+export class CustomLayer extends Konva.Layer {}
 
 export class CustomRectangle extends Konva.Group {
   private headerRect: Konva.Rect;
   private headerText: Konva.Text;
   private headerIcon: Konva.Path;
   private bodyRect: Konva.Rect;
-  private bodyTexts: Konva.Text[];
 
   constructor(config: Konva.ContainerConfig, headerText: string) {
     super(config);
@@ -144,40 +139,10 @@ export class CustomRectangle extends Konva.Group {
       strokeWidth: 2,
     });
 
-    // 초기 바디 텍스트 없이 생성, 나중에 업데이트 가능
-    this.bodyTexts = [];
-
-    // Group에 헤더와 바디 추가
     this.add(this.headerRect, this.headerText, this.headerIcon, this.bodyRect);
   }
 
-  // 텍스트를 업데이트하는 메소드 (상태가 변경될 때 호출됨)
   updateHeaderText(newText: string): void {
     this.headerText.text(newText);
-    this.getLayer()?.batchDraw();
-  }
-
-  // 바디 텍스트 업데이트
-  updateBodyText(newTexts: string[]): void {
-    // 기존 텍스트 지우기
-    this.bodyTexts.forEach((textObj) => {
-      textObj.destroy();
-    });
-    this.bodyTexts = [];
-
-    // 새로운 텍스트 추가
-    newTexts.forEach((text, index) => {
-      const textElement = new Konva.Text({
-        x: 10,
-        y: 60 + index * 30,
-        text,
-        fontSize: 16,
-        fill: 'black',
-      });
-      this.bodyTexts.push(textElement);
-      this.add(textElement);
-    });
-
-    this.getLayer()?.batchDraw();
   }
 }

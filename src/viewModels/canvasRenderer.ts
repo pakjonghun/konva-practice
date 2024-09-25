@@ -7,6 +7,7 @@ export class CanvasRenderer {
   private backgroundLayer: Konva.Layer;
   private paintLayer: Konva.Layer;
   private customRectangle: CustomRectangle;
+  private animationFrameId: null | number = null;
 
   constructor(paintLayer: Konva.Layer, backgroundLayer: Konva.Layer) {
     this.paintLayer = paintLayer;
@@ -17,6 +18,18 @@ export class CanvasRenderer {
     this.customRectangle = customRectangle;
 
     this.paintLayer.add(customRectangle);
+  }
+
+  scheduleBatchDraw() {
+    if (!this.animationFrameId) {
+      this.animationFrameId = requestAnimationFrame(() => {
+        this.paintLayer.batchDraw();
+
+        this.animationFrameId = null; // 다음 상태 업데이트 시 다시 호출할 수 있게 함
+        const increseRenderCount = usePositionStore((state) => state.increaseRenderCount);
+        increseRenderCount();
+      });
+    }
   }
 
   createNode(title: string, { x, y }: Position) {
@@ -36,24 +49,28 @@ export class CanvasRenderer {
     const unsubscribeTitle = usePositionStore.subscribe(
       (state) => state.title,
       (title) => {
-        console.log('title', title);
         this.customRectangle.updateHeaderText(title);
+        this.scheduleBatchDraw();
       },
       { equalityFn: (a, b) => a == b }
     );
 
-    const unsubscribeCount = usePositionStore.subscribe((state) => {
-      console.log('count', state.count);
-      this.customRectangle.updateHeaderText(state.count.toString());
-      // this.paintLayer.destroyChildren();
-      // this.paintLayer.batchDraw();
-      // this.customRectangle.updateHeaderText(state.title);
-    });
+    const unsubscribeCount = usePositionStore.subscribe(
+      (state) => state.count,
+      (count) => {
+        this.customRectangle.updateHeaderText(count.toString());
+        this.scheduleBatchDraw();
+      },
+      {
+        equalityFn: (a, b) => a == b,
+      }
+    );
 
     const unsubscribePosition = usePositionStore.subscribe(
       (state) => ({ x: state.x, y: state.y }),
-      (position) => {
-        console.log('position', position);
+      ({ x, y }) => {
+        this.customRectangle.updateHeaderText(`${x}-${y}`);
+        this.scheduleBatchDraw();
       },
       { equalityFn: (a, b) => a.x == b.x && a.y == b.y }
     );

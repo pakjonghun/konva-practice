@@ -8,15 +8,17 @@ type Action = {
   setPosition: (position: Position) => void;
   setTitle: (title: string) => void;
   setCount: (count: number) => void;
+  increaseRenderCount: () => void;
 };
 
-type PositionStoreType = Action & Position & { title: string; count: number };
+type PositionStoreType = Action & Position & { title: string; count: number; renderCount: number };
 
-export const initState: Position & { title: string; count: number } = {
+export const initState: Position & { title: string; count: number; renderCount: number } = {
   title: '',
   count: 1,
   x: 0,
   y: 0,
+  renderCount: 0,
 };
 
 const positionStoreApi: StateCreator<
@@ -36,6 +38,10 @@ const positionStoreApi: StateCreator<
   setCount: (count) =>
     set((state) => {
       state.count = count;
+    }),
+  increaseRenderCount: () =>
+    set((state) => {
+      state.renderCount += 1;
     }),
 });
 
