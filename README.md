@@ -1,3 +1,42 @@
+
+
+2. 레벨 클리핑 (Layer Clipping)
+
+보이지 않는 영역에 있는 객체들은 다시 그릴 필요가 없습니다. 따라서 캔버스의 보이는 영역만 그리도록 레이어 클리핑을 설정할 수 있습니다. 이렇게 하면 성능을 더 개선할 수 있습니다.
+
+
+staticLayer.clip({
+  x: 0,
+  y: 0,
+  width: window.innerWidth,
+  height: window.innerHeight,
+});
+
+3. 레이어의 필요 없는 요소 처리
+
+패닝할 때 자주 업데이트되는 동적 레이어에 필요 없는 요소가 포함되어 있으면 성능에 영향을 줄 수 있습니다. 자주 업데이트되지 않는 요소는 정적 레이어에 배치하고, 패닝 중에 동적 레이어의 객체 수를 최소화하는 것이 좋습니다.
+
+
+4. 레이트 리미터 사용
+
+레이트 리미터를 사용하여 이벤트가 너무 자주 발생하는 것을 방지할 수 있습니다. 드래그 이벤트가 너무 자주 발생하면 성능에 영향을 줄 수 있으므로, requestAnimationFrame이나 throttle 등을 사용해 드래그 이벤트의 빈도를 조절할 수 있습니다.
+
+
+let lastTime = 0;
+const throttle = 100; // 100ms에 한 번만 이벤트 처리
+
+stage.on('dragmove', () => {
+  const currentTime = new Date().getTime();
+  if (currentTime - lastTime < throttle) return;
+
+  lastTime = currentTime;
+
+  const pos = stage.position();
+  staticLayer.position({ x: pos.x, y: pos.y });
+  dynamicLayer.position({ x: pos.x, y: pos.y });
+});
+
+
 ## to pdf
 
 ```
