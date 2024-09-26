@@ -6,6 +6,11 @@ export type Position = {
   y: number;
 };
 
+export type Size = {
+  width: number;
+  height: number;
+};
+
 export type Component = {
   id: string;
   owner: string;

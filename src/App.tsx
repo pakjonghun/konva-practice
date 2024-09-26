@@ -6,7 +6,16 @@ import RenderCount from './components/RenderCount';
 function App() {
   return (
     <div className="App">
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          border: '5px solid red',
+          overflow: 'hidden',
+          height: '100vh',
+        }}
+      >
         <RenderCount />
         <Input />
         <Button />

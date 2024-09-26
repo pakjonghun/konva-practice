@@ -1,14 +1,16 @@
 import Konva from 'konva';
+import { Size } from '../../store/nodeStore/types';
 
 export class BackgroundLayer extends Konva.Layer {
   constructor(config?: Konva.LayerConfig) {
     super(config);
-    this.drawBackground();
+    const width = config?.width ?? 0;
+    const height = config?.height ?? 0;
+    this.drawBackground({ width, height });
   }
 
-  drawBackground() {
-    const width = 2000;
-    const height = 2000;
+  drawBackground({ width, height }: Size) {
+    console.log(width, height);
     const gridSize = 50;
 
     const background = new Konva.Rect({
@@ -41,34 +43,5 @@ export class BackgroundLayer extends Konva.Layer {
     }
 
     lines.forEach((line) => this.add(line));
-  }
-
-  background() {
-    const width = this.width();
-    const height = this.height();
-    const gridSize = 20;
-
-    const ctx = this.getContext();
-
-    ctx.rect(0, 0, width, height);
-    ctx.fillStyle = 'black';
-    ctx.fill();
-
-    ctx.strokeStyle = 'gray';
-    ctx.lineWidth = 0.5;
-
-    for (let x = 0; x <= width; x += gridSize) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, height);
-      ctx.stroke();
-    }
-
-    for (let y = 0; y <= height; y += gridSize) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(width, y);
-      ctx.stroke();
-    }
   }
 }

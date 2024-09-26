@@ -31,10 +31,19 @@ export class CanvasViewModel extends BaseViewModel {
       width,
       height,
     });
+    const centerX = stage.width() / 2;
+    const centerY = stage.height() / 2;
 
-    const paintLayer = new BaseLayer();
-    const backgroundLayer = new BackgroundLayer();
-    stage.add(backgroundLayer);
+    const layerConfig = {
+      x: -centerX,
+      y: -centerY,
+      width,
+      height,
+    };
+
+    const paintLayer = new BaseLayer(layerConfig);
+    const backgroundLayer = new BackgroundLayer(layerConfig);
+    stage.add(backgroundLayer, paintLayer);
 
     this.stage = stage;
     this.paintLayer = paintLayer;

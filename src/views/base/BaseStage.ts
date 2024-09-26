@@ -11,10 +11,10 @@ export class BaseStage extends Konva.Stage {
     // Konva.hitOnDragEnabled = true;
     Konva.pixelRatio = 1;
 
-    this.on('mouseMove', () => {
+    this.on('mouseMove', function () {
       console.log(1);
     });
-    this.on('touchmove', (e) => {
+    this.on('touchmove', function (e) {
       console.log(1);
       e.evt.preventDefault();
       const touch1 = e.evt.touches[0];
@@ -26,8 +26,6 @@ export class BaseStage extends Konva.Stage {
       }
 
       if (touch1 && touch2) {
-        // if the stage was under Konva's drag&drop
-        // we need to stop it, and implement our own pan logic with two pointers
         if (this.isDragging()) {
           this.dragStopped = true;
           this.stopDrag();
