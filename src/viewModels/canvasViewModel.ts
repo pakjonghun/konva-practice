@@ -13,7 +13,7 @@ import { usePositionStore } from '../store/nodeStore/positionStore';
 export class CanvasViewModel extends BaseViewModel {
   private stage: Stage;
   protected paintLayer: Layer;
-  private backgroundLayer: Layer;
+  private backgroundLayer: BackgroundLayer;
 
   constructor({
     container,
@@ -29,6 +29,7 @@ export class CanvasViewModel extends BaseViewModel {
       container,
       width,
       height,
+      draggable: true,
     });
     const centerX = stage.width() / 2;
     const centerY = stage.height() / 2;
@@ -56,6 +57,18 @@ export class CanvasViewModel extends BaseViewModel {
   };
 
   render() {
+    this.stage.on('dragmove', () => {
+      const { x, y } = this.stage.position();
+      const width = this.stage.width();
+      const height = this.stage.height();
+
+      const prevX = this.backgroundLayer.x();
+      const prevY = this.backgroundLayer.y();
+      const background = this.backgroundLayer.position({ x: prevX + x, y: prevY + y });
+
+      console.log(x, y);
+    });
+
     const unsubscribe = usePositionStore.subscribe(
       (state) => state.count,
       (count) => {

@@ -2,11 +2,13 @@ import Konva from 'konva';
 import { Size } from '../../store/nodeStore/types';
 
 export class BackgroundLayer extends Konva.Layer {
+  backgroundRect: Konva.Rect;
+
   constructor(config?: Konva.LayerConfig) {
-    super({ ...config, draggable: true });
+    super({ ...config });
     const width = config?.width ?? 0;
     const height = config?.height ?? 0;
-    this.drawBackground({ width, height });
+    this.backgroundRect = this.drawBackground({ width, height });
   }
 
   drawBackground({ width, height }: Size) {
@@ -18,6 +20,8 @@ export class BackgroundLayer extends Konva.Layer {
       width,
       height,
       fill: '#2E2E2E',
+      stroke: 'blue',
+      strokeWidth: 10,
     });
     this.add(background);
 
@@ -42,5 +46,7 @@ export class BackgroundLayer extends Konva.Layer {
     }
 
     lines.forEach((line) => this.add(line));
+
+    return background;
   }
 }
