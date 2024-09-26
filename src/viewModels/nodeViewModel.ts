@@ -10,17 +10,21 @@ export class NodeViewModel {
 
   constructor(layer: Konva.Layer) {
     this.layer = layer;
+    const stage = layer.getStage();
     const title = usePositionStore.getState().title;
-    const x = usePositionStore.getState().x;
-    this.customRectangle = this.createNode(title, { x, y: x });
+
+    const customRectangle = this.createNode(title, { x: stage.x(), y: stage.y() });
+    this.customRectangle = customRectangle;
+    this.layer.add(customRectangle);
+
     this.render();
   }
 
   createNode(title: string, { x, y }: Position) {
     return new CustomRectangle(
       {
-        x: x,
-        y: y,
+        x,
+        y,
         width: 300,
         height: 200,
         draggable: true,
@@ -34,6 +38,7 @@ export class NodeViewModel {
       (state) => state.title,
       (title) => {
         this.customRectangle.updateHeaderText(title);
+        this.layer.batchDraw();
       },
       { equalityFn: (a, b) => a == b }
     );

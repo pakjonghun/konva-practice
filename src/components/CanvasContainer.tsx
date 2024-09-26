@@ -11,13 +11,13 @@ const CanvasContainer = () => {
 
     const canvasViewModel = new CanvasViewModel({
       container: containerRef.current,
-      width: width * 4,
-      height: height * 4,
+      width: width,
+      height: height,
     });
-    canvasViewModel.render();
+    const destroy = canvasViewModel.render();
 
     return () => {
-      canvasViewModel.destroy();
+      destroy();
     };
   }, []);
 

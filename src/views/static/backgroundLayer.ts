@@ -3,14 +3,13 @@ import { Size } from '../../store/nodeStore/types';
 
 export class BackgroundLayer extends Konva.Layer {
   constructor(config?: Konva.LayerConfig) {
-    super(config);
+    super({ ...config, draggable: true });
     const width = config?.width ?? 0;
     const height = config?.height ?? 0;
     this.drawBackground({ width, height });
   }
 
   drawBackground({ width, height }: Size) {
-    console.log(width, height);
     const gridSize = 50;
 
     const background = new Konva.Rect({
@@ -18,7 +17,7 @@ export class BackgroundLayer extends Konva.Layer {
       y: 0,
       width,
       height,
-      fill: 'black',
+      fill: '#2E2E2E',
     });
     this.add(background);
 

@@ -109,6 +109,7 @@ export class CustomRectangle extends Konva.Group {
       fill: 'lightgray',
       stroke: 'black',
       strokeWidth: 2,
+      draggable: true,
     });
 
     this.headerText = new BaseText({

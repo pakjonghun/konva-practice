@@ -16,8 +16,8 @@ type PositionStoreType = Action & Position & { title: string; count: number; ren
 export const initState: Position & { title: string; count: number; renderCount: number } = {
   title: '',
   count: 1,
-  x: 0,
-  y: 0,
+  x: -3000,
+  y: -2000,
   renderCount: 0,
 };
 
