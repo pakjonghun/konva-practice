@@ -16,6 +16,7 @@ const Input = () => {
 
   return (
     <input
+      className="border bg-gray-100"
       value={keyword}
       onChange={(event) => handleChangeKeyword(event.target.value)}
     />

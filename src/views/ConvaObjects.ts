@@ -1,4 +1,6 @@
 import Konva from 'konva';
+import { BaseRect } from './base/BaseRect';
+import { BaseText } from './base/BaseText';
 
 // Stage 서브클래싱
 export class CustomStage extends Konva.Stage {
@@ -99,7 +101,7 @@ export class CustomRectangle extends Konva.Group {
     super(config);
 
     // 헤더 사각형과 텍스트
-    this.headerRect = new Konva.Rect({
+    this.headerRect = new BaseRect({
       x: 0,
       y: 0,
       width: config.width || 0,
@@ -110,7 +112,7 @@ export class CustomRectangle extends Konva.Group {
       draggable: true,
     });
 
-    this.headerText = new Konva.Text({
+    this.headerText = new BaseText({
       x: 10,
       y: 10,
       text: headerText,

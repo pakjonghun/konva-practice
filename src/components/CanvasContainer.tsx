@@ -1,37 +1,25 @@
 import { useEffect, useRef } from 'react';
-import { CustomStage, CustomLayer, BackgroundLayer } from '../views/ConvaObjects';
-import { usePositionStore } from '../store/nodeStore/positionStore';
-import { CanvasRenderer } from '../viewModels/canvasRenderer';
+import { CanvasViewModel } from '../viewModels/canvasViewModel';
 
 const CanvasContainer = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const headerText = usePositionStore((state) => state.title);
-  const setHeaderText = usePositionStore((state) => state.setTitle);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const stage = new CustomStage({
+    const canvasViewModel = new CanvasViewModel({
       container: containerRef.current,
       width: 2000,
       height: 2000,
     });
-
-    const backgroundLayer = new BackgroundLayer();
-    stage.add(backgroundLayer);
-
-    const layer = new CustomLayer();
-    stage.add(layer);
-
-    const renderer = new CanvasRenderer(layer, backgroundLayer);
-    renderer.render();
+    canvasViewModel.render();
 
     return () => {
-      stage.destroy();
+      canvasViewModel.destroy();
     };
   }, []);
 
-  return <div ref={containerRef} style={{ width: '1000px', height: '4000px' }} />;
+  return <div ref={containerRef} style={{ width: '2000px', height: '4000px' }} />;
 };
 
 export default CanvasContainer;

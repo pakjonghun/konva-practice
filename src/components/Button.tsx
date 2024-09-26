@@ -20,10 +20,13 @@ const Button = () => {
   return (
     <div>
       <input
+        className="border bg-gray-100"
         value={keyword}
         onChange={(event) => handleChangeKeyword(event.target.value)}
       />
-      <button onClick={handleClickButton}>증식</button>
+      <button className="bg-sky-50 border-2 border-red-100" onClick={handleClickButton}>
+        증식
+      </button>
     </div>
   );
 };
