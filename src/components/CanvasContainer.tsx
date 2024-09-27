@@ -9,18 +9,18 @@ const CanvasContainer = () => {
     const width = containerRef.current.clientWidth;
     const height = containerRef.current.clientHeight;
 
-    const dispose = new CanvasViewModel({
+    const canvasViewModel = new CanvasViewModel({
       container: containerRef.current,
       width: width,
       height: height,
-    }).render();
+    });
 
     return () => {
-      dispose();
+      canvasViewModel.dispose();
     };
   }, []);
 
-  return <div ref={containerRef} style={{ width: '100%', height: '100vh' }} />;
+  return <div ref={containerRef} style={{ flex: 1, width: '100%' }} />;
 };
 
 export default CanvasContainer;
