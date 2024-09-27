@@ -5,13 +5,13 @@ import { usePositionStore } from '../../store/nodeStore/positionStore';
 //새로운 노드 뷰모델을 만든다.
 
 export abstract class BaseViewModel {
-  protected abstract paintLayer: Konva.Layer;
+  protected abstract layer: Konva.Layer;
   protected animationFrameId: null | number = null;
 
   scheduleBatchDraw() {
     if (!this.animationFrameId) {
       this.animationFrameId = requestAnimationFrame(() => {
-        this.paintLayer.batchDraw();
+        this.layer.batchDraw();
 
         this.animationFrameId = null;
         usePositionStore.getState().increaseRenderCount();

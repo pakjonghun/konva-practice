@@ -11,9 +11,10 @@ function App() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          padding: '0px',
+          margin: '0px',
           border: '5px solid red',
           overflow: 'hidden',
-          height: '100vh',
         }}
       >
         <RenderCount />

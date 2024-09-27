@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { CanvasViewModel } from '../viewModels/canvasViewModel';
+import { CanvasViewModel } from '../viewModels/canvasViewModel/canvasViewModel';
 
 const CanvasContainer = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -9,15 +9,14 @@ const CanvasContainer = () => {
     const width = containerRef.current.clientWidth;
     const height = containerRef.current.clientHeight;
 
-    const canvasViewModel = new CanvasViewModel({
+    const dispose = new CanvasViewModel({
       container: containerRef.current,
       width: width,
       height: height,
-    });
-    const destroy = canvasViewModel.render();
+    }).render();
 
     return () => {
-      destroy();
+      dispose();
     };
   }, []);
 

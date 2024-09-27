@@ -1,5 +1,6 @@
 import Konva from 'konva';
 import { Size } from '../../store/nodeStore/types';
+import { GRID_SIZE } from '../../constants/canvas';
 
 export class BackgroundLayer extends Konva.Layer {
   backgroundRect: Konva.Rect;
@@ -11,39 +12,44 @@ export class BackgroundLayer extends Konva.Layer {
     this.backgroundRect = this.drawBackground({ width, height });
   }
 
-  drawBackground({ width, height }: Size) {
-    const gridSize = 50;
+  smallGrid = (gridSize: number) => {
+    const gridCanvas = document.createElement('canvas') as HTMLCanvasElement;
+    gridCanvas.width = gridSize;
+    gridCanvas.height = gridSize;
+    const gridContext = gridCanvas.getContext('2d')!;
+    gridContext.strokeStyle = '#ccc';
+    gridContext.lineWidth = 1;
+    gridContext.beginPath();
+    gridContext.moveTo(0, 0);
+    gridContext.lineTo(0, gridSize);
+    gridContext.lineTo(gridSize, gridSize);
+    gridContext.lineTo(gridSize, 0);
+    gridContext.closePath();
+    gridContext.stroke();
 
+    const imgSrc = gridCanvas.toDataURL();
+    const img = new Image();
+    img.src = imgSrc;
+
+    return img;
+  };
+
+  drawBackground({ width, height }: Size) {
+    const grid = this.smallGrid(GRID_SIZE);
     const background = new Konva.Rect({
       x: 0,
       y: 0,
       width,
       height,
-      fill: '#2E2E2E',
+      // fill: '#2E2E2E',
       stroke: 'blue',
       strokeWidth: 10,
+      fillPatternImage: grid,
+      fillPatternRepeat: 'repeat',
     });
     this.add(background);
 
     const lines: Konva.Line[] = [];
-
-    for (let x = 0; x <= width; x += gridSize) {
-      const line = new Konva.Line({
-        points: [x, 0, x, height],
-        stroke: 'grey',
-        strokeWidth: 1,
-      });
-      lines.push(line);
-    }
-
-    for (let y = 0; y <= height; y += gridSize) {
-      const line = new Konva.Line({
-        points: [0, y, width, y],
-        stroke: 'gray',
-        strokeWidth: 1,
-      });
-      lines.push(line);
-    }
 
     lines.forEach((line) => this.add(line));
 
