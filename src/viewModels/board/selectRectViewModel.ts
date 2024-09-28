@@ -3,7 +3,7 @@ import { BaseViewModel } from '../base/baseViewModel';
 import { SelectRect } from '../../views/dynamic/selectRect';
 import { BaseStage } from '../../views/base/baseStage';
 import { BaseRect } from '../../views/base/baseRect';
-import { BACKGROUND, DRAG, SELECT_STROKE_COLOR, TRANSFORMER } from '../../constants/canvas';
+import { BACKGROUND, DRAG, PAINT, SELECT_STROKE_COLOR, TRANSFORMER } from '../../constants/canvas';
 import Konva from 'konva';
 import { KonvaEventObject, Node } from 'konva/lib/Node';
 
@@ -83,9 +83,9 @@ export class SelectRectViewModel extends BaseViewModel {
         this.selectRect.width(0);
         this.selectRect.height(0);
         this.multiSelecting = true;
-      }
-
-      if (target.getType() !== 'Stage') {
+        const bgLayer = this.stage.findOne(`#${DRAG}`);
+        this.selectRect.moveTo(bgLayer);
+      } else {
         const nextShape = this.getParent(target);
         if (nextShape?.id() === 'node') {
           nextShape.moveToTop();
@@ -136,6 +136,8 @@ export class SelectRectViewModel extends BaseViewModel {
         });
         this.transformer.moveToTop();
         this.multiSelecting = false;
+        const bgLayer = this.stage.findOne(`#${PAINT}`);
+        this.selectRect.moveTo(bgLayer);
         this.selectRect.visible(false);
       }
     });
