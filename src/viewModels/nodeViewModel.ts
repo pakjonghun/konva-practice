@@ -23,7 +23,6 @@ export class NodeViewModel {
 
   addEventList() {
     this.customRectangle.on('dragmove', () => {
-      console.log('`1 : ');
       const nextLayer = this.findLayerById(DRAG);
       const tr = this.findLayerById(TRANSFORMER_RECT);
       if (!nextLayer || !tr) {

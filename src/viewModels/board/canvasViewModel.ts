@@ -45,13 +45,6 @@ export class CanvasViewModel extends BaseViewModel {
     this.backgroundViewModel.backgroundLayer.draw();
     this.stage = stage;
 
-    this.layer.clip({
-      x: 0,
-      y: 0,
-      width,
-      height,
-    });
-
     this.dispose = this.render();
   }
 
@@ -116,18 +109,6 @@ export class CanvasViewModel extends BaseViewModel {
       const bg = this.backgroundViewModel.backgroundLayer.backgroundRect;
       bg.fillPatternScale({ x: newScale, y: newScale });
 
-      const stagePos = this.dragLayer.position();
-      const clipX = -stagePos.x / newScale;
-      const clipY = -stagePos.y / newScale;
-      const viewportWidth = this.dragLayer.width() / newScale;
-      const viewportHeight = this.dragLayer.height() / newScale;
-
-      this.layer.clip({
-        x: clipX,
-        y: clipY,
-        width: viewportWidth, // 뷰포트의 가로 크기
-        height: viewportHeight, // 뷰포트의 세로 크기
-      });
       this.stage.draw();
     });
 

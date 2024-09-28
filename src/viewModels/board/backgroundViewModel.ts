@@ -61,14 +61,6 @@ export class BackgroundViewModel extends BaseViewModel {
       bg.y(-y);
       bg.fillPatternOffset({ x: -x, y: -y });
 
-      //fix
-      const paintLayer = stage.findOne(`#${PAINT}`) as Konva.Layer;
-      const cx = paintLayer.clipX();
-      const cy = paintLayer.clipY();
-      console.log('cx : ', cx, cy);
-      // paintLayer.clipX(cx - x);
-      // paintLayer.clipY(cy - y);
-
       this.prevPos = { x, y };
     });
 
