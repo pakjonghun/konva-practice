@@ -13,7 +13,6 @@ function App() {
           alignItems: 'center',
           padding: '0px',
           margin: '0px',
-          border: '5px solid red',
           height: '100vh',
         }}
       >

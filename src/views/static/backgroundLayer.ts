@@ -1,6 +1,6 @@
 import Konva from 'konva';
 import { Size } from '../../store/nodeStore/types';
-import { GRID_SIZE } from '../../constants/canvas';
+import { GRID_COLOR, GRID_SIZE } from '../../constants/canvas';
 
 export class BackgroundLayer extends Konva.Layer {
   backgroundRect: Konva.Rect;
@@ -17,7 +17,7 @@ export class BackgroundLayer extends Konva.Layer {
     gridCanvas.width = gridSize;
     gridCanvas.height = gridSize;
     const gridContext = gridCanvas.getContext('2d')!;
-    gridContext.strokeStyle = '#ccc';
+    gridContext.strokeStyle = GRID_COLOR;
     gridContext.lineWidth = 1;
     gridContext.beginPath();
     gridContext.moveTo(0, 0);

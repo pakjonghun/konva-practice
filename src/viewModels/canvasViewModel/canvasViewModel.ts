@@ -10,17 +10,15 @@ import { Size } from '../../store/nodeStore/types';
 import { ZOOM_MAX_SCALE, ZOOM_MIN_SCALE, ZOOM_SPEED } from '../../constants/canvas';
 
 export class CanvasViewModel extends BaseViewModel {
-  width: number;
-  height: number;
   protected layer: Layer;
   private stage: Stage;
   private backgroundViewModel: BackgroundViewModel;
+  private zoom = false;
+
   dispose: () => void;
 
   constructor({ container, width, height }: Size & { container: HTMLDivElement }) {
     super();
-    this.width = width;
-    this.height = height;
     const stage = new BaseStage({
       container,
       width,
@@ -49,16 +47,39 @@ export class CanvasViewModel extends BaseViewModel {
   };
 
   addEventList() {
+    const container = this.stage.container();
+    container.tabIndex = 1;
+    container.focus();
+
+    const keyUpHandler = (e: KeyboardEvent) => {
+      if (!e.ctrlKey || !e.metaKey) {
+        this.zoom = false;
+        container.style.cursor = 'default';
+      }
+    };
+
+    const keyDownHandler = (e: KeyboardEvent) => {
+      if (!e.ctrlKey || !e.metaKey) {
+        this.zoom = true;
+      }
+    };
+
     this.stage.on('wheel', (event) => {
       event.evt.preventDefault();
+      if (!this.zoom) return;
 
       const prevScale = this.stage.scaleX();
-
+      const container = this.stage.container();
       const dy = event.evt.deltaY;
-      let newScale =
-        dy > 0 //
-          ? prevScale / ZOOM_SPEED
-          : prevScale * ZOOM_SPEED;
+      const isZoomOut = dy > 0;
+      let newScale = 0;
+      if (isZoomOut) {
+        container.style.cursor = 'zoom-out';
+        newScale = prevScale / ZOOM_SPEED;
+      } else {
+        container.style.cursor = 'zoom-in';
+        newScale = prevScale * ZOOM_SPEED;
+      }
 
       newScale = Math.max(ZOOM_MIN_SCALE, Math.min(ZOOM_MAX_SCALE, newScale));
       if (newScale === prevScale) {
@@ -77,16 +98,25 @@ export class CanvasViewModel extends BaseViewModel {
 
       this.stage.scale({ x: newScale, y: newScale });
       this.stage.position(newPos);
-      this.backgroundViewModel.backgroundLayer.size({ width: this.width, height: this.height });
-      this.backgroundViewModel.backgroundLayer.backgroundRect.size({
-        width: this.width,
-        height: this.height,
+
+      const bg = this.backgroundViewModel.backgroundLayer.backgroundRect;
+
+      const width = this.stage.width();
+      const height = this.stage.height();
+      bg.size({
+        width,
+        height,
       });
 
       this.stage.batchDraw();
     });
 
+    container.addEventListener('keydown', keyDownHandler);
+    container.addEventListener('keyup', keyUpHandler);
+
     return () => {
+      container.addEventListener('keydown', keyDownHandler);
+      container.removeEventListener('keyup', keyUpHandler);
       this.stage.off('wheel');
     };
   }
@@ -107,7 +137,7 @@ export class CanvasViewModel extends BaseViewModel {
 
     const count = usePositionStore.getState().count;
     this.bindingNodeUI(count);
-    this.scheduleBatchDraw();
+    this.stage.batchDraw();
 
     return () => {
       unsubscribe();
