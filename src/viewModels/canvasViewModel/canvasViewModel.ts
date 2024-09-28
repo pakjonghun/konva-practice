@@ -68,7 +68,10 @@ export class CanvasViewModel extends BaseViewModel {
       event.evt.preventDefault();
       if (!this.zoom) return;
 
-      const prevScale = this.stage.scaleX();
+      const paintLayer = this.layer;
+      const bgLayer = this.backgroundViewModel.backgroundLayer;
+
+      const prevScale = paintLayer.scaleX();
       const container = this.stage.container();
       const dy = event.evt.deltaY;
       const isZoomOut = dy > 0;
@@ -87,7 +90,7 @@ export class CanvasViewModel extends BaseViewModel {
       }
 
       const pointer = this.stage.getPointerPosition()!;
-      const pos = this.stage.position();
+      const pos = paintLayer.position();
       const prevX = (pointer.x - pos.x) / prevScale;
       const prevY = (pointer.y - pos.y) / prevScale;
 
@@ -96,17 +99,12 @@ export class CanvasViewModel extends BaseViewModel {
         y: pointer.y - prevY * newScale,
       };
 
-      this.stage.scale({ x: newScale, y: newScale });
-      this.stage.position(newPos);
+      paintLayer.scale({ x: newScale, y: newScale });
+      paintLayer.position(newPos);
 
       const bg = this.backgroundViewModel.backgroundLayer.backgroundRect;
 
-      const width = this.stage.width();
-      const height = this.stage.height();
-      bg.size({
-        width,
-        height,
-      });
+      bg.fillPatternScale({ x: newScale, y: newScale });
 
       this.stage.batchDraw();
     });

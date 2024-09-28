@@ -49,10 +49,6 @@ export class BackgroundLayer extends Konva.Layer {
     });
     this.add(background);
 
-    const lines: Konva.Line[] = [];
-
-    lines.forEach((line) => this.add(line));
-
     return background;
   }
 }
