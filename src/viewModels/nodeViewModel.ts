@@ -1,7 +1,7 @@
 import Konva from 'konva';
 import { usePositionStore } from '../store/nodeStore/positionStore';
 import { Position } from '../store/nodeStore/types';
-import { BaseLayer } from '../views/base/BaseLayer';
+import { BaseLayer } from '../views/base/baseLayer';
 import { CustomRectangle } from '../views/ConvaObjects';
 
 export class NodeViewModel {

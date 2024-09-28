@@ -1,6 +1,6 @@
-import { BaseLayer } from '../../views/base/BaseLayer';
+import { BaseLayer } from '../../views/base/baseLayer';
 import { NodeViewModel } from '../nodeViewModel';
-import { BaseStage } from '../../views/base/BaseStage';
+import { BaseStage } from '../../views/base/baseStage';
 import { BaseViewModel } from '../base/baseViewModel';
 import { Layer } from 'konva/lib/Layer';
 import { Stage } from 'konva/lib/Stage';
@@ -8,12 +8,13 @@ import { usePositionStore } from '../../store/nodeStore/positionStore';
 import { BackgroundViewModel } from './backgroundViewModel';
 import { Size } from '../../store/nodeStore/types';
 import { ZOOM_MAX_SCALE, ZOOM_MIN_SCALE, ZOOM_SPEED } from '../../constants/canvas';
+import Konva from 'konva';
 
 export class CanvasViewModel extends BaseViewModel {
   protected layer: Layer;
   private stage: Stage;
   private backgroundViewModel: BackgroundViewModel;
-  private zoomTimer = false;
+  private transformer: Konva.Transformer;
 
   dispose: () => void;
 
@@ -32,6 +33,9 @@ export class CanvasViewModel extends BaseViewModel {
       height,
     });
     const backgroundViewModel = new BackgroundViewModel({ stage, width, height });
+    const tr = new Konva.Transformer();
+    this.transformer = tr;
+    paintLayer.add(tr);
     stage.add(backgroundViewModel.backgroundLayer, paintLayer);
 
     this.stage = stage;

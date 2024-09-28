@@ -1,8 +1,9 @@
 import Konva from 'konva';
 import { Size } from '../../store/nodeStore/types';
 import { GRID_COLOR, GRID_SIZE } from '../../constants/canvas';
+import { BaseLayer } from '../base/baseLayer';
 
-export class BackgroundLayer extends Konva.Layer {
+export class BackgroundLayer extends BaseLayer {
   backgroundRect: Konva.Rect;
 
   constructor(config?: Konva.LayerConfig) {
