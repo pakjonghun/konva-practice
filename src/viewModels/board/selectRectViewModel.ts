@@ -5,8 +5,7 @@ import { BaseStage } from '../../views/base/baseStage';
 import { BaseRect } from '../../views/base/baseRect';
 import { BACKGROUND } from '../../constants/canvas';
 import Konva from 'konva';
-import { Node } from 'konva/lib/Node';
-import { Size } from '../../store/boardStore/types';
+import { KonvaEventObject, Node } from 'konva/lib/Node';
 
 export class SelectRectViewModel extends BaseViewModel {
   private selectRectView: BaseRect;
@@ -29,6 +28,12 @@ export class SelectRectViewModel extends BaseViewModel {
     return this.selectRectView;
   }
 
+  getOtherEvent(event: KonvaEventObject<MouseEvent>) {
+    const isDraggable = this.stage.draggable();
+    const otherEvent = event.evt.ctrlKey || event.evt.metaKey || isDraggable;
+    return otherEvent;
+  }
+
   getParent(target?: Node | null): Node | null | undefined {
     if (target?.id() === 'node') {
       return target;
@@ -43,24 +48,25 @@ export class SelectRectViewModel extends BaseViewModel {
 
   addEventList() {
     this.stage.on('mousedown', (event) => {
-      const isDraggable = this.stage.draggable();
-      const otherEvent = event.evt.ctrlKey || event.evt.metaKey || isDraggable;
-      const selectedNodes = this.transformer.nodes();
-      const isMultiSelected = selectedNodes.length > 1;
+      const otherEvent = this.getOtherEvent(event);
       if (otherEvent) {
         return;
       }
+      const selectedNodes = this.transformer.nodes();
+      const isMultiSelected = selectedNodes.length > 1;
+
+      const target = event.target;
+      const nextShape = this.getParent(target);
 
       if (isMultiSelected) {
-        const box = this.transformer.getClientRect();
-        const pos = this.transformer.getLayer()?.getRelativePointerPosition();
-        const isInTransformer = isPointInRect(box, pos ?? null);
-        if (isInTransformer) {
+        const hasClicked = selectedNodes.some((node) => {
+          return node === nextShape;
+        });
+        if (hasClicked) {
           return;
         }
       }
 
-      const target = event.target;
       const targetId = target.id();
 
       if (targetId === BACKGROUND) {
@@ -82,6 +88,11 @@ export class SelectRectViewModel extends BaseViewModel {
     });
 
     this.stage.on('mousemove', (event) => {
+      const otherEvent = this.getOtherEvent(event);
+      if (otherEvent) {
+        return;
+      }
+
       if (!this.multiSelecting || !this.prevPos) {
         return;
       }
@@ -100,7 +111,12 @@ export class SelectRectViewModel extends BaseViewModel {
       });
     });
 
-    this.stage.on('mouseup', () => {
+    this.stage.on('mouseup', (event) => {
+      const otherEvent = this.getOtherEvent(event);
+      if (otherEvent) {
+        return;
+      }
+
       if (this.multiSelecting) {
         const box = this.selectRect.getClientRect();
         const shapes = this.stage.find('#node');
@@ -125,16 +141,4 @@ export class SelectRectViewModel extends BaseViewModel {
       this.stage.off('mouseup');
     };
   }
-}
-
-function isPointInRect(rect: Size & Position, point: Position | null) {
-  if (!point) {
-    return false;
-  }
-  return (
-    point.x >= rect.x &&
-    point.x <= rect.x + rect.width &&
-    point.y >= rect.y &&
-    point.y <= rect.y + rect.height
-  );
 }
