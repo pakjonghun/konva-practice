@@ -3,6 +3,7 @@ import { usePositionStore } from '../store/nodeStore/positionStore';
 import { Position } from '../store/nodeStore/types';
 import { BaseLayer } from '../views/base/baseLayer';
 import { CustomRectangle } from '../views/ConvaObjects';
+import { DRAG, PAINT, TRANSFORMER } from '../constants/canvas';
 
 export class NodeViewModel {
   private layer: BaseLayer;
@@ -16,8 +17,31 @@ export class NodeViewModel {
     const customRectangle = this.createNode(title, { x: stage.x(), y: stage.y() });
     this.customRectangle = customRectangle;
     this.layer.add(customRectangle);
-
+    this.addEventList();
     this.render();
+  }
+
+  addEventList() {
+    this.customRectangle.on('dragmove', () => {
+      console.log('`1 : ');
+      const nextLayer = this.findLayerById(DRAG);
+      const tr = this.findLayerById(TRANSFORMER);
+      if (!nextLayer || !tr) {
+        return;
+      }
+      this.customRectangle.moveTo(nextLayer);
+      tr.moveTo(nextLayer);
+    });
+
+    this.customRectangle.on('dragend', () => {
+      const nextLayer = this.findLayerById(PAINT);
+      const tr = this.findLayerById(TRANSFORMER);
+      if (!nextLayer || !tr) {
+        return;
+      }
+      this.customRectangle.moveTo(nextLayer);
+      tr.moveTo(nextLayer);
+    });
   }
 
   createNode(title: string, { x, y }: Position) {
@@ -32,6 +56,12 @@ export class NodeViewModel {
       },
       title
     );
+  }
+
+  private findLayerById(id: string) {
+    const stage = this.customRectangle.getStage();
+    const targetLayer = stage?.findOne(`#${id}`);
+    return targetLayer;
   }
 
   render() {

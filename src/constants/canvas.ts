@@ -1,5 +1,4 @@
 //board style
-
 export const GRID_SIZE = 70;
 export const ZOOM_MIN_SCALE = 0.2;
 export const ZOOM_MAX_SCALE = 1;
@@ -11,3 +10,6 @@ export const SELECT_STROKE_COLOR = '#005A99';
 
 //board node id
 export const BACKGROUND = 'BACKGROUND';
+export const DRAG = 'DRAG';
+export const PAINT = 'PAINT';
+export const TRANSFORMER = 'TRANSFORMER';

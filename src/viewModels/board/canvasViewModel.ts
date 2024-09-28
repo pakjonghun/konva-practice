@@ -7,12 +7,14 @@ import { Stage } from 'konva/lib/Stage';
 import { usePositionStore } from '../../store/nodeStore/positionStore';
 import { BackgroundViewModel } from './backgroundViewModel';
 import { Size } from '../../store/nodeStore/types';
-import { ZOOM_MAX_SCALE, ZOOM_MIN_SCALE, ZOOM_SPEED } from '../../constants/canvas';
+import { DRAG, PAINT, ZOOM_MAX_SCALE, ZOOM_MIN_SCALE, ZOOM_SPEED } from '../../constants/canvas';
 import { SelectRectViewModel } from './selectRectViewModel';
+import Konva from 'konva';
 
 export class CanvasViewModel extends BaseViewModel {
   protected layer: Layer;
   private stage: Stage;
+  private dragLayer: Layer;
   private backgroundViewModel: BackgroundViewModel;
   private selectRectViewModel: SelectRectViewModel;
 
@@ -27,6 +29,7 @@ export class CanvasViewModel extends BaseViewModel {
     });
 
     this.layer = new BaseLayer({
+      id: PAINT,
       x: 0,
       y: 0,
       width,
@@ -34,9 +37,9 @@ export class CanvasViewModel extends BaseViewModel {
     });
     this.backgroundViewModel = new BackgroundViewModel({ stage, width, height });
     this.selectRectViewModel = new SelectRectViewModel(stage);
-
+    this.dragLayer = new Konva.Layer({ id: DRAG });
     this.layer.add(this.selectRectViewModel.selectRect, this.selectRectViewModel.transformer);
-    stage.add(this.backgroundViewModel.backgroundLayer, this.layer);
+    stage.add(this.backgroundViewModel.backgroundLayer, this.layer, this.dragLayer);
 
     this.stage = stage;
     this.dispose = this.render();
@@ -92,6 +95,8 @@ export class CanvasViewModel extends BaseViewModel {
       };
       paintLayer.scale({ x: newScale, y: newScale });
       paintLayer.position(newPos);
+      this.dragLayer.scale({ x: newScale, y: newScale });
+      this.dragLayer.position(newPos);
       const bg = this.backgroundViewModel.backgroundLayer.backgroundRect;
       bg.fillPatternScale({ x: newScale, y: newScale });
     });
