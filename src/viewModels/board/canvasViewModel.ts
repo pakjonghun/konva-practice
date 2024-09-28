@@ -40,7 +40,7 @@ export class CanvasViewModel extends BaseViewModel {
     this.dragLayer = new Konva.Layer({ id: DRAG });
     this.layer.add(this.selectRectViewModel.selectRect, this.selectRectViewModel.transformer);
     stage.add(this.backgroundViewModel.backgroundLayer, this.layer, this.dragLayer);
-
+    this.backgroundViewModel.backgroundLayer.draw();
     this.stage = stage;
     this.dispose = this.render();
   }
@@ -110,6 +110,7 @@ export class CanvasViewModel extends BaseViewModel {
   }
 
   render() {
+    console.log('rendering');
     const dispose = this.addEventList();
     const container = this.stage.container();
     container.tabIndex = 1;

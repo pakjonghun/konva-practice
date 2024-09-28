@@ -1,6 +1,6 @@
 import Konva from 'konva';
 import { Size } from '../../store/nodeStore/types';
-import { BACKGROUND, GRID_COLOR, GRID_SIZE } from '../../constants/canvas';
+import { BACKGROUND, BG_COLOR, GRID_COLOR, GRID_SIZE } from '../../constants/canvas';
 import { BaseLayer } from '../base/baseLayer';
 
 export class BackgroundLayer extends BaseLayer {
@@ -43,13 +43,15 @@ export class BackgroundLayer extends BaseLayer {
       y: 0,
       width,
       height,
-      // fill: '#2E2E2E',
       stroke: 'blue',
       strokeWidth: 10,
-      fillPatternImage: grid,
-      fillPatternRepeat: 'repeat',
     });
     this.add(background);
+
+    grid.onload = () => {
+      background.fillPatternImage(grid);
+      background.fillPatternRepeat('repeat');
+    };
 
     return background;
   }
