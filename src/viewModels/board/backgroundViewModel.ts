@@ -2,6 +2,7 @@ import { BaseViewModel } from '../base/baseViewModel';
 import { BackgroundLayer } from '../../views/static/backgroundLayer';
 import { Position, Size } from '../../store/nodeStore/types';
 import Konva from 'konva';
+import { useBoardStore } from '../../store/boardStore/boardStore';
 
 export class BackgroundViewModel extends BaseViewModel {
   protected layer: BackgroundLayer;

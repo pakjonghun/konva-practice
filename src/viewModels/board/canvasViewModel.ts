@@ -9,6 +9,7 @@ import { BackgroundViewModel } from './backgroundViewModel';
 import { Size } from '../../store/nodeStore/types';
 import { ZOOM_MAX_SCALE, ZOOM_MIN_SCALE, ZOOM_SPEED } from '../../constants/canvas';
 import Konva from 'konva';
+import { SelectRect } from '../../views/dynamic/selectRect';
 
 export class CanvasViewModel extends BaseViewModel {
   protected layer: Layer;
@@ -35,7 +36,9 @@ export class CanvasViewModel extends BaseViewModel {
     const backgroundViewModel = new BackgroundViewModel({ stage, width, height });
     const tr = new Konva.Transformer();
     this.transformer = tr;
-    paintLayer.add(tr);
+    const selectRect = new SelectRect(stage);
+    paintLayer.add(tr, selectRect);
+
     stage.add(backgroundViewModel.backgroundLayer, paintLayer);
 
     this.stage = stage;
@@ -66,7 +69,6 @@ export class CanvasViewModel extends BaseViewModel {
       if (!event.evt.ctrlKey && !event.evt.metaKey) return;
 
       const paintLayer = this.layer;
-
       const prevScale = paintLayer.scaleX();
       const container = this.stage.container();
       const dy = event.evt.deltaY;
@@ -89,12 +91,10 @@ export class CanvasViewModel extends BaseViewModel {
       const pos = paintLayer.position();
       const prevX = (pointer.x - pos.x) / prevScale;
       const prevY = (pointer.y - pos.y) / prevScale;
-
       const newPos = {
         x: pointer.x - prevX * newScale,
         y: pointer.y - prevY * newScale,
       };
-
       paintLayer.scale({ x: newScale, y: newScale });
       paintLayer.position(newPos);
       const bg = this.backgroundViewModel.backgroundLayer.backgroundRect;

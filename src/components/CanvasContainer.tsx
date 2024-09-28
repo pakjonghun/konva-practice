@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { CanvasViewModel } from '../viewModels/canvasViewModel/canvasViewModel';
+import { CanvasViewModel } from '../viewModels/board/canvasViewModel';
 import { BG_COLOR } from '../constants/canvas';
 
 const CanvasContainer = () => {
