@@ -8,14 +8,13 @@ import { usePositionStore } from '../../store/nodeStore/positionStore';
 import { BackgroundViewModel } from './backgroundViewModel';
 import { Size } from '../../store/nodeStore/types';
 import { ZOOM_MAX_SCALE, ZOOM_MIN_SCALE, ZOOM_SPEED } from '../../constants/canvas';
-import Konva from 'konva';
-import { SelectRect } from '../../views/dynamic/selectRect';
+import { SelectRectViewModel } from './selectRectViewModel';
 
 export class CanvasViewModel extends BaseViewModel {
   protected layer: Layer;
   private stage: Stage;
   private backgroundViewModel: BackgroundViewModel;
-  private transformer: Konva.Transformer;
+  private selectRectViewModel: SelectRectViewModel;
 
   dispose: () => void;
 
@@ -27,23 +26,19 @@ export class CanvasViewModel extends BaseViewModel {
       height,
     });
 
-    const paintLayer = new BaseLayer({
+    this.layer = new BaseLayer({
       x: 0,
       y: 0,
       width,
       height,
     });
-    const backgroundViewModel = new BackgroundViewModel({ stage, width, height });
-    const tr = new Konva.Transformer();
-    this.transformer = tr;
-    const selectRect = new SelectRect(stage);
-    paintLayer.add(tr, selectRect);
+    this.backgroundViewModel = new BackgroundViewModel({ stage, width, height });
+    this.selectRectViewModel = new SelectRectViewModel(stage);
 
-    stage.add(backgroundViewModel.backgroundLayer, paintLayer);
+    this.layer.add(this.selectRectViewModel.selectRect);
+    stage.add(this.backgroundViewModel.backgroundLayer, this.layer);
 
     this.stage = stage;
-    this.layer = paintLayer;
-    this.backgroundViewModel = backgroundViewModel;
     this.dispose = this.render();
   }
 
