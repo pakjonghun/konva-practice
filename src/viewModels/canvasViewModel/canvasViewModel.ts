@@ -13,7 +13,7 @@ export class CanvasViewModel extends BaseViewModel {
   protected layer: Layer;
   private stage: Stage;
   private backgroundViewModel: BackgroundViewModel;
-  private isMouseOverContainer = false;
+  private zoomTimer = false;
 
   dispose: () => void;
 
@@ -57,15 +57,6 @@ export class CanvasViewModel extends BaseViewModel {
       }
     };
 
-    const mouseEnterHandler = () => {
-      this.isMouseOverContainer = true;
-    };
-
-    const mouseLeaveHandler = () => {
-      this.isMouseOverContainer = false;
-      container.style.cursor = 'default';
-    };
-
     this.stage.on('wheel', (event) => {
       event.evt.preventDefault();
       if (!event.evt.ctrlKey && !event.evt.metaKey) return;
@@ -102,22 +93,13 @@ export class CanvasViewModel extends BaseViewModel {
 
       paintLayer.scale({ x: newScale, y: newScale });
       paintLayer.position(newPos);
-
       const bg = this.backgroundViewModel.backgroundLayer.backgroundRect;
-
       bg.fillPatternScale({ x: newScale, y: newScale });
-
-      this.stage.batchDraw();
     });
 
     container.addEventListener('keyup', keyUpHandler);
 
-    container.addEventListener('mouseenter', mouseEnterHandler);
-    container.addEventListener('mouseleave', mouseLeaveHandler);
-
     return () => {
-      container.removeEventListener('mouseenter', mouseEnterHandler);
-      container.removeEventListener('mouseleave', mouseLeaveHandler);
       container.removeEventListener('keyup', keyUpHandler);
       this.stage.off('wheel');
     };
