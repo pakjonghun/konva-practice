@@ -3,7 +3,7 @@ import { usePositionStore } from '../store/nodeStore/positionStore';
 import { Position } from '../store/nodeStore/types';
 import { BaseLayer } from '../views/base/baseLayer';
 import { CustomRectangle } from '../views/ConvaObjects';
-import { DRAG, PAINT, TRANSFORMER } from '../constants/canvas';
+import { DRAG, PAINT, TRANSFORMER_RECT } from '../constants/canvas';
 
 export class NodeViewModel {
   private layer: BaseLayer;
@@ -25,7 +25,7 @@ export class NodeViewModel {
     this.customRectangle.on('dragmove', () => {
       console.log('`1 : ');
       const nextLayer = this.findLayerById(DRAG);
-      const tr = this.findLayerById(TRANSFORMER);
+      const tr = this.findLayerById(TRANSFORMER_RECT);
       if (!nextLayer || !tr) {
         return;
       }
@@ -35,7 +35,7 @@ export class NodeViewModel {
 
     this.customRectangle.on('dragend', () => {
       const nextLayer = this.findLayerById(PAINT);
-      const tr = this.findLayerById(TRANSFORMER);
+      const tr = this.findLayerById(TRANSFORMER_RECT);
       if (!nextLayer || !tr) {
         return;
       }

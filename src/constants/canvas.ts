@@ -12,4 +12,5 @@ export const SELECT_STROKE_COLOR = '#005A99';
 export const BACKGROUND = 'BACKGROUND';
 export const DRAG = 'DRAG';
 export const PAINT = 'PAINT';
-export const TRANSFORMER = 'TRANSFORMER';
+export const TRANSFORMER_RECT = 'TRANSFORMER_RECT';
+export const SELECT_RECT = 'SELECT_RECT';

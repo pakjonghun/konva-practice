@@ -2,12 +2,14 @@ import { BaseViewModel } from '../base/baseViewModel';
 import { BackgroundLayer } from '../../views/static/backgroundLayer';
 import { Position, Size } from '../../store/nodeStore/types';
 import Konva from 'konva';
+import { PAINT, SELECT_RECT } from '../../constants/canvas';
 
 export class BackgroundViewModel extends BaseViewModel {
   private layer: BackgroundLayer;
   panning = false;
   prevPos: Position | null = null;
   dispose: () => void;
+  private mousedown = false;
 
   constructor({ width, height, stage }: Size & { stage: Konva.Stage }) {
     super();
@@ -27,6 +29,14 @@ export class BackgroundViewModel extends BaseViewModel {
   }
 
   addEventList(stage: Konva.Stage) {
+    stage.on('mousedown', () => {
+      this.mousedown = true;
+    });
+
+    stage.on('mouseup', () => {
+      this.mousedown = false;
+    });
+
     stage.on('dragstart', () => {
       this.prevPos = stage.getPointerPosition();
     });
@@ -51,12 +61,26 @@ export class BackgroundViewModel extends BaseViewModel {
       bg.y(-y);
       bg.fillPatternOffset({ x: -x, y: -y });
 
+      //fix
+      const paintLayer = stage.findOne(`#${PAINT}`) as Konva.Layer;
+      const cx = paintLayer.clipX();
+      const cy = paintLayer.clipY();
+      console.log('cx : ', cx, cy);
+      // paintLayer.clipX(cx - x);
+      // paintLayer.clipY(cy - y);
+
       this.prevPos = { x, y };
     });
 
     const container = stage.container();
     const keyDownHandler = (e: KeyboardEvent) => {
-      if (e.code === 'Space') {
+      const selectRect = stage.findOne(`#${SELECT_RECT}`);
+      const visible = selectRect?.isVisible();
+      if (visible) return;
+
+      if (e.code === 'Space' && !this.mousedown) {
+        const selectRect = stage.findOne(`#${SELECT_RECT}`);
+        selectRect?.visible(false);
         container.style.cursor = 'grab';
         stage.draggable(true);
       }
@@ -73,6 +97,8 @@ export class BackgroundViewModel extends BaseViewModel {
     container.addEventListener('keydown', keyDownHandler);
 
     return () => {
+      stage.off('mousedown');
+      stage.off('mouseup');
       stage.off('dragstart');
       stage.off('dragend');
       stage.off('dragmove');

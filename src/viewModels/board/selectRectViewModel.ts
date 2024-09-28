@@ -3,7 +3,13 @@ import { BaseViewModel } from '../base/baseViewModel';
 import { SelectRect } from '../../views/dynamic/selectRect';
 import { BaseStage } from '../../views/base/baseStage';
 import { BaseRect } from '../../views/base/baseRect';
-import { BACKGROUND, DRAG, PAINT, SELECT_STROKE_COLOR, TRANSFORMER } from '../../constants/canvas';
+import {
+  BACKGROUND,
+  DRAG,
+  PAINT,
+  SELECT_STROKE_COLOR,
+  TRANSFORMER_RECT,
+} from '../../constants/canvas';
 import Konva from 'konva';
 import { KonvaEventObject, Node } from 'konva/lib/Node';
 
@@ -15,14 +21,16 @@ export class SelectRectViewModel extends BaseViewModel {
   dispose: () => void;
   constructor(private stage: BaseStage) {
     super();
+
     this.selectRectView = new SelectRect();
     this.transformerView = new Konva.Transformer({
-      id: TRANSFORMER,
+      id: TRANSFORMER_RECT,
       enabledAnchors: [],
       rotateEnabled: false,
       borderStroke: SELECT_STROKE_COLOR,
       borderStrokeWidth: 3,
     });
+
     this.transformerView.padding(2);
     this.dispose = this.addEventList();
   }
