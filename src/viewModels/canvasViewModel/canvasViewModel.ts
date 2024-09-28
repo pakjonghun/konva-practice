@@ -13,7 +13,7 @@ export class CanvasViewModel extends BaseViewModel {
   protected layer: Layer;
   private stage: Stage;
   private backgroundViewModel: BackgroundViewModel;
-  private zoom = false;
+  private isMouseOverContainer = false;
 
   dispose: () => void;
 
@@ -52,24 +52,25 @@ export class CanvasViewModel extends BaseViewModel {
     container.focus();
 
     const keyUpHandler = (e: KeyboardEvent) => {
-      if (!e.ctrlKey || !e.metaKey) {
-        this.zoom = false;
+      if (!e.ctrlKey && !e.metaKey) {
         container.style.cursor = 'default';
       }
     };
 
-    const keyDownHandler = (e: KeyboardEvent) => {
-      if (!e.ctrlKey || !e.metaKey) {
-        this.zoom = true;
-      }
+    const mouseEnterHandler = () => {
+      this.isMouseOverContainer = true;
+    };
+
+    const mouseLeaveHandler = () => {
+      this.isMouseOverContainer = false;
+      container.style.cursor = 'default';
     };
 
     this.stage.on('wheel', (event) => {
       event.evt.preventDefault();
-      if (!this.zoom) return;
+      if (!event.evt.ctrlKey && !event.evt.metaKey) return;
 
       const paintLayer = this.layer;
-      const bgLayer = this.backgroundViewModel.backgroundLayer;
 
       const prevScale = paintLayer.scaleX();
       const container = this.stage.container();
@@ -109,11 +110,14 @@ export class CanvasViewModel extends BaseViewModel {
       this.stage.batchDraw();
     });
 
-    container.addEventListener('keydown', keyDownHandler);
     container.addEventListener('keyup', keyUpHandler);
 
+    container.addEventListener('mouseenter', mouseEnterHandler);
+    container.addEventListener('mouseleave', mouseLeaveHandler);
+
     return () => {
-      container.addEventListener('keydown', keyDownHandler);
+      container.removeEventListener('mouseenter', mouseEnterHandler);
+      container.removeEventListener('mouseleave', mouseLeaveHandler);
       container.removeEventListener('keyup', keyUpHandler);
       this.stage.off('wheel');
     };
