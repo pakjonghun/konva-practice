@@ -23,6 +23,7 @@ export class NodeViewModel {
   createNode(title: string, { x, y }: Position) {
     return new CustomRectangle(
       {
+        id: 'node',
         x,
         y,
         width: 300,
@@ -40,7 +41,7 @@ export class NodeViewModel {
         this.customRectangle.updateHeaderText(title);
         this.layer.batchDraw();
       },
-      { equalityFn: (a, b) => a == b }
+      { equalityFn: (a, b) => a === b }
     );
 
     this.layer.batchDraw();

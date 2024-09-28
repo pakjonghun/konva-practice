@@ -35,7 +35,7 @@ export class CanvasViewModel extends BaseViewModel {
     this.backgroundViewModel = new BackgroundViewModel({ stage, width, height });
     this.selectRectViewModel = new SelectRectViewModel(stage);
 
-    this.layer.add(this.selectRectViewModel.selectRect);
+    this.layer.add(this.selectRectViewModel.selectRect, this.selectRectViewModel.transformer);
     stage.add(this.backgroundViewModel.backgroundLayer, this.layer);
 
     this.stage = stage;
@@ -125,6 +125,7 @@ export class CanvasViewModel extends BaseViewModel {
     return () => {
       unsubscribe();
       this.backgroundViewModel.dispose();
+      this.selectRectViewModel.dispose();
       dispose();
     };
   }

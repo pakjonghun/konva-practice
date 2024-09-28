@@ -101,7 +101,7 @@ export class CustomRectangle extends Konva.Group {
     super(config);
 
     // 헤더 사각형과 텍스트
-    this.headerRect = new BaseRect({
+    this.headerRect = new Konva.Rect({
       x: 0,
       y: 0,
       width: config.width || 0,
@@ -109,7 +109,6 @@ export class CustomRectangle extends Konva.Group {
       fill: 'lightgray',
       stroke: 'black',
       strokeWidth: 2,
-      draggable: true,
     });
 
     this.headerText = new BaseText({

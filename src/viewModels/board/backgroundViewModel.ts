@@ -4,7 +4,7 @@ import { Position, Size } from '../../store/nodeStore/types';
 import Konva from 'konva';
 
 export class BackgroundViewModel extends BaseViewModel {
-  protected layer: BackgroundLayer;
+  private layer: BackgroundLayer;
   panning = false;
   prevPos: Position | null = null;
   dispose: () => void;

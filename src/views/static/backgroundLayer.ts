@@ -1,6 +1,6 @@
 import Konva from 'konva';
 import { Size } from '../../store/nodeStore/types';
-import { GRID_COLOR, GRID_SIZE } from '../../constants/canvas';
+import { BACKGROUND, GRID_COLOR, GRID_SIZE } from '../../constants/canvas';
 import { BaseLayer } from '../base/baseLayer';
 
 export class BackgroundLayer extends BaseLayer {
@@ -38,6 +38,7 @@ export class BackgroundLayer extends BaseLayer {
   drawBackground({ width, height }: Size) {
     const grid = this.smallGrid(GRID_SIZE);
     const background = new Konva.Rect({
+      id: BACKGROUND,
       x: 0,
       y: 0,
       width,
