@@ -1,8 +1,8 @@
 import { BaseViewModel } from '../base/baseViewModel';
-import { BackgroundLayer } from '../../views/static/backgroundLayer';
+import { BackgroundLayer } from '../../views/board/backgroundLayer';
 import { Position, Size } from '../../store/nodeStore/types';
 import Konva from 'konva';
-import { PAINT, SELECT_RECT } from '../../constants/canvas';
+import { SELECT_RECT } from '../../constants/canvas';
 
 export class BackgroundViewModel extends BaseViewModel {
   private layer: BackgroundLayer;

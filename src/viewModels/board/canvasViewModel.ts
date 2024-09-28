@@ -27,7 +27,6 @@ export class CanvasViewModel extends BaseViewModel {
       width,
       height,
     });
-
     this.layer = new BaseLayer({
       id: PAINT,
       x: 0,
@@ -35,16 +34,13 @@ export class CanvasViewModel extends BaseViewModel {
       width,
       height,
     });
+    this.dragLayer = new Konva.Layer({ id: DRAG });
     this.backgroundViewModel = new BackgroundViewModel({ stage, width, height });
     this.selectRectViewModel = new SelectRectViewModel(stage);
-    this.dragLayer = new Konva.Layer({ id: DRAG });
 
     this.layer.add(this.selectRectViewModel.selectRect, this.selectRectViewModel.transformer);
-
     stage.add(this.backgroundViewModel.backgroundLayer, this.layer, this.dragLayer);
-    this.backgroundViewModel.backgroundLayer.draw();
     this.stage = stage;
-
     this.dispose = this.render();
   }
 
@@ -62,12 +58,6 @@ export class CanvasViewModel extends BaseViewModel {
     const keyUpHandler = (e: KeyboardEvent) => {
       if (!e.ctrlKey && !e.metaKey) {
         container.style.cursor = 'default';
-      }
-    };
-
-    const keyDownHandler = (e: KeyboardEvent) => {
-      if (e.ctrlKey || e.metaKey) {
-        container.style.cursor = 'zoom-in';
       }
     };
 
@@ -113,20 +103,18 @@ export class CanvasViewModel extends BaseViewModel {
     });
 
     container.addEventListener('keyup', keyUpHandler);
-    container.addEventListener('keydown', keyDownHandler);
 
     return () => {
       container.removeEventListener('keyup', keyUpHandler);
-      container.removeEventListener('keydown', keyDownHandler);
       this.stage.off('wheel');
     };
   }
 
   render() {
-    const dispose = this.addEventList();
     const container = this.stage.container();
     container.tabIndex = 1;
     container.focus();
+    const dispose = this.addEventList();
 
     const unsubscribe = usePositionStore.subscribe(
       (state) => state.count,

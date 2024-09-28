@@ -1,6 +1,6 @@
 import { Position } from '../../store/nodeStore/types';
 import { BaseViewModel } from '../base/baseViewModel';
-import { SelectRect } from '../../views/dynamic/selectRect';
+import { SelectRect } from '../../views/board/selectRect';
 import { BaseStage } from '../../views/base/baseStage';
 import { BaseRect } from '../../views/base/baseRect';
 import {
