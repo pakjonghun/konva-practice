@@ -38,10 +38,22 @@ export class CanvasViewModel extends BaseViewModel {
     this.backgroundViewModel = new BackgroundViewModel({ stage, width, height });
     this.selectRectViewModel = new SelectRectViewModel(stage);
     this.dragLayer = new Konva.Layer({ id: DRAG });
+
     this.layer.add(this.selectRectViewModel.selectRect, this.selectRectViewModel.transformer);
+
     stage.add(this.backgroundViewModel.backgroundLayer, this.layer, this.dragLayer);
     this.backgroundViewModel.backgroundLayer.draw();
     this.stage = stage;
+
+    stage.getLayers().forEach((layer) => {
+      layer.clip({
+        x: 0,
+        y: 0,
+        width, // 뷰포트의 가로 크기
+        height, // 뷰포트의 세로 크기
+      });
+    });
+
     this.dispose = this.render();
   }
 
