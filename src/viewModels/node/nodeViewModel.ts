@@ -1,9 +1,10 @@
 import Konva from 'konva';
-import { usePositionStore } from '../store/nodeStore/positionStore';
-import { Position } from '../store/nodeStore/types';
-import { BaseLayer } from '../views/base/baseLayer';
-import { CustomRectangle } from '../views/ConvaObjects';
-import { DRAG, PAINT, TRANSFORMER_RECT } from '../constants/canvas';
+import { useBoardStore } from '../../store/boardStore/boardStore';
+import { Position } from '../../store/boardStore/types';
+import { BaseLayer } from '../../views/base/baseLayer';
+import { CustomRectangle } from '../../views/ConvaObjects';
+import { DRAG, PAINT, TRANSFORMER_RECT } from '../../constants/canvas';
+import { useNodeStore } from '../../store/nodeStore/nodeStore';
 
 export class NodeViewModel {
   private layer: BaseLayer;
@@ -11,7 +12,9 @@ export class NodeViewModel {
 
   constructor(layer: Konva.Layer) {
     this.layer = layer;
-    const title = usePositionStore.getState().title;
+    const title = useBoardStore.getState().title;
+
+    console.log(useNodeStore.getState().nodeById.size);
 
     const customRectangle = this.createNode(title, { x: layer.x(), y: layer.y() });
     this.customRectangle = customRectangle;
@@ -63,7 +66,15 @@ export class NodeViewModel {
   }
 
   render() {
-    const unsubscribeTitle = usePositionStore.subscribe(
+    useNodeStore.subscribe(
+      (state) => state.nodeById.get('d6fb3640-f7ab-11ee-9afa-dd080d0c217e'),
+      (node) => {
+        console.log('my node!', node?._id);
+        this.customRectangle.updateHeaderText(node?.name ?? '');
+      }
+    );
+
+    const unsubscribeTitle = useBoardStore.subscribe(
       (state) => state.title,
       (title) => {
         this.customRectangle.updateHeaderText(title);

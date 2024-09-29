@@ -1,25 +1,17 @@
-export type TDirection = 'Input' | 'Output';
+import { Position } from '../boardStore/types';
+
+export type Direction = 'Input' | 'Output';
 export type TPinType = 'Parameter' | 'Flow';
-
-export type Position = {
-  x: number;
-  y: number;
-};
-
-export type Size = {
-  width: number;
-  height: number;
-};
 
 export type Component = {
   id: string;
   owner: string;
   class: string;
-  placement: TDirection;
+  placement: Direction;
   children?: Component[];
 };
 
-export type INodeData = {
+export type NodeData = {
   _id: string;
   type: string;
   name: string;
@@ -27,4 +19,9 @@ export type INodeData = {
   components: Component;
   category: Array<string>;
   explain?: string;
+};
+
+export type PinConnection = {
+  from: string;
+  to: string;
 };

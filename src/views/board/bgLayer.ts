@@ -1,5 +1,5 @@
 import Konva from 'konva';
-import { Size } from '../../store/nodeStore/types';
+import { Size } from '../../store/boardStore/types';
 import { BACKGROUND, GRID_COLOR, GRID_SIZE } from '../../constants/canvas';
 import { BaseLayer } from '../base/baseLayer';
 

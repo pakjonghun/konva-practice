@@ -1,4 +1,4 @@
-import { Position } from '../../store/nodeStore/types';
+import { Position } from '../../store/boardStore/types';
 import { BaseViewModel } from '../base/baseViewModel';
 import { SelectRect } from '../../views/board/selectRect';
 import { BaseStage } from '../../views/base/baseStage';

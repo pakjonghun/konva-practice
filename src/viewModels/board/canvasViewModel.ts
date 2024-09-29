@@ -3,7 +3,7 @@ import { BaseViewModel } from '../base/baseViewModel';
 import { Layer } from 'konva/lib/Layer';
 import { Stage } from 'konva/lib/Stage';
 import { BgViewModel } from './bgLayerViewModel';
-import { Size } from '../../store/nodeStore/types';
+import { Size } from '../../store/boardStore/types';
 import { DRAG, ZOOM_MAX_SCALE, ZOOM_MIN_SCALE, ZOOM_SPEED } from '../../constants/canvas';
 import { SelectRectViewModel } from './selectRectViewModel';
 import Konva from 'konva';
@@ -101,7 +101,6 @@ export class CanvasViewModel extends BaseViewModel {
 
   paint() {
     const dispose = this.addEventList();
-
     this.stage.batchDraw();
 
     return () => {

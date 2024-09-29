@@ -1,6 +1,6 @@
 import { BaseViewModel } from '../base/baseViewModel';
 import { BackgroundLayer } from '../../views/board/bgLayer';
-import { Position, Size } from '../../store/nodeStore/types';
+import { Position, Size } from '../../store/boardStore/types';
 import Konva from 'konva';
 import { SELECT_RECT } from '../../constants/canvas';
 

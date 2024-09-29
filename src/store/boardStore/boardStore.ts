@@ -10,10 +10,10 @@ type Action = {
   setCount: (count: number) => void;
   increaseRenderCount: () => void;
 };
+type State = Position & { title: string; count: number; renderCount: number };
+type StoreType = Action & State;
 
-type PositionStoreType = Action & Position & { title: string; count: number; renderCount: number };
-
-export const initState: Position & { title: string; count: number; renderCount: number } = {
+export const initState: State = {
   title: '',
   count: 1,
   x: -3000,
@@ -21,10 +21,9 @@ export const initState: Position & { title: string; count: number; renderCount: 
   renderCount: 0,
 };
 
-const positionStoreApi: StateCreator<
-  PositionStoreType,
-  [['zustand/immer', never], ['zustand/devtools', never]]
-> = (set) => ({
+const storeApi: StateCreator<StoreType, [['zustand/immer', never], ['zustand/devtools', never]]> = (
+  set
+) => ({
   ...initState,
   setTitle: (keyword) =>
     set((state) => {
@@ -45,8 +44,8 @@ const positionStoreApi: StateCreator<
     }),
 });
 
-export const usePositionStore = create<PositionStoreType>()(
-  devtools(immer(subscribeWithSelector(positionStoreApi)), {
-    name: 'our dev tool!!',
+export const useBoardStore = create<StoreType>()(
+  devtools(immer(subscribeWithSelector(storeApi)), {
+    name: '보드 저장소',
   })
 );

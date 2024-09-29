@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import useDebounce from '../hooks/useDebounce';
-import { usePositionStore } from '../store/nodeStore/positionStore';
+import { useBoardStore } from '../store/boardStore/boardStore';
 
 const Input = () => {
-  const setHeaderTitle = usePositionStore((state) => state.setTitle);
+  const setHeaderTitle = useBoardStore((state) => state.setTitle);
   const [keyword, setKeyword] = useState('');
   const handleChangeKeyword = useCallback((value: string) => {
     setKeyword(value);
