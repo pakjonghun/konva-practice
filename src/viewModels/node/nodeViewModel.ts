@@ -1,10 +1,9 @@
 import Konva from 'konva';
-import { useBoardStore } from '../../store/boardStore/boardStore';
-import { Position } from '../../store/boardStore/types';
 import { BaseLayer } from '../../views/base/baseLayer';
 import { CustomRectangle } from '../../views/ConvaObjects';
 import { DRAG, PAINT, TRANSFORMER_RECT } from '../../constants/canvas';
-import { useNodeStore } from '../../store/nodeStore/nodeStore';
+import { useLogicStore } from '../../store/logicStore/logicStore';
+import { Position } from '../../store/logicStore/types/common';
 
 export class NodeViewModel {
   private layer: BaseLayer;
@@ -12,11 +11,9 @@ export class NodeViewModel {
 
   constructor(layer: Konva.Layer) {
     this.layer = layer;
-    const title = useBoardStore.getState().title;
+    const logicById = useLogicStore.getState().logicById;
 
-    console.log(useNodeStore.getState().nodeById.size);
-
-    const customRectangle = this.createNode(title, { x: layer.x(), y: layer.y() });
+    const customRectangle = this.createNode('a', { x: layer.x(), y: layer.y() });
     this.customRectangle = customRectangle;
     this.layer.add(customRectangle);
     this.addEventList();
@@ -66,27 +63,19 @@ export class NodeViewModel {
   }
 
   render() {
-    useNodeStore.subscribe(
-      (state) => state.nodeById.get('d6fb3640-f7ab-11ee-9afa-dd080d0c217e'),
-      (node) => {
-        console.log('my node!', node?._id);
-        this.customRectangle.updateHeaderText(node?.name ?? '');
-      }
-    );
-
-    const unsubscribeTitle = useBoardStore.subscribe(
-      (state) => state.title,
-      (title) => {
-        this.customRectangle.updateHeaderText(title);
-        this.layer.batchDraw();
-      },
-      { equalityFn: (a, b) => a === b }
-    );
+    // const unsubscribeTitle = useBoardStore.subscribe(
+    //   (state) => state.title,
+    //   (title) => {
+    //     this.customRectangle.updateHeaderText(title);
+    //     this.layer.batchDraw();
+    //   },
+    //   { equalityFn: (a, b) => a === b }
+    // );
 
     this.layer.batchDraw();
 
     return () => {
-      unsubscribeTitle();
+      // unsubscribeTitle();
     };
   }
 }

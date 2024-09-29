@@ -3,9 +3,9 @@ import { NodeViewModel } from '../node/nodeViewModel';
 import { BaseViewModel } from '../base/baseViewModel';
 import { Layer } from 'konva/lib/Layer';
 import { Stage } from 'konva/lib/Stage';
-import { useBoardStore } from '../../store/boardStore/boardStore';
-import { Size } from '../../store/boardStore/types';
 import { PAINT } from '../../constants/canvas';
+import { Size } from '../../store/logicStore/types/common';
+import { useLogicStore } from '../../store/logicStore/logicStore';
 
 export class PaintLayerViewModel extends BaseViewModel {
   private view: Layer;
@@ -38,16 +38,16 @@ export class PaintLayerViewModel extends BaseViewModel {
     container.tabIndex = 1;
     container.focus();
 
-    const unsubscribe = useBoardStore.subscribe(
-      (state) => state.count,
-      (count) => {
-        this.bindingNodeUI(count);
+    const unsubscribe = useLogicStore.subscribe(
+      (state) => state.logicById,
+      (logicById) => {
+        // this.bindingNodeUI();
       },
       { equalityFn: (a, b) => a === b }
     );
 
-    const count = useBoardStore.getState().count;
-    this.bindingNodeUI(count);
+    const logicById = useLogicStore.getState().logicById;
+    // this.bindingNodeUI(count);
     this.stage.batchDraw();
 
     return () => {

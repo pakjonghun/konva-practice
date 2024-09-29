@@ -1,7 +1,4 @@
-import { Position } from '../boardStore/types';
-
-export type Direction = 'Input' | 'Output';
-export type TPinType = 'Parameter' | 'Flow';
+import { Direction, Position } from './common';
 
 export type Component = {
   id: string;

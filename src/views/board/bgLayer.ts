@@ -1,7 +1,7 @@
 import Konva from 'konva';
-import { Size } from '../../store/boardStore/types';
 import { BACKGROUND, GRID_COLOR, GRID_SIZE } from '../../constants/canvas';
 import { BaseLayer } from '../base/baseLayer';
+import { Size } from '../../store/logicStore/types/common';
 
 export class BackgroundLayer extends BaseLayer {
   backgroundRect: Konva.Rect;

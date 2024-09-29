@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useLoadNodeData } from '../hooks/useNodeData';
-import { useNodeStore } from '../store/nodeStore/nodeStore';
 import CanvasContainer from './CanvasContainer';
+import { useLogicStore } from '../store/logicStore/logicStore';
 
 const LogicBoardContainer = () => {
   const { isFetching, data } = useLoadNodeData();
-  const setNodeList = useNodeStore((state) => state.setNodeList);
-  const setConnectionList = useNodeStore((state) => state.setConnectionList);
+  const setBoardData = useLogicStore((state) => state.setBoardData);
+  // const setConnectionList = useLogicStore((state) => state.setConnectionList);
   const [isBoardReady, setIsBoardReady] = useState(false);
 
   useEffect(() => {
     if (!isFetching && data) {
-      setNodeList(data.nodes);
-      setConnectionList(data.pinConnections);
+      // setNodeList(data.nodes);
+      // setConnectionList(data.pinConnections);
       setIsBoardReady(true);
     }
-  }, [data, isFetching, setNodeList, setConnectionList]);
+  }, [data, isFetching]);
 
   if (!isBoardReady || isFetching) {
     return <div className="bg-pink-100 h-full w-full">로딩중입니다.</div>;

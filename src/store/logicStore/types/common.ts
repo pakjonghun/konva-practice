@@ -1,4 +1,5 @@
-export type TDirection = 'Input' | 'Output';
+export type Direction = 'Input' | 'Output';
+
 export type TPinType = 'Parameter' | 'Flow';
 
 export type Position = {

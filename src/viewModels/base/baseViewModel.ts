@@ -1,5 +1,4 @@
 import Konva from 'konva';
-import { useBoardStore } from '../../store/boardStore/boardStore';
 
 export abstract class BaseViewModel {
   protected animationFrameId: null | number = null;
@@ -10,7 +9,7 @@ export abstract class BaseViewModel {
         layer.batchDraw();
 
         this.animationFrameId = null;
-        useBoardStore.getState().increaseRenderCount();
+        // useBoardStore.getState().increaseRenderCount();
       });
     }
   }

@@ -1,4 +1,3 @@
-import { Position } from '../../store/boardStore/types';
 import { BaseViewModel } from '../base/baseViewModel';
 import { SelectRect } from '../../views/board/selectRect';
 import { BaseStage } from '../../views/base/baseStage';
@@ -12,6 +11,7 @@ import {
 } from '../../constants/canvas';
 import Konva from 'konva';
 import { KonvaEventObject, Node } from 'konva/lib/Node';
+import { Position } from '../../store/logicStore/types/common';
 
 export class SelectRectViewModel extends BaseViewModel {
   private selectRectView: BaseRect;
