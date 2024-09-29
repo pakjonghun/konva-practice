@@ -1,23 +1,20 @@
-import { BaseLayer } from '../../views/base/baseLayer';
-import { NodeViewModel } from '../nodeViewModel';
 import { BaseStage } from '../../views/base/baseStage';
 import { BaseViewModel } from '../base/baseViewModel';
 import { Layer } from 'konva/lib/Layer';
 import { Stage } from 'konva/lib/Stage';
-import { usePositionStore } from '../../store/nodeStore/positionStore';
-import { BackgroundViewModel } from './backgroundViewModel';
+import { BgViewModel } from './bgLayerViewModel';
 import { Size } from '../../store/nodeStore/types';
-import { DRAG, PAINT, ZOOM_MAX_SCALE, ZOOM_MIN_SCALE, ZOOM_SPEED } from '../../constants/canvas';
+import { DRAG, ZOOM_MAX_SCALE, ZOOM_MIN_SCALE, ZOOM_SPEED } from '../../constants/canvas';
 import { SelectRectViewModel } from './selectRectViewModel';
 import Konva from 'konva';
+import { PaintLayerViewModel } from './paintLayerViewModel';
 
 export class CanvasViewModel extends BaseViewModel {
-  protected layer: Layer;
   private stage: Stage;
   private dragLayer: Layer;
-  private backgroundViewModel: BackgroundViewModel;
+  private bgLayerViewModel: BgViewModel;
+  private paintLayerViewModel: PaintLayerViewModel;
   private selectRectViewModel: SelectRectViewModel;
-
   dispose: () => void;
 
   constructor({ container, width, height }: Size & { container: HTMLDivElement }) {
@@ -27,28 +24,20 @@ export class CanvasViewModel extends BaseViewModel {
       width,
       height,
     });
-    this.layer = new BaseLayer({
-      id: PAINT,
-      x: 0,
-      y: 0,
+
+    const dragLayer = (this.dragLayer = new Konva.Layer({ id: DRAG }));
+    const bgViewModel = (this.bgLayerViewModel = new BgViewModel({ stage, width, height }));
+    const paintViewModel = (this.paintLayerViewModel = new PaintLayerViewModel({
+      stage,
       width,
       height,
-    });
-    this.dragLayer = new Konva.Layer({ id: DRAG });
-    this.backgroundViewModel = new BackgroundViewModel({ stage, width, height });
-    this.selectRectViewModel = new SelectRectViewModel(stage);
-
-    this.layer.add(this.selectRectViewModel.selectRect, this.selectRectViewModel.transformer);
-    stage.add(this.backgroundViewModel.backgroundLayer, this.layer, this.dragLayer);
+    }));
+    const selectRectViewModel = (this.selectRectViewModel = new SelectRectViewModel(stage));
+    paintViewModel.paintLayer.add(selectRectViewModel.selectRect, selectRectViewModel.transformer);
+    stage.add(bgViewModel.bgLayer, paintViewModel.paintLayer, dragLayer);
     this.stage = stage;
-    this.dispose = this.render();
+    this.dispose = this.paint();
   }
-
-  bindingNodeUI = (count: number) => {
-    for (let i = 0; i < count; i++) {
-      new NodeViewModel(this.layer);
-    }
-  };
 
   addEventList() {
     const container = this.stage.container();
@@ -65,7 +54,7 @@ export class CanvasViewModel extends BaseViewModel {
       event.evt.preventDefault();
       if (!event.evt.ctrlKey && !event.evt.metaKey) return;
 
-      const paintLayer = this.layer;
+      const paintLayer = this.paintLayerViewModel.paintLayer;
       const prevScale = paintLayer.scaleX();
       const container = this.stage.container();
       const dy = event.evt.deltaY;
@@ -96,7 +85,7 @@ export class CanvasViewModel extends BaseViewModel {
       paintLayer.position(newPos);
       this.dragLayer.scale({ x: newScale, y: newScale });
       this.dragLayer.position(newPos);
-      const bg = this.backgroundViewModel.backgroundLayer.backgroundRect;
+      const bg = this.bgLayerViewModel.bgLayer.backgroundRect;
       bg.fillPatternScale({ x: newScale, y: newScale });
 
       this.stage.draw();
@@ -110,27 +99,14 @@ export class CanvasViewModel extends BaseViewModel {
     };
   }
 
-  render() {
-    const container = this.stage.container();
-    container.tabIndex = 1;
-    container.focus();
+  paint() {
     const dispose = this.addEventList();
 
-    const unsubscribe = usePositionStore.subscribe(
-      (state) => state.count,
-      (count) => {
-        this.bindingNodeUI(count);
-      },
-      { equalityFn: (a, b) => a === b }
-    );
-
-    const count = usePositionStore.getState().count;
-    this.bindingNodeUI(count);
     this.stage.batchDraw();
 
     return () => {
-      unsubscribe();
-      this.backgroundViewModel.dispose();
+      this.paintLayerViewModel.dispose();
+      this.bgLayerViewModel.dispose();
       this.selectRectViewModel.dispose();
       dispose();
     };

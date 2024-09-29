@@ -1,11 +1,11 @@
 import { BaseViewModel } from '../base/baseViewModel';
-import { BackgroundLayer } from '../../views/board/backgroundLayer';
+import { BackgroundLayer } from '../../views/board/bgLayer';
 import { Position, Size } from '../../store/nodeStore/types';
 import Konva from 'konva';
 import { SELECT_RECT } from '../../constants/canvas';
 
-export class BackgroundViewModel extends BaseViewModel {
-  private layer: BackgroundLayer;
+export class BgViewModel extends BaseViewModel {
+  private view: BackgroundLayer;
   panning = false;
   prevPos: Position | null = null;
   dispose: () => void;
@@ -14,7 +14,7 @@ export class BackgroundViewModel extends BaseViewModel {
   constructor({ width, height, stage }: Size & { stage: Konva.Stage }) {
     super();
 
-    this.layer = new BackgroundLayer({
+    this.view = new BackgroundLayer({
       x: 0,
       y: 0,
       width,
@@ -24,8 +24,8 @@ export class BackgroundViewModel extends BaseViewModel {
     this.dispose = this.addEventList(stage);
   }
 
-  get backgroundLayer() {
-    return this.layer;
+  get bgLayer() {
+    return this.view;
   }
 
   addEventList(stage: Konva.Stage) {
@@ -56,7 +56,7 @@ export class BackgroundViewModel extends BaseViewModel {
         return;
       }
 
-      const bg = this.layer.backgroundRect;
+      const bg = this.view.backgroundRect;
       bg.x(-x);
       bg.y(-y);
       bg.fillPatternOffset({ x: -x, y: -y });

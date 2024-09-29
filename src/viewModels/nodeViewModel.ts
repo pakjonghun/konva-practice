@@ -11,10 +11,9 @@ export class NodeViewModel {
 
   constructor(layer: Konva.Layer) {
     this.layer = layer;
-    const stage = layer.getStage();
     const title = usePositionStore.getState().title;
 
-    const customRectangle = this.createNode(title, { x: stage.x(), y: stage.y() });
+    const customRectangle = this.createNode(title, { x: layer.x(), y: layer.y() });
     this.customRectangle = customRectangle;
     this.layer.add(customRectangle);
     this.addEventList();
