@@ -1,13 +1,18 @@
-import { BaseStage } from '../../views/base/baseStage';
 import { BaseViewModel } from '../base/baseViewModel';
 import { Layer } from 'konva/lib/Layer';
 import { Stage } from 'konva/lib/Stage';
 import { BgViewModel } from './bgLayerViewModel';
-import { DRAG, ZOOM_MAX_SCALE, ZOOM_MIN_SCALE, ZOOM_SPEED } from '../../constants/canvas';
+import {
+  DRAG,
+  ZOOM_MAX_SCALE,
+  ZOOM_MIN_SCALE,
+  ZOOM_SPEED,
+} from '../../constants/canvas';
 import { SelectRectViewModel } from './selectRectViewModel';
 import Konva from 'konva';
 import { PaintLayerViewModel } from './paintLayerViewModel';
 import { Size } from '../../store/logicStore/types/common';
+import { BaseStage } from '../../views/base/BaseStage';
 
 export class CanvasViewModel extends BaseViewModel {
   private stage: Stage;
@@ -17,7 +22,11 @@ export class CanvasViewModel extends BaseViewModel {
   private selectRectViewModel: SelectRectViewModel;
   dispose: () => void;
 
-  constructor({ container, width, height }: Size & { container: HTMLDivElement }) {
+  constructor({
+    container,
+    width,
+    height,
+  }: Size & { container: HTMLDivElement }) {
     super();
     const stage = new BaseStage({
       container,
@@ -26,14 +35,22 @@ export class CanvasViewModel extends BaseViewModel {
     });
 
     const dragLayer = (this.dragLayer = new Konva.Layer({ id: DRAG }));
-    const bgViewModel = (this.bgLayerViewModel = new BgViewModel({ stage, width, height }));
+    const bgViewModel = (this.bgLayerViewModel = new BgViewModel({
+      stage,
+      width,
+      height,
+    }));
     const paintViewModel = (this.paintLayerViewModel = new PaintLayerViewModel({
       stage,
       width,
       height,
     }));
-    const selectRectViewModel = (this.selectRectViewModel = new SelectRectViewModel(stage));
-    paintViewModel.paintLayer.add(selectRectViewModel.selectRect, selectRectViewModel.transformer);
+    const selectRectViewModel = (this.selectRectViewModel =
+      new SelectRectViewModel(stage));
+    paintViewModel.paintLayer.add(
+      selectRectViewModel.selectRect,
+      selectRectViewModel.transformer
+    );
     stage.add(bgViewModel.bgLayer, paintViewModel.paintLayer, dragLayer);
     this.stage = stage;
     this.dispose = this.paint();

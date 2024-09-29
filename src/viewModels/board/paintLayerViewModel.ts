@@ -1,4 +1,4 @@
-import { BaseLayer } from '../../views/base/baseLayer';
+import { BaseLayer } from '../../views/base/BaseLayer';
 import { NodeViewModel } from '../node/nodeViewModel';
 import { BaseViewModel } from '../base/baseViewModel';
 import { Layer } from 'konva/lib/Layer';

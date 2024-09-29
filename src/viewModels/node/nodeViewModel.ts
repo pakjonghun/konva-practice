@@ -1,5 +1,5 @@
 import Konva from 'konva';
-import { BaseLayer } from '../../views/base/baseLayer';
+import { BaseLayer } from '../../views/base/BaseLayer';
 import { CustomRectangle } from '../../views/ConvaObjects';
 import { DRAG, PAINT, TRANSFORMER_RECT } from '../../constants/canvas';
 import { useLogicStore } from '../../store/logicStore/logicStore';
@@ -13,7 +13,10 @@ export class NodeViewModel {
     this.layer = layer;
     const logicById = useLogicStore.getState().logicById;
 
-    const customRectangle = this.createNode('a', { x: layer.x(), y: layer.y() });
+    const customRectangle = this.createNode('a', {
+      x: layer.x(),
+      y: layer.y(),
+    });
     this.customRectangle = customRectangle;
     this.layer.add(customRectangle);
     this.addEventList();

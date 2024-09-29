@@ -1,6 +1,6 @@
 import Konva from 'konva';
-import { BaseRect } from './base/baseRect';
-import { BaseText } from './base/baseText';
+import { BaseRect } from './base/BaseRect';
+import { BaseText } from './base/BaseText';
 
 // Stage 서브클래싱
 export class CustomStage extends Konva.Stage {
