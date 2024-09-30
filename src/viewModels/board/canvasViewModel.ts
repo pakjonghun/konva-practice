@@ -23,12 +23,14 @@ export class CanvasViewModel extends BaseViewModel {
   dispose: () => void;
 
   constructor({
+    id,
     container,
     width,
     height,
-  }: Size & { container: HTMLDivElement }) {
+  }: Size & { container: HTMLDivElement; id: string }) {
     super();
     const stage = new BaseStage({
+      id,
       container,
       width,
       height,

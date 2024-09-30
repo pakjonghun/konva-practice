@@ -1,18 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { BoardData } from '../store/logicStore/types/logic';
+import { BoardData, LogicBoard } from '../store/logicStore/types/logic';
 
 const instance = axios.create();
-const NODE_DATA = 'NODE_DATA';
-type ResponseBoard = BoardData;
+const LOGIC_DATA = 'LOGIC_DATA';
+type ResponseBoard = LogicBoard;
 
 const loadNodeData = () => {
-  return instance.get('/nodeData.json').then((res) => res.data);
+  return instance.get('/logic.json').then((res) => res.data);
 };
 
 export const useLoadNodeData = () => {
   return useQuery<ResponseBoard, void>({
-    queryKey: [NODE_DATA],
+    queryKey: [LOGIC_DATA],
     queryFn: loadNodeData,
   });
 };
