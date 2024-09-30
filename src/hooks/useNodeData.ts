@@ -1,10 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { BoardData, LogicBoard } from '../store/logicStore/types/logic';
+import {
+  BoardData,
+  RawLogicBoard,
+  RawBoardData,
+} from '../store/logicStore/types/logic';
 
 const instance = axios.create();
 const LOGIC_DATA = 'LOGIC_DATA';
-type ResponseBoard = LogicBoard;
+type ResponseBoard = RawLogicBoard;
 
 const loadNodeData = () => {
   return instance.get('/logic.json').then((res) => res.data);

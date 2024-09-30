@@ -8,7 +8,7 @@ import { BaseRect } from '../base/BaseRect';
 export class SelectRect extends BaseRect {
   constructor() {
     super({
-      id: SELECT_RECT,
+      name: SELECT_RECT,
       fill: SELECT_COLOR,
       strokeWidth: 1,
       stroke: SELECT_STROKE_COLOR,

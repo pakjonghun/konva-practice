@@ -38,7 +38,7 @@ export class BackgroundLayer extends BaseLayer {
   drawBackground({ width, height }: Size) {
     const grid = this.smallGrid(GRID_SIZE);
     const background = new Konva.Rect({
-      id: BACKGROUND,
+      name: BACKGROUND,
       x: 0,
       y: 0,
       width,

@@ -6,6 +6,7 @@ import { Stage } from 'konva/lib/Stage';
 import { PAINT } from '../../constants/canvas';
 import { Size } from '../../store/logicStore/types/common';
 import { useLogicStore } from '../../store/logicStore/logicStore';
+import { NodeData } from '../../store/logicStore/types/node';
 
 export class PaintLayerViewModel extends BaseViewModel {
   private view: Layer;
@@ -17,7 +18,7 @@ export class PaintLayerViewModel extends BaseViewModel {
     this.stage = stage;
 
     this.view = new BaseLayer({
-      id: PAINT,
+      name: PAINT,
       x: 0,
       y: 0,
       width,
@@ -27,10 +28,10 @@ export class PaintLayerViewModel extends BaseViewModel {
     this.dispose = this.paint();
   }
 
-  bindingNodeUI = (count: number) => {
-    for (let i = 0; i < count; i++) {
-      new NodeViewModel(this.view);
-    }
+  bindingNodeUI = (nodeDataList: NodeData[]) => {
+    nodeDataList.forEach((nodeData) => {
+      // new NodeViewModel(this.view, nodeData);
+    });
   };
 
   paint() {
@@ -39,15 +40,25 @@ export class PaintLayerViewModel extends BaseViewModel {
     container.focus();
 
     const unsubscribe = useLogicStore.subscribe(
-      (state) => state.logicById,
-      (logicById) => {
+      (state) => {
+        // const paintNodeList = [];
+        // state.nodeById.forEach((node) => {
+        //   if (!node.hasView) {
+        //     paintNodeList.push(node);
+        //   }
+        // });
+        // return paintNodeList;
+      },
+      (boardData) => {
+        console.log('boardData', boardData);
         // this.bindingNodeUI();
       },
       { equalityFn: (a, b) => a === b }
     );
 
-    const logicById = useLogicStore.getState().logicById;
-    // this.bindingNodeUI(count);
+    const boardData = useLogicStore.getState().nodeById;
+    console.log('iniboardData : ', boardData);
+    // this.bindingNodeUI(boardData?. ?? []);
     this.stage.batchDraw();
 
     return () => {
@@ -57,5 +68,9 @@ export class PaintLayerViewModel extends BaseViewModel {
 
   get paintLayer() {
     return this.view;
+  }
+
+  get boardId() {
+    return this.stage.id();
   }
 }

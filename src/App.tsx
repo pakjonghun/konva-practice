@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Button from './components/Button';
-import CanvasContainer from './components/CanvasContainer';
+import CanvasContainer from './components/LogicBoard';
 import Input from './components/Input';
 import RenderCount from './components/RenderCount';
 

@@ -1,20 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useLoadNodeData } from '../hooks/useNodeData';
-import CanvasContainer from './CanvasContainer';
+import CanvasContainer from './LogicBoard';
 import { useLogicStore } from '../store/logicStore/logicStore';
 
 const LogicBoardContainer = () => {
   const { isFetching, data } = useLoadNodeData();
-  const setBoardData = useLogicStore((state) => state.setBoardData);
-
-  // const setConnectionList = useLogicStore((state) => state.setConnectionList);
+  const setBoardData = useLogicStore((state) => state.initBoardData);
   const [isBoardReady, setIsBoardReady] = useState(false);
 
   useEffect(() => {
     if (!isFetching && data) {
       setBoardData(data);
-      // setNodeList(data.nodes);
-      // setConnectionList(data.pinConnections);
       setIsBoardReady(true);
     }
   }, [data, isFetching]);

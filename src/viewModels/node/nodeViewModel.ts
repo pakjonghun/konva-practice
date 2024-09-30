@@ -11,7 +11,7 @@ export class NodeViewModel {
 
   constructor(layer: Konva.Layer) {
     this.layer = layer;
-    const logicById = useLogicStore.getState().logicById;
+    // const logicById = useLogicStore.getState().logicById.get('');
 
     const customRectangle = this.createNode('a', {
       x: layer.x(),
@@ -59,9 +59,9 @@ export class NodeViewModel {
     );
   }
 
-  private findLayerById(id: string) {
+  private findLayerById(tag: string) {
     const stage = this.customRectangle.getStage();
-    const targetLayer = stage?.findOne(`#${id}`);
+    const targetLayer = stage?.findOne(`.${tag}`);
     return targetLayer;
   }
 

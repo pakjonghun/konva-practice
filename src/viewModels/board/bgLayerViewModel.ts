@@ -66,12 +66,12 @@ export class BgViewModel extends BaseViewModel {
 
     const container = stage.container();
     const keyDownHandler = (e: KeyboardEvent) => {
-      const selectRect = stage.findOne(`#${SELECT_RECT}`);
+      const selectRect = stage.findOne(`.${SELECT_RECT}`);
       const visible = selectRect?.isVisible();
       if (visible) return;
 
       if (e.code === 'Space' && !this.mousedown) {
-        const selectRect = stage.findOne(`#${SELECT_RECT}`);
+        const selectRect = stage.findOne(`.${SELECT_RECT}`);
         selectRect?.visible(false);
         container.style.cursor = 'grab';
         stage.draggable(true);

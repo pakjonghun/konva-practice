@@ -8,6 +8,7 @@ import {
   PAINT,
   SELECT_STROKE_COLOR,
   TRANSFORMER_RECT,
+  CONTAINER_TAG,
 } from '../../constants/canvas';
 import Konva from 'konva';
 import { KonvaEventObject, Node } from 'konva/lib/Node';
@@ -24,7 +25,7 @@ export class SelectRectViewModel extends BaseViewModel {
 
     this.selectRectView = new SelectRect();
     this.transformerView = new Konva.Transformer({
-      id: TRANSFORMER_RECT,
+      name: TRANSFORMER_RECT,
       enabledAnchors: [],
       rotateEnabled: false,
       borderStroke: SELECT_STROKE_COLOR,
@@ -50,7 +51,7 @@ export class SelectRectViewModel extends BaseViewModel {
   }
 
   getParent(target?: Node | null): Node | null | undefined {
-    if (target?.id() === 'node') {
+    if (target?.name() === CONTAINER_TAG) {
       return target;
     }
 
@@ -82,9 +83,9 @@ export class SelectRectViewModel extends BaseViewModel {
         }
       }
 
-      const targetId = target.id();
+      const targetName = target.name();
 
-      if (targetId === BACKGROUND) {
+      if (targetName === BACKGROUND) {
         event.target.preventDefault();
         this.selectRect.moveToTop();
         this.prevPos = this.selectRect
@@ -93,11 +94,11 @@ export class SelectRectViewModel extends BaseViewModel {
         this.selectRect.width(0);
         this.selectRect.height(0);
         this.multiSelecting = true;
-        const bgLayer = this.stage.findOne(`#${DRAG}`);
+        const bgLayer = this.stage.findOne(`.${DRAG}`);
         this.selectRect.moveTo(bgLayer);
       } else {
         const nextShape = this.getParent(target);
-        if (nextShape?.id() === 'node') {
+        if (nextShape?.name() === CONTAINER_TAG) {
           nextShape.moveToTop();
           this.transformer.nodes([nextShape]);
         }
@@ -146,7 +147,7 @@ export class SelectRectViewModel extends BaseViewModel {
         });
         this.transformer.moveToTop();
         this.multiSelecting = false;
-        const bgLayer = this.stage.findOne(`#${PAINT}`);
+        const bgLayer = this.stage.findOne(`.${PAINT}`);
         this.selectRect.moveTo(bgLayer);
         this.selectRect.visible(false);
       }
