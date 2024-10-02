@@ -1,5 +1,5 @@
 import { Group } from 'konva/lib/Group';
-import { BaseRect } from '../base/BaseRect';
+import { BaseRect } from '../base/baseRect';
 import {
   BODY_TAG,
   CONTAINER_TAG,

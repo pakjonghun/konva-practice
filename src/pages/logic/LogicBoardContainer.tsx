@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useLoadNodeData } from '../hooks/useNodeData';
 import CanvasContainer from './LogicBoard';
-import { useLogicStore } from '../store/logicStore/logicStore';
+import Loading from '../../components/Loading';
+import { useLoadNodeData } from '../../hooks/useNodeData';
+import { useLogicStore } from '../../store/logicStore/logicStore';
 
 const LogicBoardContainer = () => {
   const { isFetching, data } = useLoadNodeData();
@@ -13,10 +14,10 @@ const LogicBoardContainer = () => {
       setBoardData(data);
       setIsBoardReady(true);
     }
-  }, [data, isFetching]);
+  }, [data, isFetching, setBoardData]);
 
   if (!isBoardReady || isFetching || !data?.id) {
-    return <div className="bg-pink-100 h-full w-full">로딩중입니다.</div>;
+    return <Loading />;
   }
 
   return <CanvasContainer boardId={data.id} />;

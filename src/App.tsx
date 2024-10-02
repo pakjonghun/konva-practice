@@ -1,35 +1,29 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Button from './components/Button';
-import CanvasContainer from './components/LogicBoard';
-import Input from './components/Input';
-import RenderCount from './components/RenderCount';
 
 import { enableMapSet } from 'immer';
-import LogicBoardContainer from './components/LogicBoardContainer';
+import { Theme } from '@radix-ui/themes';
+import LogicBoardContainer from './pages/logic/LogicBoardContainer';
+import '@radix-ui/themes/styles.css';
+
 const queryClient = new QueryClient();
 enableMapSet();
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <div className="App">
+    <Theme>
+      <QueryClientProvider client={queryClient}>
         <div
+          className="App"
           style={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
-            padding: '0px',
-            margin: '0px',
             height: '100vh',
           }}
         >
-          <RenderCount />
-          <Input />
-          <Button />
           <LogicBoardContainer />
         </div>
-      </div>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </Theme>
   );
 }
 

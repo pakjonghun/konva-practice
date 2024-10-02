@@ -1,7 +1,7 @@
 import { BaseViewModel } from '../base/baseViewModel';
 import { SelectRect } from '../../views/board/selectRect';
-import { BaseStage } from '../../views/base/BaseStage';
-import { BaseRect } from '../../views/base/BaseRect';
+import { BaseStage } from '../../views/base/baseStage';
+import { BaseRect } from '../../views/base/baseRect';
 import {
   BACKGROUND,
   DRAG,
@@ -88,9 +88,7 @@ export class SelectRectViewModel extends BaseViewModel {
       if (targetName === BACKGROUND) {
         event.target.preventDefault();
         this.selectRect.moveToTop();
-        this.prevPos = this.selectRect
-          .getLayer()
-          ?.getRelativePointerPosition()!;
+        this.prevPos = this.selectRect.getLayer()?.getRelativePointerPosition()!;
         this.selectRect.width(0);
         this.selectRect.height(0);
         this.multiSelecting = true;

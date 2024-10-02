@@ -2,11 +2,8 @@ import { StateCreator, create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import { subscribeWithSelector } from 'zustand/middleware';
-import {
-  RawLogicBoard,
-  NodeDataBinding,
-  ConnectionBinding,
-} from './types/logic';
+import { RawLogicBoard, NodeDataBinding, ConnectionBinding } from './types/logic';
+import { NodeData } from './types/node';
 
 type Action = {
   initBoardData: (rawLogicData: RawLogicBoard) => void;
@@ -24,10 +21,10 @@ export const initState: State = {
   connectionById: new Map(),
 };
 
-const storeApi: StateCreator<
-  StoreType,
-  [['zustand/immer', never], ['zustand/devtools', never]]
-> = (set) => ({
+const storeApi: StateCreator<StoreType, [['zustand/immer', never], ['zustand/devtools', never]]> = (
+  set,
+  get
+) => ({
   ...initState,
   initBoardData: (rawLogicData) =>
     set((state) => {
@@ -63,6 +60,15 @@ const storeApi: StateCreator<
       }
       state.nodeById = nodeMap;
     }),
+  getPaintNode() {
+    const result: NodeData[] = [];
+    get().nodeById.forEach((node) => {
+      if (node.hasView) {
+        result.push(node.nodeData);
+      }
+    });
+    return result;
+  },
 });
 
 export const useLogicStore = create<StoreType>()(

@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from 'react';
-import { CanvasViewModel } from '../viewModels/board/canvasViewModel';
-import { BG_COLOR } from '../constants/canvas';
+import { BG_COLOR } from '../../constants/canvas';
+import { CanvasViewModel } from '../../viewModels/board/canvasViewModel';
 
 interface Props {
   boardId: string;
@@ -24,7 +24,7 @@ const CanvasContainer: FC<Props> = ({ boardId }) => {
     return () => {
       canvasViewModel.dispose();
     };
-  }, []);
+  }, [boardId]);
 
   return (
     <div

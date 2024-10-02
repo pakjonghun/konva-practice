@@ -1,9 +1,5 @@
-import {
-  SELECT_COLOR,
-  SELECT_RECT,
-  SELECT_STROKE_COLOR,
-} from '../../constants/canvas';
-import { BaseRect } from '../base/BaseRect';
+import { SELECT_COLOR, SELECT_RECT, SELECT_STROKE_COLOR } from '../../constants/canvas';
+import { BaseRect } from '../base/baseRect';
 
 export class SelectRect extends BaseRect {
   constructor() {
