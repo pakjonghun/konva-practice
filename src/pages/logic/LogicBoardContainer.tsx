@@ -17,7 +17,7 @@ const LogicBoardContainer = () => {
       const nodeList = res.data.node;
       const manyNodeList: NodeData[] = [];
 
-      for (let i = 0; i < 300; i++) {
+      for (let i = 0; i < 50; i++) {
         nodeList.forEach((n) => {
           const newId = v4();
           const newPosition = {
@@ -33,7 +33,6 @@ const LogicBoardContainer = () => {
           manyNodeList.push(newNode);
         });
       }
-      console.log('data count', manyNodeList.length);
       nodeStore.initNode(manyNodeList);
       setIsBoardReady(true);
     }

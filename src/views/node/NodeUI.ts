@@ -95,5 +95,7 @@ export class NodeUI extends Konva.Group {
     pins.forEach((pin) => {
       this.add(pin);
     });
+
+    // this.cache();
   }
 }
