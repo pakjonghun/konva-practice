@@ -59,7 +59,9 @@ export class CanvasViewModel extends BaseViewModel {
 
     this.stage.on('wheel', (event) => {
       event.evt.preventDefault();
-      if (!event.evt.ctrlKey && !event.evt.metaKey) return;
+      if (!event.evt.ctrlKey || !event.evt.metaKey) {
+        return;
+      }
 
       const paintLayer = this.paintLayerViewModel.paintLayer;
       const prevScale = paintLayer.scaleX();
