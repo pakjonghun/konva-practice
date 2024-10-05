@@ -40,7 +40,7 @@ export class NodeViewModel {
     });
 
     return () => {
-      this.view.off('dragmove');
+      this.view.off('dragstart');
       this.view.off('dragend');
     };
   }
