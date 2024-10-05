@@ -1,8 +1,3 @@
-import Konva from 'konva';
-import { DRAG, PAINT, TRANSFORMER_RECT } from '../../constants/canvas';
-import { useLogicStore } from '../../store/logicStore/logicStore';
-import { Position } from '../../store/logicStore/types/common';
-
 export class NodeViewModel {
   // constructor(layer: Konva.Layer) {
   //   this.layer = layer;

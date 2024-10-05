@@ -1,7 +1,7 @@
-import Konva from "konva";
-import { BACKGROUND, GRID_COLOR, GRID_SIZE } from "../../constants/canvas";
-import { BaseLayer } from "../base/BaseLayer";
-import { Size } from "../../store/logicStore/types/common";
+import Konva from 'konva';
+import { BACKGROUND, GRID_COLOR, GRID_SIZE } from '../../constants/canvas';
+import { BaseLayer } from '../base/BaseLayer';
+import { Size } from '../../store/boardStore/node/type';
 
 export class BackgroundLayer extends BaseLayer {
   backgroundRect: Konva.Rect;
@@ -14,10 +14,10 @@ export class BackgroundLayer extends BaseLayer {
   }
 
   smallGrid = (gridSize: number) => {
-    const gridCanvas = document.createElement("canvas") as HTMLCanvasElement;
+    const gridCanvas = document.createElement('canvas') as HTMLCanvasElement;
     gridCanvas.width = gridSize;
     gridCanvas.height = gridSize;
-    const gridContext = gridCanvas.getContext("2d")!;
+    const gridContext = gridCanvas.getContext('2d')!;
     gridContext.strokeStyle = GRID_COLOR;
     gridContext.lineWidth = 1;
     gridContext.beginPath();
@@ -43,17 +43,16 @@ export class BackgroundLayer extends BaseLayer {
       y: 0,
       width,
       height,
-      stroke: "blue",
+      stroke: 'blue',
       strokeWidth: 10,
     });
     this.add(background);
 
     grid.onload = () => {
       background.fillPatternImage(grid);
-      background.fillPatternRepeat("repeat");
+      background.fillPatternRepeat('repeat');
     };
 
     return background;
   }
 }
-

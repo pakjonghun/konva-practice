@@ -1,26 +1,33 @@
 import { useEffect, useState } from 'react';
-import CanvasContainer from './LogicBoard';
 import Loading from '../../components/Loading';
-import { useLoadNodeData } from '../../hooks/useNodeData';
-import { useLogicStore } from '../../store/logicStore/logicStore';
+import { useParams } from 'react-router-dom';
+import { useBoardData } from '../../hooks/query/logic/useBoardData';
+import LogicBoard from './LogicBoard';
 
 const LogicBoardContainer = () => {
-  const { isFetching, data } = useLoadNodeData();
-  const setBoardData = useLogicStore((state) => state.initBoardData);
+  const { boardId } = useParams<{ boardId: string }>();
+  const { data: res, isFetching } = useBoardData(boardId);
   const [isBoardReady, setIsBoardReady] = useState(false);
 
   useEffect(() => {
-    if (!isFetching && data) {
-      setBoardData(data);
+    if (!isFetching && res?.data) {
       setIsBoardReady(true);
     }
-  }, [data, isFetching, setBoardData]);
+  }, [isFetching, res]);
 
-  if (!isBoardReady || isFetching || !data?.id) {
+  if (isFetching) {
     return <Loading />;
   }
 
-  return <CanvasContainer boardId={data.id} />;
+  if ((!res?.data && !isFetching) || !isBoardReady) {
+    return <p>보드 데이터 로드가 실패했습니다.</p>;
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', flex: 1 }}>
+      <LogicBoard />
+    </div>
+  );
 };
 
 export default LogicBoardContainer;

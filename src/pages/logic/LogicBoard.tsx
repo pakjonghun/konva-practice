@@ -1,12 +1,10 @@
-import { FC, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { BG_COLOR } from '../../constants/canvas';
 import { CanvasViewModel } from '../../viewModels/board/canvasViewModel';
+import { useParams } from 'react-router-dom';
 
-interface Props {
-  boardId: string;
-}
-
-const CanvasContainer: FC<Props> = ({ boardId }) => {
+const LogicBoard = () => {
+  const { boardId } = useParams() as { boardId: string };
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -39,4 +37,4 @@ const CanvasContainer: FC<Props> = ({ boardId }) => {
   );
 };
 
-export default CanvasContainer;
+export default LogicBoard;

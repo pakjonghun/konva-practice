@@ -2,7 +2,7 @@ import { BaseViewModel } from '../base/baseViewModel';
 import { BackgroundLayer } from '../../views/board/bgLayer';
 import Konva from 'konva';
 import { SELECT_RECT } from '../../constants/canvas';
-import { Position, Size } from '../../store/logicStore/types/common';
+import { Position, Size } from '../../store/boardStore/node/type';
 
 export class BgViewModel extends BaseViewModel {
   private view: BackgroundLayer;
