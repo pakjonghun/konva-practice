@@ -6,14 +6,15 @@ import { NodeUI } from '../../views/node/NodeUI';
 export class NodeViewModel {
   layer: Konva.Layer;
   view: Konva.Group;
+  dispose: () => void;
 
   constructor(layer: Konva.Layer, nodeData: NodeData) {
     this.layer = layer;
     const view = this.createNode(nodeData);
     this.view = view;
     this.layer.add(view);
-    this.addEventList();
-    this.render();
+
+    this.dispose = this.render();
   }
   addEventList() {
     this.view.on('dragmove', () => {
@@ -34,6 +35,11 @@ export class NodeViewModel {
       this.view.moveTo(nextLayer);
       tr.moveTo(nextLayer);
     });
+
+    return () => {
+      this.view.off('dragmove');
+      this.view.off('dragend');
+    };
   }
   createNode(nodeData: NodeData) {
     const { x, y } = nodeData.initPosition;
@@ -52,17 +58,7 @@ export class NodeViewModel {
     return targetLayer;
   }
   render() {
-    // const unsubscribeTitle = useBoardStore.subscribe(
-    //   (state) => state.title,
-    //   (title) => {
-    //     this.customRectangle.updateHeaderText(title);
-    //     this.layer.batchDraw();
-    //   },
-    //   { equalityFn: (a, b) => a === b }
-    // );
-    // this.layer.batchDraw();
-    return () => {
-      // unsubscribeTitle();
-    };
+    const eventDispose = this.addEventList();
+    return eventDispose;
   }
 }

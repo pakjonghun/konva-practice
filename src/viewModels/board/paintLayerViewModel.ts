@@ -36,16 +36,20 @@ export class PaintLayerViewModel extends BaseViewModel {
     container.focus();
 
     this.stage.batchDraw();
-
+    const nodeDisposeList: (() => void)[] = [];
     const dispose = autorun(() => {
       const nodeList = nodeStore.requireNodeUIList;
       nodeList.forEach((nodeData) => {
-        new NodeViewModel(this.paintLayer, nodeData);
+        const nodeViewModel = new NodeViewModel(this.paintLayer, nodeData);
+        const nodeDispose = nodeViewModel.dispose;
+        nodeDisposeList.push(nodeDispose);
       });
       nodeStore.batchBindNode(nodeList.map((node) => node.id));
     });
-
-    return dispose;
+    return () => {
+      dispose();
+      nodeDisposeList.forEach((disposeFunc) => disposeFunc());
+    };
   }
 
   get paintLayer() {
