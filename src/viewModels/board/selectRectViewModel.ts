@@ -83,9 +83,8 @@ export class SelectRectViewModel extends BaseViewModel {
       }
 
       const targetName = target.name();
-
       if (targetName === BACKGROUND) {
-        // event.target.preventDefault();
+        event.target.preventDefault();
         this.selectRect.moveToTop();
         this.prevPos = this.selectRect.getLayer()?.getRelativePointerPosition()!;
         this.selectRect.width(0);
@@ -113,7 +112,7 @@ export class SelectRectViewModel extends BaseViewModel {
         return;
       }
 
-      // event.target.preventDefault();
+      event.target.preventDefault();
       const layer = this.selectRect.getLayer();
       const { x, y } = layer?.getRelativePointerPosition()!;
       const { x: x1, y: y1 } = this.prevPos;

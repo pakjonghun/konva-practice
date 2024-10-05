@@ -17,23 +17,26 @@ export class NodeViewModel {
     this.dispose = this.render();
   }
   addEventList() {
-    this.view.on('dragmove', () => {
-      const nextLayer = this.findLayerById(DRAG);
-      const tr = this.findLayerById(TRANSFORMER_RECT);
-      if (!nextLayer || !tr) {
+    this.view.on('dragstart', () => {
+      const dragLayer = this.findByName(DRAG);
+      const tr = this.findByName(TRANSFORMER_RECT);
+      if (!dragLayer || !tr) {
         return;
       }
-      this.view.moveTo(nextLayer);
-      tr.moveTo(nextLayer);
+
+      console.log(this.view.id(), 'node move to drag');
+      this.view.moveTo(dragLayer);
+      tr.moveTo(dragLayer);
     });
     this.view.on('dragend', () => {
-      const nextLayer = this.findLayerById(PAINT);
-      const tr = this.findLayerById(TRANSFORMER_RECT);
-      if (!nextLayer || !tr) {
+      const paintLayer = this.findByName(PAINT);
+      const tr = this.findByName(TRANSFORMER_RECT);
+      if (!paintLayer || !tr) {
         return;
       }
-      this.view.moveTo(nextLayer);
-      tr.moveTo(nextLayer);
+      console.log(this.view.id(), 'node move to paint');
+      this.view.moveTo(paintLayer);
+      tr.moveTo(paintLayer);
     });
 
     return () => {
@@ -52,7 +55,7 @@ export class NodeViewModel {
       listening: true,
     });
   }
-  private findLayerById(tag: string) {
+  private findByName(tag: string) {
     const stage = this.view.getStage();
     const targetLayer = stage?.findOne(`.${tag}`);
     return targetLayer;

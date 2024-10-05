@@ -9,6 +9,7 @@ import { NodeBodyText } from './body/NodeBodyText';
 import {
   NODE_BODY_HEIGHT,
   NODE_HEADER_HEIGHT,
+  NODE_STROKE_COLOR,
   NODE_WIDTH,
   PIN_HEIGHT,
 } from '../../constants/canvas';
@@ -76,6 +77,7 @@ export class NodeUI extends Konva.Group {
           y: nextY + radius,
           radius: radius,
           fill: 'white',
+          stroke: NODE_STROKE_COLOR,
         });
 
         const pinGroup = new Konva.Group({
