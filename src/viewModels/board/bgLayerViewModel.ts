@@ -21,82 +21,81 @@ export class BgViewModel extends BaseViewModel {
       height,
     });
 
-    // this.dispose = this.addEventList(stage);
-    this.dispose = () => {};
+    this.dispose = this.addEventList(stage);
   }
 
   get bgLayer() {
     return this.view;
   }
 
-  // addEventList(stage: Konva.Stage) {
-  //   stage.on('mousedown', () => {
-  //     this.mousedown = true;
-  //   });
+  addEventList(stage: Konva.Stage) {
+    stage.on('mousedown', () => {
+      this.mousedown = true;
+    });
 
-  //   stage.on('mouseup', () => {
-  //     this.mousedown = false;
-  //   });
+    stage.on('mouseup', () => {
+      this.mousedown = false;
+    });
 
-  //   stage.on('dragstart', () => {
-  //     this.prevPos = stage.getPointerPosition();
-  //   });
+    stage.on('dragstart', () => {
+      this.prevPos = stage.getPointerPosition();
+    });
 
-  //   stage.on('dragend', () => {
-  //     this.prevPos = null;
-  //   });
+    stage.on('dragend', () => {
+      this.prevPos = null;
+    });
 
-  //   stage.on('dragmove', () => {
-  //     if (!this.prevPos) {
-  //       return;
-  //     }
+    stage.on('dragmove', () => {
+      if (!this.prevPos) {
+        return;
+      }
 
-  //     const { x: px, y: py } = this.prevPos;
-  //     const { x, y } = stage.position();
-  //     if (x === px && y === py) {
-  //       return;
-  //     }
+      const { x: px, y: py } = this.prevPos;
+      const { x, y } = stage.position();
+      if (x === px && y === py) {
+        return;
+      }
 
-  //     const bg = this.view.backgroundRect;
-  //     bg.x(-x);
-  //     bg.y(-y);
-  //     bg.fillPatternOffset({ x: -x, y: -y });
+      const bg = this.view.backgroundRect;
+      bg.x(-x);
+      bg.y(-y);
+      bg.fillPatternOffset({ x: -x, y: -y });
 
-  //     this.prevPos = { x, y };
-  //   });
+      this.prevPos = { x, y };
+    });
 
-  //   const container = stage.container();
-  //   const keyDownHandler = (e: KeyboardEvent) => {
-  //     const selectRect = stage.findOne(`.${SELECT_RECT}`);
-  //     const visible = selectRect?.isVisible();
-  //     if (visible) return;
+    const container = stage.container();
+    const keyDownHandler = (e: KeyboardEvent) => {
+      const selectRect = stage.findOne(`.${SELECT_RECT}`);
+      const visible = selectRect?.isVisible();
+      if (visible) return;
 
-  //     if (e.code === 'Space' && !this.mousedown) {
-  //       const selectRect = stage.findOne(`.${SELECT_RECT}`);
-  //       selectRect?.visible(false);
-  //       container.style.cursor = 'grab';
-  //       stage.draggable(true);
-  //     }
-  //   };
+      if (e.code === 'Space' && !this.mousedown) {
+        const selectRect = stage.findOne(`.${SELECT_RECT}`);
+        selectRect?.visible(false);
+        container.style.cursor = 'grab';
+        stage.draggable(true);
+      }
+    };
 
-  //   const keyUpHandler = (e: KeyboardEvent) => {
-  //     if (e.code === 'Space') {
-  //       container.style.cursor = 'default';
-  //       stage.draggable(false);
-  //     }
-  //   };
+    const keyUpHandler = (e: KeyboardEvent) => {
+      if (e.code === 'Space') {
+        container.style.cursor = 'default';
+        stage.draggable(false);
+      }
+    };
 
-  //   container.addEventListener('keyup', keyUpHandler);
-  //   container.addEventListener('keydown', keyDownHandler);
+    container.addEventListener('keyup', keyUpHandler);
+    container.addEventListener('keydown', keyDownHandler);
 
-  //   return () => {
-  //     stage.off('mousedown');
-  //     stage.off('mouseup');
-  //     stage.off('dragstart');
-  //     stage.off('dragend');
-  //     stage.off('dragmove');
-  //     container.removeEventListener('keyup', keyUpHandler);
-  //     container.removeEventListener('keydown', keyDownHandler);
-  //   };
-  // }
+    return () => {
+      stage.off('mousedown');
+      stage.off('mouseup');
+      stage.off('dragstart');
+      stage.off('dragend');
+      stage.off('dragmove');
+      container.removeEventListener('keyup', keyUpHandler);
+      container.removeEventListener('keydown', keyDownHandler);
+    };
+  }
 }

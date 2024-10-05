@@ -26,9 +26,5 @@ export class NodeUI extends Konva.Group {
     const bodyContainer = new NodeBody();
 
     this.add(headerRect, text, icon, bodyContainer);
-
-    this.on('mousedown', () => {
-      console.log(' mouse down in node 111');
-    });
   }
 }

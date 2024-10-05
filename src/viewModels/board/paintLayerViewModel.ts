@@ -4,9 +4,11 @@ import { BaseViewModel } from '../base/baseViewModel';
 import { Layer } from 'konva/lib/Layer';
 import { Stage } from 'konva/lib/Stage';
 import { PAINT } from '../../constants/canvas';
-import { NodeData, Size } from '../../store/boardStore/node/type';
+import { Size } from '../../store/boardStore/node/type';
 import { autorun } from 'mobx';
 import { nodeStore } from '../../store/boardStore/node/nodeStore';
+import Konva from 'konva';
+import { BaseRect } from '../../views/base/BaseRect';
 
 export class PaintLayerViewModel extends BaseViewModel {
   private view: Layer;

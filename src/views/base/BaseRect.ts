@@ -1,13 +1,12 @@
-import Konva from "konva";
+import Konva from 'konva';
 
 export class BaseRect extends Konva.Rect {
   constructor(config: Konva.RectConfig) {
     super({
       ...config,
-      listening: false,
+      // listening: false,
       perfectDrawEnabled: false,
       shadowForStrokeEnabled: false,
     });
   }
 }
-

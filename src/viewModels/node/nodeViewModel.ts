@@ -16,10 +16,6 @@ export class NodeViewModel {
     this.render();
   }
   addEventList() {
-    this.view.on('mousedown', () => {
-      console.log('down');
-    });
-
     this.view.on('dragmove', () => {
       const nextLayer = this.findLayerById(DRAG);
       const tr = this.findLayerById(TRANSFORMER_RECT);

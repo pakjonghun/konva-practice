@@ -44,6 +44,7 @@ export class CanvasViewModel extends BaseViewModel {
     const selectRectViewModel = (this.selectRectViewModel = new SelectRectViewModel(stage));
     paintViewModel.paintLayer.add(selectRectViewModel.selectRect, selectRectViewModel.transformer);
     stage.add(bgViewModel.bgLayer, paintViewModel.paintLayer, dragLayer);
+
     this.stage = stage;
     this.dispose = this.paint();
   }
