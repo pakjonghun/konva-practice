@@ -24,7 +24,6 @@ export class NodeViewModel {
         return;
       }
 
-      console.log(this.view.id(), 'node move to drag');
       this.view.moveTo(dragLayer);
       tr.moveTo(dragLayer);
     });
@@ -34,7 +33,6 @@ export class NodeViewModel {
       if (!paintLayer || !tr) {
         return;
       }
-      console.log(this.view.id(), 'node move to paint');
       this.view.moveTo(paintLayer);
       tr.moveTo(paintLayer);
     });

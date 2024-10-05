@@ -9,10 +9,13 @@ import {
   SELECT_STROKE_COLOR,
   TRANSFORMER_RECT,
   NODE_TAG,
+  NODE_WIDTH,
 } from '../../constants/canvas';
 import Konva from 'konva';
 import { KonvaEventObject, Node } from 'konva/lib/Node';
 import { Position } from '../../store/boardStore/node/type';
+import { transform } from 'typescript';
+import { NodeUI } from '../../views/node/NodeUI';
 
 export class SelectRectViewModel extends BaseViewModel {
   private selectRectView: BaseRect;
@@ -24,6 +27,7 @@ export class SelectRectViewModel extends BaseViewModel {
     super();
     this.selectRectView = new SelectRect();
     this.transformerView = new Konva.Transformer({
+      centeredScaling: true,
       shouldOverdrawWholeArea: true,
       name: TRANSFORMER_RECT,
       enabledAnchors: [],
@@ -32,7 +36,7 @@ export class SelectRectViewModel extends BaseViewModel {
       borderStrokeWidth: 3,
     });
 
-    this.transformerView.padding(2);
+    this.transformerView.padding(3);
     this.dispose = this.addEventList();
   }
 
@@ -93,11 +97,24 @@ export class SelectRectViewModel extends BaseViewModel {
         const bgLayer = this.stage.findOne(`.${DRAG}`);
         this.selectRect.moveTo(bgLayer);
       } else {
-        const nextShape = this.getParent(target);
+        const nextShape = this.getParent(target) as NodeUI;
         if (nextShape?.name() === NODE_TAG) {
           nextShape.moveToTop();
-          this.transformer.moveToTop();
+
+          const shapeRect = nextShape.getClientRect();
+          const originW = shapeRect.width;
           this.transformer.nodes([nextShape]);
+          if (originW > NODE_WIDTH) {
+            const scale = NODE_WIDTH / originW;
+            if (nextShape.hasInput) {
+              this.transformer.offsetX(-30);
+            }
+
+            this.transformer.scaleX(scale);
+          }
+
+          this.transformer.moveToTop();
+          this.transformer.getLayer()?.batchDraw();
         }
       }
     });

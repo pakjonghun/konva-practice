@@ -15,14 +15,12 @@ import {
 } from '../../constants/canvas';
 
 export class NodeUI extends Konva.Group {
+  hasInput = false;
   constructor({ name, components }: NodeData, option: Konva.GroupConfig) {
     super({
       ...option,
-      hitGraphEnabled: true,
-      visible: true,
     });
     this.moveToTop();
-
     //header
     const iconImg = new Image();
     iconImg.src = img;
@@ -45,12 +43,15 @@ export class NodeUI extends Konva.Group {
     const inputX = +PIN_GAP;
     const radius = PIN_HEIGHT / 2;
     components.forEach(
-      ({ id, owner, placement, children, class: c, properties: { name, type, uses } }) => {
+      ({ id, owner, placement, children, class: c, properties: { name: pinName, type, uses } }) => {
         if (uses === 'Flow') {
           return;
         }
+
         let nextY = 0;
         if (placement === 'Input') {
+          console.log(pinName, name, 'Input');
+          this.hasInput = true;
           nextY = inputY;
           x = inputX;
           circleX = 0 - radius - TEXT_PIN_GAP;
@@ -63,7 +64,7 @@ export class NodeUI extends Konva.Group {
           outputY += PIN_HEIGHT + PIN_GAP;
           align = 'right';
         }
-        const text = new NodeBodyText(name, {
+        const text = new NodeBodyText(pinName, {
           x,
           y: nextY,
           height: PIN_HEIGHT,
@@ -98,34 +99,6 @@ export class NodeUI extends Konva.Group {
       this.add(pin);
     });
 
-    // this.getClientRect = function () {
-    //   const headerRectBox = headerRect.getClientRect();
-    //   const bodyRectBox = bodyContainer.getClientRect();
-
-    //   // 그룹의 x, y 좌표를 각각의 요소의 좌표에 더해줌
-    //   const groupX = this.x();
-    //   const groupY = this.y();
-
-    //   const minX = Math.min(headerRectBox.x, bodyRectBox.x);
-    //   const minY = Math.min(headerRectBox.y, bodyRectBox.y);
-
-    //   const maxX = Math.max(
-    //     headerRectBox.x + headerRectBox.width,
-    //     bodyRectBox.x + bodyRectBox.width
-    //   );
-    //   const maxY = Math.max(
-    //     headerRectBox.y + headerRectBox.height,
-    //     bodyRectBox.y + bodyRectBox.height
-    //   );
-
-    //   // 그룹의 좌표를 더해 정확한 상대 좌표로 변환
-    //   return {
-    //     x: minX + groupX,
-    //     y: minY + groupY,
-    //     width: maxX - minX, // 전체 너비
-    //     height: maxY - minY, // 전체 높이
-    //   };
-    // };
     // this.cache();
   }
 }
