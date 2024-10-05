@@ -29,11 +29,13 @@ export class CanvasViewModel extends BaseViewModel {
     const dragLayer = (this.dragLayer = new Konva.Layer({
       name: DRAG,
     }));
+
     const bgViewModel = (this.bgLayerViewModel = new BgViewModel({
       stage,
       width,
       height,
     }));
+
     const paintViewModel = (this.paintLayerViewModel = new PaintLayerViewModel({
       stage,
       width,

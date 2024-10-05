@@ -28,19 +28,11 @@ export class PaintLayerViewModel extends BaseViewModel {
     this.dispose = this.paint();
   }
 
-  bindingNodeUI = (nodeDataList: NodeData[]) => {
-    nodeDataList.forEach((nodeData) => {
-      // new NodeViewModel(this.view, nodeData);
-    });
-  };
-
   paint() {
     const container = this.stage.container();
     container.tabIndex = 1;
     container.focus();
 
-    // const boardData = useLogicStore.getState().nodeById;
-    // this.bindingNodeUI(boardData?. ?? []);
     this.stage.batchDraw();
 
     const dispose = autorun(() => {
@@ -48,6 +40,7 @@ export class PaintLayerViewModel extends BaseViewModel {
       nodeList.forEach((nodeData) => {
         new NodeViewModel(this.paintLayer, nodeData);
       });
+      nodeStore.batchBindNode(nodeList.map((node) => node.id));
     });
 
     return dispose;

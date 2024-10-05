@@ -1,6 +1,6 @@
 import Konva from 'konva';
 import { NodeData } from '../../store/boardStore/node/type';
-import { BODY_TAG, DRAG, NODE_TAG, PAINT, TRANSFORMER_RECT } from '../../constants/canvas';
+import { DRAG, NODE_TAG, PAINT, TRANSFORMER_RECT } from '../../constants/canvas';
 import { NodeUI } from '../../views/node/NodeUI';
 
 export class NodeViewModel {
@@ -9,13 +9,17 @@ export class NodeViewModel {
 
   constructor(layer: Konva.Layer, nodeData: NodeData) {
     this.layer = layer;
-    const customRectangle = this.createNode(nodeData);
-    this.view = customRectangle;
-    this.layer.add(customRectangle);
+    const view = this.createNode(nodeData);
+    this.view = view;
+    this.layer.add(view);
     this.addEventList();
     this.render();
   }
   addEventList() {
+    this.view.on('mousedown', () => {
+      console.log('down');
+    });
+
     this.view.on('dragmove', () => {
       const nextLayer = this.findLayerById(DRAG);
       const tr = this.findLayerById(TRANSFORMER_RECT);
@@ -43,6 +47,7 @@ export class NodeViewModel {
       x,
       y,
       draggable: true,
+      listening: true,
     });
   }
   private findLayerById(tag: string) {

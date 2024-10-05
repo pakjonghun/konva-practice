@@ -64,6 +64,7 @@ export class SelectRectViewModel extends BaseViewModel {
 
   addEventList() {
     this.stage.on('mousedown', (event) => {
+      console.log('stage mouse down', event.currentTarget);
       const otherEvent = this.getOtherEvent(event);
       if (otherEvent) {
         return;
@@ -72,6 +73,8 @@ export class SelectRectViewModel extends BaseViewModel {
       const isMultiSelected = selectedNodes.length > 1;
       const target = event.target;
       const nextShape = this.getParent(target);
+
+      console.log(target);
 
       if (isMultiSelected) {
         const hasClicked = selectedNodes.some((node) => {
@@ -85,7 +88,8 @@ export class SelectRectViewModel extends BaseViewModel {
       const targetName = target.name();
 
       if (targetName === BACKGROUND) {
-        event.target.preventDefault();
+        console.log('background click');
+        // event.target.preventDefault();
         this.selectRect.moveToTop();
         this.prevPos = this.selectRect.getLayer()?.getRelativePointerPosition()!;
         this.selectRect.width(0);
@@ -113,7 +117,7 @@ export class SelectRectViewModel extends BaseViewModel {
         return;
       }
 
-      event.target.preventDefault();
+      // event.target.preventDefault();
       const layer = this.selectRect.getLayer();
       const { x, y } = layer?.getRelativePointerPosition()!;
       const { x: x1, y: y1 } = this.prevPos;
