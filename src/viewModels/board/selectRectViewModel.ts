@@ -24,6 +24,7 @@ export class SelectRectViewModel extends BaseViewModel {
     super();
     this.selectRectView = new SelectRect();
     this.transformerView = new Konva.Transformer({
+      shouldOverdrawWholeArea: true,
       name: TRANSFORMER_RECT,
       enabledAnchors: [],
       rotateEnabled: false,
