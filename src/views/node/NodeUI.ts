@@ -98,6 +98,34 @@ export class NodeUI extends Konva.Group {
       this.add(pin);
     });
 
+    // this.getClientRect = function () {
+    //   const headerRectBox = headerRect.getClientRect();
+    //   const bodyRectBox = bodyContainer.getClientRect();
+
+    //   // 그룹의 x, y 좌표를 각각의 요소의 좌표에 더해줌
+    //   const groupX = this.x();
+    //   const groupY = this.y();
+
+    //   const minX = Math.min(headerRectBox.x, bodyRectBox.x);
+    //   const minY = Math.min(headerRectBox.y, bodyRectBox.y);
+
+    //   const maxX = Math.max(
+    //     headerRectBox.x + headerRectBox.width,
+    //     bodyRectBox.x + bodyRectBox.width
+    //   );
+    //   const maxY = Math.max(
+    //     headerRectBox.y + headerRectBox.height,
+    //     bodyRectBox.y + bodyRectBox.height
+    //   );
+
+    //   // 그룹의 좌표를 더해 정확한 상대 좌표로 변환
+    //   return {
+    //     x: minX + groupX,
+    //     y: minY + groupY,
+    //     width: maxX - minX, // 전체 너비
+    //     height: maxY - minY, // 전체 높이
+    //   };
+    // };
     // this.cache();
   }
 }

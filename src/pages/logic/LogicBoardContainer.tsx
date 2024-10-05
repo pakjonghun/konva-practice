@@ -15,25 +15,26 @@ const LogicBoardContainer = () => {
   useEffect(() => {
     if (!isFetching && res?.data) {
       const nodeList = res.data.node;
-      const manyNodeList: NodeData[] = [];
+      // const manyNodeList: NodeData[] = [];
 
-      for (let i = 0; i < 1500; i++) {
-        nodeList.forEach((n) => {
-          const newId = v4();
-          const newPosition = {
-            x: Math.random() * 800,
-            y: Math.random() * 800,
-          };
-          const newNode = {
-            ...n,
-            id: newId,
-            initPosition: newPosition,
-          };
+      // for (let i = 0; i < 50; i++) {
+      //   nodeList.forEach((n) => {
+      //     const newId = v4();
+      //     const newPosition = {
+      //       x: Math.random() * 800,
+      //       y: Math.random() * 800,
+      //     };
+      //     const newNode = {
+      //       ...n,
+      //       id: newId,
+      //       initPosition: newPosition,
+      //     };
 
-          manyNodeList.push(newNode);
-        });
-      }
-      nodeStore.initNode(manyNodeList);
+      //     manyNodeList.push(newNode);
+      //   });
+      // }
+      // nodeStore.initNode(manyNodeList);
+      nodeStore.initNode(nodeList);
       setIsBoardReady(true);
     }
 
