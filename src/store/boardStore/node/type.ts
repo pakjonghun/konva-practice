@@ -1,5 +1,4 @@
 export type Direction = 'Input' | 'Output';
-
 export type TPinType = 'Parameter' | 'Flow';
 
 export type Position = {
@@ -28,6 +27,25 @@ export type ComponentCommon = {
   class: string;
   placement: Direction;
   children?: ComponentCommon[];
+  properties: CommonProp;
+};
+
+export type CommonProp = {
+  name: string;
+  uses: TPinType;
+  type: string;
+};
+
+export type Component<T extends CommonProp> = ComponentCommon & {
+  properties: T;
+};
+
+export type PinData = {
+  name?: string;
+  uses: TPinType;
+  type: string;
+  canBeNull: boolean;
+  schemeFieldId?: string;
 };
 
 //뷰를 위한 데이터 구조

@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import { useBoardData } from '../../hooks/query/logic/useBoardData';
 import LogicBoard from './LogicBoard';
 import { nodeStore } from '../../store/boardStore/node/nodeStore';
+import { NodeData } from '../../store/boardStore/node/type';
+import { v4 } from 'uuid';
 
 const LogicBoardContainer = () => {
   const { boardId } = useParams<{ boardId: string }>();
@@ -12,7 +14,27 @@ const LogicBoardContainer = () => {
 
   useEffect(() => {
     if (!isFetching && res?.data) {
-      nodeStore.initNode(res.data.node);
+      const nodeList = res.data.node;
+      const manyNodeList: NodeData[] = [];
+
+      for (let i = 0; i < 300; i++) {
+        nodeList.forEach((n) => {
+          const newId = v4();
+          const newPosition = {
+            x: Math.random() * 800,
+            y: Math.random() * 800,
+          };
+          const newNode = {
+            ...n,
+            id: newId,
+            initPosition: newPosition,
+          };
+
+          manyNodeList.push(newNode);
+        });
+      }
+      console.log('data count', manyNodeList.length);
+      nodeStore.initNode(manyNodeList);
       setIsBoardReady(true);
     }
 

@@ -7,8 +7,6 @@ import { PAINT } from '../../constants/canvas';
 import { Size } from '../../store/boardStore/node/type';
 import { autorun } from 'mobx';
 import { nodeStore } from '../../store/boardStore/node/nodeStore';
-import Konva from 'konva';
-import { BaseRect } from '../../views/base/BaseRect';
 
 export class PaintLayerViewModel extends BaseViewModel {
   private view: Layer;
@@ -18,7 +16,6 @@ export class PaintLayerViewModel extends BaseViewModel {
   constructor({ stage, width, height }: Size & { stage: Stage }) {
     super();
     this.stage = stage;
-
     this.view = new BaseLayer({
       name: PAINT,
       x: 0,

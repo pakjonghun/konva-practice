@@ -26,9 +26,13 @@ export const PIN_TEXT_TAG = 'PIN_TEXT_TAG';
 //node style
 export const NODE_FILL_COLOR = '#D3D3D3';
 export const NODE_STROKE_COLOR = '#5A5A5A';
+export const NODE_TEXT_COLOR = '#1E1E1E';
 export const NODE_WIDTH = 220;
 export const NODE_HEADER_HEIGHT = 36;
 export const NODE_BODY_HEIGHT = 100;
 export const NODE_FONT_SIZE = 18;
 export const NODE_ICON_SIZE = 20;
 export const NODE_RADIUS = 6;
+
+//pin style
+export const PIN_HEIGHT = 20;

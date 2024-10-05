@@ -15,8 +15,73 @@
             "properties": {
               "canBeNull": true,
               "isCallback": false,
-              "name": "",
-              "uses": "Flow",
+              "name": "name1",
+              "uses": "Parameter",
+              "type": "dW5rbm93bg=="
+            }
+          },
+          {
+            "id": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330_Output_bbdb58e5-9e2f-11ee-b9ce-c19b79c60330",
+            "class": "Pin",
+            "placement": "Output",
+            "owner": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330",
+            "properties": {
+              "canBeNull": true,
+              "isCallback": false,
+              "name": "name2",
+              "uses": "Parameter",
+              "type": "dW5rbm93bg=="
+            }
+          },
+          {
+            "id": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330_Output_bbdb58e5-9e2f-11ee-b9ce-c19b79c60330",
+            "class": "Pin",
+            "placement": "Input",
+            "owner": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330",
+            "properties": {
+              "canBeNull": true,
+              "isCallback": false,
+              "name": "name4",
+              "uses": "Parameter",
+              "type": "dW5rbm93bg=="
+            }
+          },
+          {
+            "id": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330_Output_bbdb58e5-9e2f-11ee-b9ce-c19b79c60330",
+            "class": "Pin",
+            "placement": "Input",
+            "owner": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330",
+            "properties": {
+              "canBeNull": true,
+              "isCallback": false,
+              "name": "name5",
+              "uses": "Parameter",
+              "type": "dW5rbm93bg=="
+            }
+          },
+          {
+            "id": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330_Output_bbdb58e5-9e2f-11ee-b9ce-c19b79c60330",
+            "class": "Pin",
+            "placement": "Output",
+            "owner": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330",
+            "properties": {
+              "canBeNull": true,
+              "isCallback": false,
+              "name": "name6",
+              "uses": "Parameter",
+              "type": "dW5rbm93bg=="
+            }
+          },
+          {
+            "id": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330_Output_bbdb58e5-9e2f-11ee-b9ce-c19b79c60330",
+            "class": "Pin",
+            "placement": "Output",
+            "owner": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330",
+            "properties": {
+              "canBeNull": true,
+              "isCallback": false,
+              "name": "name7",
+              "uses": "Parameter",
               "type": "dW5rbm93bg=="
             }
           },
@@ -26,6 +91,7 @@
             "placement": "Output",
             "owner": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330",
             "properties": {
+              "name": "ert",
               "listPlaceholder": "시작 파라메터",
               "pinUses": "Parameter"
             },
