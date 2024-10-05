@@ -5,6 +5,8 @@ import { Layer } from 'konva/lib/Layer';
 import { Stage } from 'konva/lib/Stage';
 import { PAINT } from '../../constants/canvas';
 import { NodeData, Size } from '../../store/boardStore/node/type';
+import { autorun } from 'mobx';
+import { nodeStore } from '../../store/boardStore/node/nodeStore';
 
 export class PaintLayerViewModel extends BaseViewModel {
   private view: Layer;
@@ -41,7 +43,14 @@ export class PaintLayerViewModel extends BaseViewModel {
     // this.bindingNodeUI(boardData?. ?? []);
     this.stage.batchDraw();
 
-    return () => {};
+    const dispose = autorun(() => {
+      const nodeList = nodeStore.requireNodeUIList;
+      nodeList.forEach((nodeData) => {
+        new NodeViewModel(this.paintLayer, nodeData);
+      });
+    });
+
+    return dispose;
   }
 
   get paintLayer() {

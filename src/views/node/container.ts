@@ -1,14 +1,14 @@
-import { Group } from "konva/lib/Group";
-import { BaseRect } from "../base/BaseRect";
+import { Group } from 'konva/lib/Group';
+import { BaseRect } from '../base/BaseRect';
 import {
   BODY_TAG,
-  CONTAINER_TAG,
+  NODE_TAG,
   HEADER_TAG,
   NODE_FILL_COLOR,
   NODE_HEADER_HEIGHT,
   NODE_STROKE_COLOR,
   NODE_WIDTH,
-} from "../../constants/canvas";
+} from '../../constants/canvas';
 
 export class Container {
   constructor() {
@@ -17,7 +17,7 @@ export class Container {
 
   paint() {
     const group = new Group({
-      name: CONTAINER_TAG,
+      name: NODE_TAG,
     });
     const header = new BaseRect({
       name: HEADER_TAG,
@@ -40,4 +40,3 @@ export class Container {
     group.add(header, body);
   }
 }
-

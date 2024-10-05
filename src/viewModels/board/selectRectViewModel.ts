@@ -8,7 +8,7 @@ import {
   PAINT,
   SELECT_STROKE_COLOR,
   TRANSFORMER_RECT,
-  CONTAINER_TAG,
+  NODE_TAG,
 } from '../../constants/canvas';
 import Konva from 'konva';
 import { KonvaEventObject, Node } from 'konva/lib/Node';
@@ -22,7 +22,6 @@ export class SelectRectViewModel extends BaseViewModel {
   dispose: () => void;
   constructor(private stage: BaseStage) {
     super();
-
     this.selectRectView = new SelectRect();
     this.transformerView = new Konva.Transformer({
       name: TRANSFORMER_RECT,
@@ -51,7 +50,7 @@ export class SelectRectViewModel extends BaseViewModel {
   }
 
   getParent(target?: Node | null): Node | null | undefined {
-    if (target?.name() === CONTAINER_TAG) {
+    if (target?.name() === NODE_TAG) {
       return target;
     }
 
@@ -70,7 +69,6 @@ export class SelectRectViewModel extends BaseViewModel {
       }
       const selectedNodes = this.transformer.nodes();
       const isMultiSelected = selectedNodes.length > 1;
-
       const target = event.target;
       const nextShape = this.getParent(target);
 
@@ -96,8 +94,9 @@ export class SelectRectViewModel extends BaseViewModel {
         this.selectRect.moveTo(bgLayer);
       } else {
         const nextShape = this.getParent(target);
-        if (nextShape?.name() === CONTAINER_TAG) {
+        if (nextShape?.name() === NODE_TAG) {
           nextShape.moveToTop();
+          this.transformer.moveToTop();
           this.transformer.nodes([nextShape]);
         }
       }
@@ -134,7 +133,7 @@ export class SelectRectViewModel extends BaseViewModel {
 
       if (this.multiSelecting) {
         const box = this.selectRect.getClientRect();
-        const shapes = this.stage.find('#node');
+        const shapes = this.stage.find(`.${NODE_TAG}`);
         const nodes = shapes.filter((shape) =>
           Konva.Util.haveIntersection(shape.getClientRect(), box)
         );

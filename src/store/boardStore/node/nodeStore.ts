@@ -1,14 +1,19 @@
 import { NodeBinding, NodeData } from './type';
 import { makeAutoObservable, observable, runInAction } from 'mobx';
 
-export class NodeStore {
+class NodeStore {
   nodeById = observable.map<string, NodeBinding>();
 
   constructor() {
     makeAutoObservable(this);
   }
 
+  clear = () => {
+    this.nodeById.clear();
+  };
+
   initNode = (nodeDataList: Array<NodeData>) => {
+    this.clear();
     for (const nodeData of nodeDataList) {
       this.nodeById.set(nodeData.id, { hasView: false, nodeData });
     }
@@ -36,3 +41,5 @@ export class NodeStore {
     return notPaintedNodeList;
   }
 }
+
+export const nodeStore = new NodeStore();
