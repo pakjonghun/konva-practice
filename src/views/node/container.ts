@@ -1,5 +1,5 @@
-import { Group } from 'konva/lib/Group';
-import { BaseRect } from '../base/baseRect';
+import { Group } from "konva/lib/Group";
+import { BaseRect } from "../base/BaseRect";
 import {
   BODY_TAG,
   CONTAINER_TAG,
@@ -8,7 +8,7 @@ import {
   NODE_HEADER_HEIGHT,
   NODE_STROKE_COLOR,
   NODE_WIDTH,
-} from '../../constants/canvas';
+} from "../../constants/canvas";
 
 export class Container {
   constructor() {
@@ -40,3 +40,4 @@ export class Container {
     group.add(header, body);
   }
 }
+

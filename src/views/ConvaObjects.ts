@@ -1,6 +1,6 @@
-import Konva from 'konva';
-import { BaseRect } from './base/BaseRect';
-import { BaseText } from './base/BaseText';
+import Konva from "konva";
+// import { BaseRect } from './base/BaseRect';
+import { BaseText } from "./base/BaseText";
 
 // Stage 서브클래싱
 export class CustomStage extends Konva.Stage {
@@ -25,7 +25,7 @@ export class BackgroundLayer extends Konva.Layer {
       y: 0,
       width: width,
       height: height,
-      fill: 'black',
+      fill: "black",
     });
     this.add(background);
 
@@ -36,7 +36,7 @@ export class BackgroundLayer extends Konva.Layer {
     for (let x = 0; x <= width; x += gridSize) {
       const line = new Konva.Line({
         points: [x, 0, x, height],
-        stroke: 'gray',
+        stroke: "gray",
         strokeWidth: 0.5,
       });
       lines.push(line);
@@ -46,7 +46,7 @@ export class BackgroundLayer extends Konva.Layer {
     for (let y = 0; y <= height; y += gridSize) {
       const line = new Konva.Line({
         points: [0, y, width, y],
-        stroke: 'gray',
+        stroke: "gray",
         strokeWidth: 0.5,
       });
       lines.push(line);
@@ -66,10 +66,10 @@ export class BackgroundLayer extends Konva.Layer {
     const ctx = this.getContext();
 
     ctx.rect(0, 0, width, height);
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = "black";
     ctx.fill();
 
-    ctx.strokeStyle = 'gray';
+    ctx.strokeStyle = "gray";
     ctx.lineWidth = 0.5;
 
     for (let x = 0; x <= width; x += gridSize) {
@@ -106,8 +106,8 @@ export class CustomRectangle extends Konva.Group {
       y: 0,
       width: config.width || 0,
       height: 50,
-      fill: 'lightgray',
-      stroke: 'black',
+      fill: "lightgray",
+      stroke: "black",
       strokeWidth: 2,
     });
 
@@ -116,15 +116,15 @@ export class CustomRectangle extends Konva.Group {
       y: 10,
       text: headerText,
       fontSize: 20,
-      fontStyle: 'bold',
-      id: 'text',
+      fontStyle: "bold",
+      id: "text",
     });
 
     this.headerIcon = new Konva.Path({
       x: 150,
       y: 10,
-      data: 'M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z', // 기본 아이콘, 필요시 수정 가능
-      fill: 'black',
+      data: "M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z", // 기본 아이콘, 필요시 수정 가능
+      fill: "black",
       scaleX: 1.5,
       scaleY: 1.5,
     });
@@ -135,8 +135,8 @@ export class CustomRectangle extends Konva.Group {
       y: 50,
       width: config.width || 0,
       height: (config.height || 0) - 50,
-      fill: 'white',
-      stroke: 'black',
+      fill: "white",
+      stroke: "black",
       strokeWidth: 2,
     });
 
@@ -147,3 +147,4 @@ export class CustomRectangle extends Konva.Group {
     this.headerText.text(newText);
   }
 }
+

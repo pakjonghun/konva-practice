@@ -1,12 +1,12 @@
-import { BaseLayer } from '../../views/base/baseLayer';
-import { NodeViewModel } from '../node/nodeViewModel';
-import { BaseViewModel } from '../base/baseViewModel';
-import { Layer } from 'konva/lib/Layer';
-import { Stage } from 'konva/lib/Stage';
-import { PAINT } from '../../constants/canvas';
-import { Size } from '../../store/logicStore/types/common';
-import { useLogicStore } from '../../store/logicStore/logicStore';
-import { NodeData } from '../../store/logicStore/types/node';
+import { BaseLayer } from "../../views/base/BaseLayer";
+import { NodeViewModel } from "../node/nodeViewModel";
+import { BaseViewModel } from "../base/baseViewModel";
+import { Layer } from "konva/lib/Layer";
+import { Stage } from "konva/lib/Stage";
+import { PAINT } from "../../constants/canvas";
+import { Size } from "../../store/logicStore/types/common";
+import { useLogicStore } from "../../store/logicStore/logicStore";
+import { NodeData } from "../../store/logicStore/types/node";
 
 export class PaintLayerViewModel extends BaseViewModel {
   private view: Layer;
@@ -50,14 +50,14 @@ export class PaintLayerViewModel extends BaseViewModel {
         // return paintNodeList;
       },
       (boardData) => {
-        console.log('boardData', boardData);
+        console.log("boardData", boardData);
         // this.bindingNodeUI();
       },
       { equalityFn: (a, b) => a === b }
     );
 
     const boardData = useLogicStore.getState().nodeById;
-    console.log('iniboardData : ', boardData);
+    console.log("iniboardData : ", boardData);
     // this.bindingNodeUI(boardData?. ?? []);
     this.stage.batchDraw();
 
@@ -74,3 +74,4 @@ export class PaintLayerViewModel extends BaseViewModel {
     return this.stage.id();
   }
 }
+

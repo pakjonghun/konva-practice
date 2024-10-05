@@ -1,13 +1,18 @@
-import { BaseViewModel } from '../base/baseViewModel';
-import { Layer } from 'konva/lib/Layer';
-import { Stage } from 'konva/lib/Stage';
-import { BgViewModel } from './bgLayerViewModel';
-import { DRAG, ZOOM_MAX_SCALE, ZOOM_MIN_SCALE, ZOOM_SPEED } from '../../constants/canvas';
-import { SelectRectViewModel } from './selectRectViewModel';
-import Konva from 'konva';
-import { PaintLayerViewModel } from './paintLayerViewModel';
-import { Size } from '../../store/logicStore/types/common';
-import { BaseStage } from '../../views/base/baseStage';
+import { BaseViewModel } from "../base/baseViewModel";
+import { Layer } from "konva/lib/Layer";
+import { Stage } from "konva/lib/Stage";
+import { BgViewModel } from "./bgLayerViewModel";
+import {
+  DRAG,
+  ZOOM_MAX_SCALE,
+  ZOOM_MIN_SCALE,
+  ZOOM_SPEED,
+} from "../../constants/canvas";
+import { SelectRectViewModel } from "./selectRectViewModel";
+import Konva from "konva";
+import { PaintLayerViewModel } from "./paintLayerViewModel";
+import { Size } from "../../store/logicStore/types/common";
+import { BaseStage } from "../../views/base/BaseStage";
 
 export class CanvasViewModel extends BaseViewModel {
   private stage: Stage;
@@ -17,7 +22,12 @@ export class CanvasViewModel extends BaseViewModel {
   private selectRectViewModel: SelectRectViewModel;
   dispose: () => void;
 
-  constructor({ id, container, width, height }: Size & { container: HTMLDivElement; id: string }) {
+  constructor({
+    id,
+    container,
+    width,
+    height,
+  }: Size & { container: HTMLDivElement; id: string }) {
     super();
     const stage = new BaseStage({
       id,
@@ -39,8 +49,12 @@ export class CanvasViewModel extends BaseViewModel {
       width,
       height,
     }));
-    const selectRectViewModel = (this.selectRectViewModel = new SelectRectViewModel(stage));
-    paintViewModel.paintLayer.add(selectRectViewModel.selectRect, selectRectViewModel.transformer);
+    const selectRectViewModel = (this.selectRectViewModel =
+      new SelectRectViewModel(stage));
+    paintViewModel.paintLayer.add(
+      selectRectViewModel.selectRect,
+      selectRectViewModel.transformer
+    );
     stage.add(bgViewModel.bgLayer, paintViewModel.paintLayer, dragLayer);
     this.stage = stage;
     this.dispose = this.paint();
@@ -53,11 +67,11 @@ export class CanvasViewModel extends BaseViewModel {
 
     const keyUpHandler = (e: KeyboardEvent) => {
       if (!e.ctrlKey && !e.metaKey) {
-        container.style.cursor = 'default';
+        container.style.cursor = "default";
       }
     };
 
-    this.stage.on('wheel', (event) => {
+    this.stage.on("wheel", (event) => {
       event.evt.preventDefault();
       if (!event.evt.ctrlKey && !event.evt.metaKey) return;
 
@@ -68,10 +82,10 @@ export class CanvasViewModel extends BaseViewModel {
       const isZoomOut = dy > 0;
       let newScale = 0;
       if (isZoomOut) {
-        container.style.cursor = 'zoom-out';
+        container.style.cursor = "zoom-out";
         newScale = prevScale / ZOOM_SPEED;
       } else {
-        container.style.cursor = 'zoom-in';
+        container.style.cursor = "zoom-in";
         newScale = prevScale * ZOOM_SPEED;
       }
 
@@ -98,11 +112,11 @@ export class CanvasViewModel extends BaseViewModel {
       this.stage.draw();
     });
 
-    container.addEventListener('keyup', keyUpHandler);
+    container.addEventListener("keyup", keyUpHandler);
 
     return () => {
-      container.removeEventListener('keyup', keyUpHandler);
-      this.stage.off('wheel');
+      container.removeEventListener("keyup", keyUpHandler);
+      this.stage.off("wheel");
     };
   }
 
@@ -118,3 +132,4 @@ export class CanvasViewModel extends BaseViewModel {
     };
   }
 }
+

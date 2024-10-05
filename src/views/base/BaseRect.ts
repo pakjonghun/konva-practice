@@ -1,4 +1,4 @@
-import Konva from 'konva';
+import Konva from "konva";
 
 export class BaseRect extends Konva.Rect {
   constructor(config: Konva.RectConfig) {
@@ -10,3 +10,4 @@ export class BaseRect extends Konva.Rect {
     });
   }
 }
+

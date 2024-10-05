@@ -1,7 +1,7 @@
-import { BaseViewModel } from '../base/baseViewModel';
-import { SelectRect } from '../../views/board/selectRect';
-import { BaseStage } from '../../views/base/baseStage';
-import { BaseRect } from '../../views/base/baseRect';
+import { BaseViewModel } from "../base/baseViewModel";
+import { SelectRect } from "../../views/board/selectRect";
+import { BaseStage } from "../../views/base/BaseStage";
+import { BaseRect } from "../../views/base/BaseRect";
 import {
   BACKGROUND,
   DRAG,
@@ -9,10 +9,10 @@ import {
   SELECT_STROKE_COLOR,
   TRANSFORMER_RECT,
   CONTAINER_TAG,
-} from '../../constants/canvas';
-import Konva from 'konva';
-import { KonvaEventObject, Node } from 'konva/lib/Node';
-import { Position } from '../../store/logicStore/types/common';
+} from "../../constants/canvas";
+import Konva from "konva";
+import { KonvaEventObject, Node } from "konva/lib/Node";
+import { Position } from "../../store/logicStore/types/common";
 
 export class SelectRectViewModel extends BaseViewModel {
   private selectRectView: BaseRect;
@@ -63,7 +63,7 @@ export class SelectRectViewModel extends BaseViewModel {
   }
 
   addEventList() {
-    this.stage.on('mousedown', (event) => {
+    this.stage.on("mousedown", (event) => {
       const otherEvent = this.getOtherEvent(event);
       if (otherEvent) {
         return;
@@ -88,7 +88,9 @@ export class SelectRectViewModel extends BaseViewModel {
       if (targetName === BACKGROUND) {
         event.target.preventDefault();
         this.selectRect.moveToTop();
-        this.prevPos = this.selectRect.getLayer()?.getRelativePointerPosition()!;
+        this.prevPos = this.selectRect
+          .getLayer()
+          ?.getRelativePointerPosition()!;
         this.selectRect.width(0);
         this.selectRect.height(0);
         this.multiSelecting = true;
@@ -103,7 +105,7 @@ export class SelectRectViewModel extends BaseViewModel {
       }
     });
 
-    this.stage.on('mousemove', (event) => {
+    this.stage.on("mousemove", (event) => {
       const otherEvent = this.getOtherEvent(event);
       if (otherEvent) {
         return;
@@ -126,7 +128,7 @@ export class SelectRectViewModel extends BaseViewModel {
       });
     });
 
-    this.stage.on('mouseup', (event) => {
+    this.stage.on("mouseup", (event) => {
       const otherEvent = this.getOtherEvent(event);
       if (otherEvent) {
         return;
@@ -134,7 +136,7 @@ export class SelectRectViewModel extends BaseViewModel {
 
       if (this.multiSelecting) {
         const box = this.selectRect.getClientRect();
-        const shapes = this.stage.find('#node');
+        const shapes = this.stage.find("#node");
         const nodes = shapes.filter((shape) =>
           Konva.Util.haveIntersection(shape.getClientRect(), box)
         );
@@ -152,9 +154,10 @@ export class SelectRectViewModel extends BaseViewModel {
     });
 
     return () => {
-      this.stage.off('mousedown');
-      this.stage.off('mousemove');
-      this.stage.off('mouseup');
+      this.stage.off("mousedown");
+      this.stage.off("mousemove");
+      this.stage.off("mouseup");
     };
   }
 }
+
