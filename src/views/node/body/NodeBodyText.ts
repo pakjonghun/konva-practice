@@ -5,10 +5,10 @@ import { BaseText } from '../../base/BaseText';
 export class NodeBodyText extends BaseText {
   constructor(text: string, option?: Konva.TextConfig) {
     super({
-      ...option,
-      text,
       fontSize: NODE_FONT_SIZE,
       fill: NODE_TEXT_COLOR,
+      ...option,
+      text,
     });
   }
 }
