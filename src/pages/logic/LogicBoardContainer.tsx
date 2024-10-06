@@ -6,6 +6,7 @@ import LogicBoard from './LogicBoard';
 import { nodeStore } from '../../store/boardStore/node/nodeStore';
 import { NodeData } from '../../store/boardStore/node/type';
 import { v4 } from 'uuid';
+import Inspector from './Inspector';
 
 const LogicBoardContainer = () => {
   const { boardId } = useParams<{ boardId: string }>();
@@ -17,7 +18,7 @@ const LogicBoardContainer = () => {
       const nodeList = res.data.node;
       // const manyNodeList: NodeData[] = [];
 
-      // for (let i = 0; i < 50; i++) {
+      // for (let i = 0; i < 100; i++) {
       //   nodeList.forEach((n) => {
       //     const newId = v4();
       //     const newPosition = {
@@ -56,8 +57,17 @@ const LogicBoardContainer = () => {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', flex: 1 }}>
+    <div
+      style={{
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        flex: 1,
+      }}
+    >
       <LogicBoard />
+      <Inspector />
     </div>
   );
 };

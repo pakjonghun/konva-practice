@@ -1,7 +1,7 @@
 import Konva from 'konva';
 import {
   NODE_BODY_HEIGHT,
-  NODE_FILL_COLOR,
+  NODE_BODY_FILL_COLOR,
   NODE_HEADER_HEIGHT,
   NODE_RADIUS,
   NODE_STROKE_COLOR,
@@ -18,7 +18,7 @@ export class NodeBody extends BaseRect {
       y: NODE_HEADER_HEIGHT,
       width: NODE_WIDTH,
       height: NODE_BODY_HEIGHT,
-      fill: NODE_FILL_COLOR,
+      fill: NODE_BODY_FILL_COLOR,
       cornerRadius: [0, 0, NODE_RADIUS, NODE_RADIUS],
     });
   }

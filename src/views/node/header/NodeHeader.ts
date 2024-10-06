@@ -1,6 +1,6 @@
 import Konva from 'konva';
 import {
-  NODE_FILL_COLOR,
+  NODE_HEADER_FILL_COLOR,
   NODE_HEADER_HEIGHT,
   NODE_RADIUS,
   NODE_STROKE_COLOR,
@@ -17,7 +17,7 @@ export class NodeHeader extends BaseRect {
       stroke: NODE_STROKE_COLOR,
       width: NODE_WIDTH,
       height: NODE_HEADER_HEIGHT,
-      fill: NODE_FILL_COLOR,
+      fill: NODE_HEADER_FILL_COLOR,
       cornerRadius: [NODE_RADIUS, NODE_RADIUS, 0, 0],
     });
   }

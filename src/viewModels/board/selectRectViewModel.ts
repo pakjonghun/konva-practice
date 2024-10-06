@@ -14,8 +14,8 @@ import {
 import Konva from 'konva';
 import { KonvaEventObject, Node } from 'konva/lib/Node';
 import { Position } from '../../store/boardStore/node/type';
-import { transform } from 'typescript';
 import { NodeUI } from '../../views/node/NodeUI';
+import { inspectorStore } from '../../store/boardStore/inspector/inspectorStore';
 
 export class SelectRectViewModel extends BaseViewModel {
   private selectRectView: BaseRect;
@@ -104,12 +104,11 @@ export class SelectRectViewModel extends BaseViewModel {
           const shapeRect = nextShape.getClientRect();
           const originW = shapeRect.width;
           this.transformer.nodes([nextShape]);
+          inspectorStore.setSelectedNodeIdList([nextShape.id()]);
           if (originW > NODE_WIDTH) {
             const scale = NODE_WIDTH / originW;
-            if (nextShape.hasInput) {
-              this.transformer.offsetX(-30);
-            }
 
+            this.transformer.offsetX(nextShape.hasInput ? -30 : 0);
             this.transformer.scaleX(scale);
           }
 
@@ -155,6 +154,7 @@ export class SelectRectViewModel extends BaseViewModel {
           Konva.Util.haveIntersection(shape.getClientRect(), box)
         );
         this.transformer.nodes(nodes);
+        inspectorStore.setSelectedNodeIdList(nodes.map((n) => n.id()));
 
         nodes.forEach((node) => {
           node.moveToTop();

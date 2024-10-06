@@ -50,7 +50,6 @@ export class NodeUI extends Konva.Group {
 
         let nextY = 0;
         if (placement === 'Input') {
-          console.log(pinName, name, 'Input');
           this.hasInput = true;
           nextY = inputY;
           x = inputX;

@@ -24,7 +24,8 @@ export const PIN_CIRCLE_TAG = 'PIN_CIRCLE_TAG';
 export const PIN_TEXT_TAG = 'PIN_TEXT_TAG';
 
 //node style
-export const NODE_FILL_COLOR = '#D3D3D3';
+export const NODE_HEADER_FILL_COLOR = '#2A9D8F';
+export const NODE_BODY_FILL_COLOR = '#E0E0E0';
 export const NODE_STROKE_COLOR = '#5A5A5A';
 export const NODE_TEXT_COLOR = '#1E1E1E';
 export const NODE_WIDTH = 220;
