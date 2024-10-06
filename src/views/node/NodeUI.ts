@@ -83,15 +83,15 @@ export class NodeUI extends Konva.Group {
       if (placement === 'Input') {
         this.hasInput = true;
         nextY = inputY;
-        textX = PIN_GAP * 3;
+        textX = PIN_GAP * 2;
         iconX = PIN_GAP / 2;
         circleX = 0 - radius - TEXT_PIN_GAP;
         inputY += PIN_HEIGHT + PIN_GAP;
         align = 'left';
       } else {
         nextY = outputY;
-        textX = NODE_WIDTH / 2 - PIN_GAP * 3;
-        iconX = NODE_WIDTH - PIN_GAP * 2;
+        textX = NODE_WIDTH / 2 - PIN_GAP * 2;
+        iconX = NODE_WIDTH - PIN_GAP * 1.7;
         circleX = NODE_WIDTH + TEXT_PIN_GAP + radius;
         outputY += PIN_HEIGHT + PIN_GAP;
         align = 'right';

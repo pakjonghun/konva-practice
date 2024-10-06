@@ -37,11 +37,12 @@ export const NODE_RADIUS = 6;
 
 export const PIN_GAP = 12;
 export const TEXT_PIN_GAP = 5;
+export const ICON_PIN_GAP = 2;
 
 //pin style
 export const PIN_HEIGHT = 20;
 export const PIN_COLOR = {
-  ['string' as string]: 'red',
-  number: 'blue',
-  unknown: 'red',
+  ['string' as string]: '#C0392B',
+  number: '#2980B9',
+  unknown: '#7F8C8D',
 };
