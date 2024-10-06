@@ -1,6 +1,7 @@
 import Konva from 'konva';
 import { NodeData } from '../../store/boardStore/node/type';
-import img from './function.svg';
+import functionImg from './icon/function.svg';
+import specialImg from './icon/special.svg';
 import { NodeHeader } from './header/NodeHeader';
 import { NodeHeaderIcon } from './header/NodeHeaderIcon';
 import { NodeHeaderText } from './header/NodeHeaderText';
@@ -22,7 +23,13 @@ export class NodeUI extends Konva.Group {
     super(option);
     //header
     const iconImg = new Image();
-    iconImg.src = img;
+
+    if (name === 'ip') {
+      iconImg.src = functionImg;
+    } else {
+      iconImg.src = specialImg;
+    }
+
     const icon = new NodeHeaderIcon(iconImg);
     const headerRect = new NodeHeader();
     this.headerTitle = new NodeHeaderText(name);
