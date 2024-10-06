@@ -12,7 +12,7 @@ const LogicBoardContainer = () => {
   const { boardId } = useParams<{ boardId: string }>();
   const { data: res, isFetching, isError } = useBoardData(boardId);
   const [isBoardReady, setIsBoardReady] = useState(false);
-
+  console.log('board root redner');
   useEffect(() => {
     if (!isFetching && res?.data) {
       const nodeList = res.data.node;

@@ -25,6 +25,7 @@ export class NodeViewModel {
         return nodeStore.getTargetNodeData(nodeData.id).title;
       },
       (newTitle) => {
+        console.log('update title');
         this.updateTitle(newTitle);
       }
     );

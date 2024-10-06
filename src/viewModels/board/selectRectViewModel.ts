@@ -106,6 +106,7 @@ export class SelectRectViewModel extends BaseViewModel {
       if (parent?.name() === NODE_TAG) {
         if (!selectedNodes.some((n) => n === parent)) {
           this.transformer.nodes([parent]);
+          this.updateNodeListData([parent]);
           this.moveToTop(parent);
 
           //선택된 범위가 핀을 제외한 범위한 포함하도록 하는 로직 필요
@@ -157,6 +158,7 @@ export class SelectRectViewModel extends BaseViewModel {
         const nodes = shapes.filter((shape) =>
           Konva.Util.haveIntersection(shape.getClientRect(), box)
         );
+        this.updateNodeListData(nodes);
         this.transformer.nodes(nodes);
 
         nodes.forEach((node) => {
@@ -170,7 +172,7 @@ export class SelectRectViewModel extends BaseViewModel {
         this.selectRect.visible(false);
       }
 
-      this.trackSelectNodeList();
+      this.clearNodeListData();
     });
 
     return () => {
@@ -183,9 +185,15 @@ export class SelectRectViewModel extends BaseViewModel {
   }
 
   //마우스 업 할때 상태가 동기화가 확실하게 됨. 다운 상태는 실제로 선택 안된것도 포함되거나 누락되는경우 있음.
-  trackSelectNodeList() {
+  clearNodeListData() {
     const selectedNodes = this.transformer.nodes();
-    inspectorStore.setSelectedNodeIdList(selectedNodes.map((n) => n.id()));
+    if (!selectedNodes.length) {
+      inspectorStore.setSelectedNodeIdList([]);
+    }
+  }
+
+  updateNodeListData(nodeList: Konva.Node[]) {
+    inspectorStore.setSelectedNodeIdList(nodeList.map((n) => n.id()));
   }
 }
 
