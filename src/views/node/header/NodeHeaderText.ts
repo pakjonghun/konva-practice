@@ -1,5 +1,9 @@
 import Konva from 'konva';
-import { NODE_FONT_SIZE, NODE_HEADER_HEIGHT, NODE_TEXT_COLOR } from '../../../constants/canvas';
+import {
+  NODE_FONT_SIZE,
+  NODE_HEADER_HEIGHT,
+  NODE__HEADER_TEXT_COLOR,
+} from '../../../constants/canvas';
 import { BaseText } from '../../base/BaseText';
 
 export class NodeHeaderText extends BaseText {
@@ -10,7 +14,7 @@ export class NodeHeaderText extends BaseText {
       x: 30,
       fontSize: NODE_FONT_SIZE,
       y: NODE_HEADER_HEIGHT / 2 - NODE_FONT_SIZE / 2,
-      fill: NODE_TEXT_COLOR,
+      fill: NODE__HEADER_TEXT_COLOR,
     });
   }
 }
