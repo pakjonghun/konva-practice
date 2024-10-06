@@ -9,8 +9,7 @@ import { NodeHeaderText } from '../header/NodeHeaderText';
 import { NodeBody } from '../body/NodeBody';
 import { NodeBodyText } from '../body/NodeBodyText';
 import {
-  NODE_BODY_HEIGHT,
-  NODE_HEADER_HEIGHT,
+  NODE_BODY_FILL_COLOR,
   NODE_STROKE_COLOR,
   NODE_WIDTH,
   PIN_COLOR,
@@ -22,7 +21,8 @@ import {
 type PinProp = {
   inputY: number;
   outputY: number;
-  x: number;
+  textX: number;
+  iconX: number;
   circleX: number;
   nextY: number;
   align: string;
@@ -31,12 +31,13 @@ type PinProp = {
 export class PinUI extends Konva.Group {
   constructor(
     { id, class: c, owner, placement, properties: { name, type }, children }: ComponentCommon,
-    { inputY, outputY, x, circleX, nextY, align }: PinProp,
+    { inputY, outputY, textX, iconX, circleX, nextY, align }: PinProp,
     option: Konva.GroupConfig
   ) {
     super(option);
 
-    //pinIcon
+    const radius = (PIN_HEIGHT * 4.7) / 10;
+
     const iconImg = new Image();
     switch (type) {
       case 'string':
@@ -51,42 +52,51 @@ export class PinUI extends Konva.Group {
         iconImg.src = unknownImg;
         break;
     }
+    const color = PIN_COLOR[type as string] ?? 'gray';
     const icon = new NodeHeaderIcon(iconImg);
-    const color = PIN_COLOR[type as string];
 
-    //pin
-    const radius = PIN_HEIGHT / 2;
     if (placement === 'Input') {
       nextY = inputY;
-      x = PIN_GAP;
+      textX = PIN_GAP * 2;
+      iconX = PIN_GAP / 2;
       circleX = 0 - radius - TEXT_PIN_GAP;
       inputY += PIN_HEIGHT + PIN_GAP;
       align = 'left';
     } else {
       nextY = outputY;
-      x = NODE_WIDTH / 2 - PIN_GAP;
+      textX = NODE_WIDTH / 2 - PIN_GAP * 2;
+      iconX = NODE_WIDTH - PIN_GAP * 1.7;
       circleX = NODE_WIDTH + TEXT_PIN_GAP + radius;
       outputY += PIN_HEIGHT + PIN_GAP;
       align = 'right';
     }
     const text = new NodeBodyText(name, {
-      x,
+      x: textX,
       y: nextY,
       height: PIN_HEIGHT,
-      align,
       width: NODE_WIDTH / 2,
+      align,
+
       verticalAlign: 'middle',
+      fill: color,
+      fontSize: 15,
+    });
+
+    icon.setAttrs({
+      x: iconX,
+      y: nextY + 3,
+      scale: { x: 0.7, y: 0.7 },
     });
 
     const circle = new Konva.Circle({
       x: circleX,
-
       y: nextY + radius,
       radius: radius,
-      fill: color,
-      stroke: color,
+      fill: NODE_BODY_FILL_COLOR,
+      stroke: NODE_STROKE_COLOR,
+      strokeWidth: 1.4,
     });
 
-    this.add(text, circle);
+    this.add(text, icon, circle);
   }
 }
