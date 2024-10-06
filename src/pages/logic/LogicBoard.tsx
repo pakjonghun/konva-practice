@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 const LogicBoard = () => {
   const { boardId } = useParams() as { boardId: string };
   const containerRef = useRef<HTMLDivElement | null>(null);
-  console.log('board container render');
   useEffect(() => {
     if (!containerRef.current) return;
     const width = containerRef.current.clientWidth;

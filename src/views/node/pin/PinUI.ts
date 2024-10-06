@@ -17,6 +17,8 @@ type PinProp = {
 };
 
 export class PinUI extends Konva.Group {
+  circle: PinCircle;
+
   constructor(
     { id, class: c, owner, placement, properties: { name, type }, children }: ComponentCommon,
     { align, circleX, iconX, nextY, textX }: PinProp,
@@ -24,7 +26,6 @@ export class PinUI extends Konva.Group {
   ) {
     super({
       ...option,
-      id,
     });
 
     const radius = (PIN_HEIGHT * 4.7) / 10;
@@ -59,12 +60,12 @@ export class PinUI extends Konva.Group {
       scale: { x: 0.7, y: 0.7 },
     });
 
-    const circle = new PinCircle({
+    this.circle = new PinCircle({
       x: circleX,
       y: nextY + radius,
       radius: radius,
     });
 
-    this.add(text, icon, circle);
+    this.add(text, icon, this.circle);
   }
 }

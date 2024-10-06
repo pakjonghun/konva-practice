@@ -43,7 +43,7 @@ export type Component<T extends CommonProp> = ComponentCommon & {
 };
 
 export type PinData = {
-  name?: string;
+  name: string;
   uses: TPinType;
   type: string;
   canBeNull: boolean;

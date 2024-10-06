@@ -4,6 +4,7 @@ import { DRAG, NODE_TAG, PAINT, TRANSFORMER_RECT } from '../../constants/canvas'
 import { NodeUI } from '../../views/node/NodeUI';
 import { reaction } from 'mobx';
 import { nodeStore } from '../../store/boardStore/node/nodeStore';
+import { PinViewModel } from './pinViewModel';
 
 export class NodeViewModel {
   layer: Konva.Layer;
@@ -15,7 +16,7 @@ export class NodeViewModel {
     this.layer = layer;
     const view = this.createNode(nodeData);
     this.view = view;
-    this.layer.add(view);
+
     this.nodeId = nodeData.id;
 
     this.dispose = this.render();
@@ -25,7 +26,6 @@ export class NodeViewModel {
         return nodeStore.getTargetNodeData(nodeData.id).title;
       },
       (newTitle) => {
-        console.log('update title');
         this.updateTitle(newTitle);
       }
     );
@@ -64,9 +64,10 @@ export class NodeViewModel {
       this.view.off('dragend');
     };
   }
+
   createNode(nodeData: NodeData) {
     const { x, y } = nodeData.initPosition;
-    return new NodeUI(nodeData, {
+    const nodeUI = new NodeUI(nodeData, {
       name: NODE_TAG,
       id: nodeData.id,
       x,
@@ -74,6 +75,9 @@ export class NodeViewModel {
       draggable: true,
       listening: true,
     });
+    this.layer.add(nodeUI);
+
+    return nodeUI;
   }
   private findByName(tag: string) {
     const stage = this.view.getStage();

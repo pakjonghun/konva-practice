@@ -1,4 +1,4 @@
-import { NodeData, Position } from './type';
+import { ComponentCommon, NodeData, Position } from './type';
 import { makeAutoObservable } from 'mobx';
 
 export class NodeItemStore {
@@ -23,5 +23,21 @@ export class NodeItemStore {
 
   setPosition = (position: Position) => {
     this.nodeData.initPosition = position;
+  };
+
+  getPinById = (pinId: string, components?: ComponentCommon[]): null | ComponentCommon => {
+    let target: ComponentCommon | null = null;
+    const targetComponents = components ?? this.nodeData.components;
+    for (const comp of targetComponents) {
+      if (comp.id === pinId) {
+        return comp;
+      }
+      target = this.getPinById(pinId, comp.children ?? []);
+      if (target) {
+        return target;
+      }
+    }
+
+    return target;
   };
 }

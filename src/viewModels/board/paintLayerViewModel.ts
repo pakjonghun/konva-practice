@@ -7,6 +7,7 @@ import { PAINT } from '../../constants/canvas';
 import { Size } from '../../store/boardStore/node/type';
 import { autorun } from 'mobx';
 import { nodeStore } from '../../store/boardStore/node/nodeStore';
+import { PinViewModel } from '../node/pinViewModel';
 
 export class PaintLayerViewModel extends BaseViewModel {
   private view: Layer;
@@ -34,11 +35,22 @@ export class PaintLayerViewModel extends BaseViewModel {
 
     this.stage.batchDraw();
     const nodeDisposeList: (() => void)[] = [];
+
     const dispose = autorun(() => {
       const nodeList = nodeStore.requireNodeUIList;
       nodeList.forEach((nodeData) => {
         const nodeViewModel = new NodeViewModel(this.paintLayer, nodeData);
         const nodeDispose = nodeViewModel.dispose;
+
+        const components = nodeData.components;
+        components.forEach((comp) => {
+          if (comp.properties.uses == 'Flow') {
+            return;
+          } else {
+            const pinViewModel = new PinViewModel(this.paintLayer, comp.id, nodeData.id);
+          }
+        });
+
         nodeDisposeList.push(nodeDispose);
       });
       nodeStore.batchBindNode(nodeList.map((node) => node.id));
