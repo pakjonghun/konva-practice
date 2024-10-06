@@ -1,7 +1,7 @@
 import { BaseViewModel } from '../base/baseViewModel';
 import { BackgroundLayer } from '../../views/board/bgLayer';
 import Konva from 'konva';
-import { SELECT_RECT } from '../../constants/canvas';
+import { NODE_TAG, SELECT_RECT } from '../../constants/canvas';
 import { Position, Size } from '../../store/boardStore/node/type';
 
 export class BgViewModel extends BaseViewModel {
@@ -71,6 +71,9 @@ export class BgViewModel extends BaseViewModel {
       if (visible) return;
 
       if (e.code === 'Space' && !this.mousedown) {
+        stage.find(`.${NODE_TAG}`).forEach((node) => {
+          node.setAttr('draggable', false);
+        });
         const selectRect = stage.findOne(`.${SELECT_RECT}`);
         selectRect?.visible(false);
         container.style.cursor = 'grab';
@@ -81,6 +84,9 @@ export class BgViewModel extends BaseViewModel {
     const keyUpHandler = (e: KeyboardEvent) => {
       if (e.code === 'Space') {
         container.style.cursor = 'default';
+        stage.find(`.${NODE_TAG}`).forEach((node) => {
+          node.setAttr('draggable', true);
+        });
         stage.draggable(false);
       }
     };
