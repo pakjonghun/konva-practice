@@ -7,6 +7,7 @@ import { NodeHeaderText } from './header/NodeHeaderText';
 import { NodeBody } from './body/NodeBody';
 import { NodeBodyText } from './body/NodeBodyText';
 import {
+  NODE_BODY_FILL_COLOR,
   NODE_BODY_HEIGHT,
   NODE_HEADER_HEIGHT,
   NODE_STROKE_COLOR,
@@ -47,7 +48,7 @@ export class NodeUI extends Konva.Group {
     let align = 'left';
     let iconX = 0;
 
-    const radius = PIN_HEIGHT / 2;
+    const radius = (PIN_HEIGHT * 4.7) / 10;
 
     components.forEach((component) => {
       const {
@@ -100,27 +101,27 @@ export class NodeUI extends Konva.Group {
         x: textX,
         y: nextY,
         height: PIN_HEIGHT,
-        align,
         width: NODE_WIDTH / 2,
+        align,
+
         verticalAlign: 'middle',
         fill: color,
-        fontSize: 16,
+        fontSize: 15,
       });
 
       icon.setAttrs({
         x: iconX,
-        y: nextY + 2,
-        width: (PIN_HEIGHT * 2) / 3,
-        height: (PIN_HEIGHT * 2) / 3,
+        y: nextY + 3,
+        scale: { x: 0.7, y: 0.7 },
       });
 
       const circle = new Konva.Circle({
         x: circleX,
         y: nextY + radius,
         radius: radius,
-        fill: 'white',
+        fill: NODE_BODY_FILL_COLOR,
         stroke: NODE_STROKE_COLOR,
-        strokeWidth: 1,
+        strokeWidth: 1.4,
       });
 
       const pinGroup = new Konva.Group({

@@ -9,6 +9,7 @@ export class NodeBodyText extends BaseText {
       fill: NODE_TEXT_COLOR,
       ...option,
       text,
+      fontFamily: 'Helvetica',
     });
   }
 }
