@@ -11,50 +11,48 @@ import {
   NODE_HEADER_HEIGHT,
   NODE_STROKE_COLOR,
   NODE_WIDTH,
+  PIN_GAP,
   PIN_HEIGHT,
+  TEXT_PIN_GAP,
 } from '../../constants/canvas';
 
 export class NodeUI extends Konva.Group {
   hasInput = false;
   headerTitle: Konva.Text;
   constructor({ name, components }: NodeData, option: Konva.GroupConfig) {
-    super({
-      ...option,
-    });
-    this.moveToTop();
+    super(option);
     //header
     const iconImg = new Image();
     iconImg.src = img;
     const icon = new NodeHeaderIcon(iconImg);
     const headerRect = new NodeHeader();
-    const title = new NodeHeaderText(name);
-    this.headerTitle = title;
+    this.headerTitle = new NodeHeaderText(name);
 
     //body
     const bodyContainer = new NodeBody();
 
     //pin
     const pins: Konva.Group[] = [];
-    const PIN_GAP = 12;
-    const TEXT_PIN_GAP = 5;
+
     let inputY = NODE_HEADER_HEIGHT + PIN_GAP;
     let outputY = NODE_HEADER_HEIGHT + PIN_GAP;
     let x = 0;
     let circleX = 0;
+    let nextY = 0;
     let align = 'left';
-    const inputX = +PIN_GAP;
+
     const radius = PIN_HEIGHT / 2;
+
     components.forEach(
       ({ id, owner, placement, children, class: c, properties: { name: pinName, type, uses } }) => {
         if (uses === 'Flow') {
           return;
         }
 
-        let nextY = 0;
         if (placement === 'Input') {
           this.hasInput = true;
           nextY = inputY;
-          x = inputX;
+          x = PIN_GAP;
           circleX = 0 - radius - TEXT_PIN_GAP;
           inputY += PIN_HEIGHT + PIN_GAP;
           align = 'left';
@@ -90,16 +88,14 @@ export class NodeUI extends Konva.Group {
       }
     );
     const maxBodyHeight = Math.max(inputY, outputY);
-    const maxHeight = maxBodyHeight + PIN_GAP - NODE_HEADER_HEIGHT;
+    const maxHeight = maxBodyHeight - NODE_HEADER_HEIGHT;
     if (maxHeight > NODE_BODY_HEIGHT) {
       bodyContainer.height(maxHeight);
     }
 
-    this.add(headerRect, title, icon, bodyContainer);
+    this.add(headerRect, this.headerTitle, icon, bodyContainer);
     pins.forEach((pin) => {
       this.add(pin);
     });
-
-    // this.cache();
   }
 }
