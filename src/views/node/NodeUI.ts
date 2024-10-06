@@ -5,22 +5,15 @@ import { NodeHeader } from './header/NodeHeader';
 import { NodeHeaderIcon } from './header/NodeHeaderIcon';
 import { NodeHeaderText } from './header/NodeHeaderText';
 import { NodeBody } from './body/NodeBody';
-import { NodeBodyText } from './body/NodeBodyText';
 import {
-  NODE_BODY_FILL_COLOR,
   NODE_BODY_HEIGHT,
   NODE_HEADER_HEIGHT,
-  NODE_STROKE_COLOR,
   NODE_WIDTH,
-  PIN_COLOR,
   PIN_GAP,
   PIN_HEIGHT,
   TEXT_PIN_GAP,
 } from '../../constants/canvas';
-
-import stringImg from './pin/string.svg';
-import numberImg from './pin/number.svg';
-import unknownImg from './pin/unknown.svg';
+import { PinUI } from './pin/PinUI';
 
 export class NodeUI extends Konva.Group {
   hasInput = false;
@@ -39,7 +32,6 @@ export class NodeUI extends Konva.Group {
 
     //pin
     const pins: Konva.Group[] = [];
-
     let inputY = NODE_HEADER_HEIGHT + PIN_GAP;
     let outputY = NODE_HEADER_HEIGHT + PIN_GAP;
     let textX = 0;
@@ -64,23 +56,6 @@ export class NodeUI extends Konva.Group {
         return;
       }
 
-      const iconImg = new Image();
-      switch (type) {
-        case 'string':
-          iconImg.src = stringImg;
-          break;
-
-        case 'number':
-          iconImg.src = numberImg;
-          break;
-
-        default:
-          iconImg.src = unknownImg;
-          break;
-      }
-      const color = PIN_COLOR[type as string] ?? 'gray';
-      const icon = new NodeHeaderIcon(iconImg);
-
       if (placement === 'Input') {
         this.hasInput = true;
         nextY = inputY;
@@ -97,38 +72,9 @@ export class NodeUI extends Konva.Group {
         outputY += PIN_HEIGHT + PIN_GAP;
         align = 'right';
       }
-      const text = new NodeBodyText(pinName, {
-        x: textX,
-        y: nextY,
-        height: PIN_HEIGHT,
-        width: NODE_WIDTH / 2,
-        align,
 
-        verticalAlign: 'middle',
-        fill: color,
-        fontSize: 15,
-      });
-
-      icon.setAttrs({
-        x: iconX,
-        y: nextY + 3,
-        scale: { x: 0.7, y: 0.7 },
-      });
-
-      const circle = new Konva.Circle({
-        x: circleX,
-        y: nextY + radius,
-        radius: radius,
-        fill: NODE_BODY_FILL_COLOR,
-        stroke: NODE_STROKE_COLOR,
-        strokeWidth: 1.4,
-      });
-
-      const pinGroup = new Konva.Group({
-        id,
-      });
-      pinGroup.add(text, icon, circle);
-      pins.push(pinGroup);
+      const pinUI = new PinUI(component, { align, circleX, iconX, nextY, textX }, {});
+      pins.push(pinUI);
     });
     const maxBodyHeight = Math.max(inputY, outputY);
     const maxHeight = maxBodyHeight - NODE_HEADER_HEIGHT;

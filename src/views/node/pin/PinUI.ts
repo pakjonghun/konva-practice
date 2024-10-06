@@ -1,26 +1,19 @@
 import Konva from 'konva';
-import { ComponentCommon, NodeData } from '../../../store/boardStore/node/type';
+import { ComponentCommon } from '../../../store/boardStore/node/type';
 import stringImg from './string.svg';
 import numberImg from './number.svg';
 import unknownImg from './unknown.svg';
-import { NodeHeader } from '../header/NodeHeader';
 import { NodeHeaderIcon } from '../header/NodeHeaderIcon';
-import { NodeHeaderText } from '../header/NodeHeaderText';
-import { NodeBody } from '../body/NodeBody';
 import { NodeBodyText } from '../body/NodeBodyText';
 import {
   NODE_BODY_FILL_COLOR,
   NODE_STROKE_COLOR,
   NODE_WIDTH,
   PIN_COLOR,
-  PIN_GAP,
   PIN_HEIGHT,
-  TEXT_PIN_GAP,
 } from '../../../constants/canvas';
 
 type PinProp = {
-  inputY: number;
-  outputY: number;
   textX: number;
   iconX: number;
   circleX: number;
@@ -31,7 +24,7 @@ type PinProp = {
 export class PinUI extends Konva.Group {
   constructor(
     { id, class: c, owner, placement, properties: { name, type }, children }: ComponentCommon,
-    { inputY, outputY, textX, iconX, circleX, nextY, align }: PinProp,
+    { align, circleX, iconX, nextY, textX }: PinProp,
     option: Konva.GroupConfig
   ) {
     super(option);
@@ -55,21 +48,6 @@ export class PinUI extends Konva.Group {
     const color = PIN_COLOR[type as string] ?? 'gray';
     const icon = new NodeHeaderIcon(iconImg);
 
-    if (placement === 'Input') {
-      nextY = inputY;
-      textX = PIN_GAP * 2;
-      iconX = PIN_GAP / 2;
-      circleX = 0 - radius - TEXT_PIN_GAP;
-      inputY += PIN_HEIGHT + PIN_GAP;
-      align = 'left';
-    } else {
-      nextY = outputY;
-      textX = NODE_WIDTH / 2 - PIN_GAP * 2;
-      iconX = NODE_WIDTH - PIN_GAP * 1.7;
-      circleX = NODE_WIDTH + TEXT_PIN_GAP + radius;
-      outputY += PIN_HEIGHT + PIN_GAP;
-      align = 'right';
-    }
     const text = new NodeBodyText(name, {
       x: textX,
       y: nextY,
