@@ -16,6 +16,7 @@ import {
 
 export class NodeUI extends Konva.Group {
   hasInput = false;
+  headerTitle: Konva.Text;
   constructor({ name, components }: NodeData, option: Konva.GroupConfig) {
     super({
       ...option,
@@ -27,6 +28,7 @@ export class NodeUI extends Konva.Group {
     const icon = new NodeHeaderIcon(iconImg);
     const headerRect = new NodeHeader();
     const title = new NodeHeaderText(name);
+    this.headerTitle = title;
 
     //body
     const bodyContainer = new NodeBody();

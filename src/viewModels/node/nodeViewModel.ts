@@ -2,10 +2,12 @@ import Konva from 'konva';
 import { NodeData } from '../../store/boardStore/node/type';
 import { DRAG, NODE_TAG, PAINT, TRANSFORMER_RECT } from '../../constants/canvas';
 import { NodeUI } from '../../views/node/NodeUI';
+import { reaction } from 'mobx';
+import { nodeStore } from '../../store/boardStore/node/nodeStore';
 
 export class NodeViewModel {
   layer: Konva.Layer;
-  view: Konva.Group;
+  view: NodeUI;
   dispose: () => void;
 
   constructor(layer: Konva.Layer, nodeData: NodeData) {
@@ -15,7 +17,21 @@ export class NodeViewModel {
     this.layer.add(view);
 
     this.dispose = this.render();
+
+    reaction(
+      () => {
+        return nodeStore.getTargetNodeData(nodeData.id).title;
+      },
+      (newTitle) => {
+        this.updateTitle(newTitle);
+      }
+    );
   }
+
+  updateTitle = (newTitle: string) => {
+    this.view.headerTitle.setText(newTitle);
+  };
+
   addEventList() {
     this.view.on('dragstart', () => {
       const dragLayer = this.findByName(DRAG);

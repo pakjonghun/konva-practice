@@ -9,16 +9,12 @@ import {
   SELECT_STROKE_COLOR,
   TRANSFORMER_RECT,
   NODE_TAG,
-  NODE_WIDTH,
 } from '../../constants/canvas';
 import Konva from 'konva';
 import { KonvaEventObject, Node } from 'konva/lib/Node';
 import { Position } from '../../store/boardStore/node/type';
-import { NodeUI } from '../../views/node/NodeUI';
-import { inspectorStore } from '../../store/boardStore/inspector/inspectorStore';
-import { transform } from 'typescript';
-import { Shape } from 'konva/lib/Shape';
 import { Vector2d } from 'konva/lib/types';
+import { inspectorStore } from '../../store/boardStore/inspector/inspectorStore';
 
 export class SelectRectViewModel extends BaseViewModel {
   private selectRectView: BaseRect;
@@ -74,17 +70,20 @@ export class SelectRectViewModel extends BaseViewModel {
 
   addEventList() {
     const container = this.stage.container();
-    container.addEventListener('keydown', (event) => {
+    const keyDownHandler = (event: KeyboardEvent) => {
       if (event.code === 'Space') {
         this.isSpaceDown = true;
       }
-    });
+    };
 
-    container.addEventListener('keyup', (event) => {
+    const keyUpHandler = (event: KeyboardEvent) => {
       if (event.code === 'Space') {
         this.isSpaceDown = false;
       }
-    });
+    };
+
+    container.addEventListener('keydown', keyDownHandler);
+    container.addEventListener('keyup', keyUpHandler);
 
     this.stage.on('mousedown', (event) => {
       const otherEvent = this.getOtherEvent(event);
@@ -170,21 +169,27 @@ export class SelectRectViewModel extends BaseViewModel {
         this.selectRect.moveTo(bgLayer);
         this.selectRect.visible(false);
       }
+
+      this.trackSelectNodeList();
     });
 
     return () => {
+      container.removeEventListener('keyup', keyUpHandler);
+      container.removeEventListener('keydown', keyDownHandler);
       this.stage.off('mousedown');
       this.stage.off('mousemove');
       this.stage.off('mouseup');
     };
   }
 
+  //마우스 업 할때 상태가 동기화가 확실하게 됨. 다운 상태는 실제로 선택 안된것도 포함되거나 누락되는경우 있음.
   trackSelectNodeList() {
     const selectedNodes = this.transformer.nodes();
-    console.log('selectedNodes : ', selectedNodes.length);
+    inspectorStore.setSelectedNodeIdList(selectedNodes.map((n) => n.id()));
   }
 }
 
+//공통함수 나중에 분리해서 유틸리티함수 모음에 넣어야 함.
 function isPointInRect(node: Konva.Node, { x, y }: Vector2d): boolean {
   const rect = node.getClientRect(); // node의 clientRect 얻기
   return x >= rect.x && x <= rect.x + rect.width && y >= rect.y && y <= rect.y + rect.height;

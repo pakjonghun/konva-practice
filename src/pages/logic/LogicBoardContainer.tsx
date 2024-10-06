@@ -6,7 +6,7 @@ import LogicBoard from './LogicBoard';
 import { nodeStore } from '../../store/boardStore/node/nodeStore';
 import { NodeData } from '../../store/boardStore/node/type';
 import { v4 } from 'uuid';
-import Inspector from './Inspector';
+import Inspector from './inspector/Inspector';
 
 const LogicBoardContainer = () => {
   const { boardId } = useParams<{ boardId: string }>();

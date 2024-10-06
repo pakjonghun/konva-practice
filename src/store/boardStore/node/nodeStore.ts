@@ -1,3 +1,5 @@
+import { NodeItemStore } from './nodeItemStore';
+// import { nodeStore } from './nodeStore';
 import { NodeBinding, NodeData } from './type';
 import { makeAutoObservable, observable, runInAction } from 'mobx';
 
@@ -8,6 +10,14 @@ class NodeStore {
     makeAutoObservable(this);
   }
 
+  getTargetNodeData = (nodeId: string) => {
+    const targetNodeData = this.nodeById.get(nodeId)?.nodeData;
+    if (!targetNodeData) {
+      throw new Error('해당 노드가 존재하지 않습니다.');
+    }
+    return targetNodeData;
+  };
+
   clear = () => {
     this.nodeById.clear();
   };
@@ -15,7 +25,8 @@ class NodeStore {
   initNode = (nodeDataList: Array<NodeData>) => {
     this.clear();
     for (const nodeData of nodeDataList) {
-      this.nodeById.set(nodeData.id, { hasView: false, nodeData });
+      const nodeItemStore = new NodeItemStore(nodeData);
+      this.nodeById.set(nodeData.id, { hasView: false, nodeData: nodeItemStore });
     }
   };
 
@@ -34,7 +45,7 @@ class NodeStore {
     const notPaintedNodeList: NodeData[] = [];
     this.nodeById.forEach((node) => {
       if (!node.hasView) {
-        notPaintedNodeList.push(node.nodeData);
+        notPaintedNodeList.push(node.nodeData.nodeData);
       }
     });
 

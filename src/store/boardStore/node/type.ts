@@ -1,3 +1,5 @@
+import { NodeItemStore } from './nodeItemStore';
+
 export type Direction = 'Input' | 'Output';
 export type TPinType = 'Parameter' | 'Flow';
 
@@ -49,4 +51,4 @@ export type PinData = {
 };
 
 //뷰를 위한 데이터 구조
-export type NodeBinding = { hasView: boolean; nodeData: NodeData };
+export type NodeBinding = { hasView: boolean; nodeData: NodeItemStore };
