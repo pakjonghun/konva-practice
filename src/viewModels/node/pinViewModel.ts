@@ -84,25 +84,25 @@ export class PinViewModel {
         if (!pos) {
           return;
         }
-        // 시작점과 끝점 설정
-        const endX = x + pos.x;
-        const endY = pos.y;
 
-        // 시작점과 끝점 사이의 거리 계산
-        const disX = endX - x;
-        const disY = endY - y;
+        updateBezierCurve();
+        function updateBezierCurve(waveHeight = 50) {
+          if (!pos) return;
 
-        // 제어점 1: 시작점에서 끝점까지의 1/3 지점에 위치
-        const controlX1 = x + disX / 3;
-        const controlY1 = y + disY / 3;
+          // 제어점 위치 조정 (파도 높이 포함)
+          const disX = pos.x - x;
+          const disY = pos.y - y;
 
-        // 제어점 2: 끝점에서 시작점까지의 1/3 지점에 위치
-        const controlX2 = endX - disX / 3;
-        const controlY2 = endY - disY / 3;
+          // 파도 높이 조정 (중간 제어점의 Y 값을 파도 높이로 조정)
+          const controlX1 = x + disX / 3;
+          const controlY1 = y + disY / 3 - waveHeight;
 
-        bezierLine.points([x, y, controlX1, controlY1, controlX2, controlY2, pos.x, pos.y]);
+          const controlX2 = pos.x - disX / 3;
+          const controlY2 = pos.y - disY / 3 + waveHeight;
+
+          bezierLine.points([x, y, controlX1, controlY1, controlX2, controlY2, pos.x, pos.y]);
+        }
         const dragLayer = stage.findOne(`.${DRAG}`);
-        console.log('dragLayer : ', dragLayer);
         bezierLine.moveTo(dragLayer);
         this.layer.batchDraw();
       };
