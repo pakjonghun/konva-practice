@@ -1,4 +1,4 @@
-import { NodeData } from './type';
+import { NodeData, Position } from './type';
 import { makeAutoObservable } from 'mobx';
 
 export class NodeItemStore {
@@ -15,5 +15,13 @@ export class NodeItemStore {
 
   setTitle = (newTitle: string) => {
     this.nodeData.name = newTitle;
+  };
+
+  get position() {
+    return this.nodeData.initPosition;
+  }
+
+  setPosition = (position: Position) => {
+    this.nodeData.initPosition = position;
   };
 }

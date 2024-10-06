@@ -9,12 +9,14 @@ export class NodeViewModel {
   layer: Konva.Layer;
   view: NodeUI;
   dispose: () => void;
+  nodeId: string;
 
   constructor(layer: Konva.Layer, nodeData: NodeData) {
     this.layer = layer;
     const view = this.createNode(nodeData);
     this.view = view;
     this.layer.add(view);
+    this.nodeId = nodeData.id;
 
     this.dispose = this.render();
 
@@ -51,6 +53,9 @@ export class NodeViewModel {
       }
       this.view.moveTo(paintLayer);
       tr.moveTo(paintLayer);
+
+      const nodeItemStore = nodeStore.getTargetNodeData(this.nodeId);
+      nodeItemStore.setPosition(this.view.position());
     });
 
     return () => {
