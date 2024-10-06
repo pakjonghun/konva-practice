@@ -7,6 +7,7 @@ export class BaseText extends Konva.Text {
       listening: false,
       perfectDrawEnabled: false,
       shadowForStrokeEnabled: false,
+      fontFamily: 'Helvetica',
     });
   }
 }

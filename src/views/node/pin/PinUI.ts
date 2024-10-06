@@ -1,17 +1,12 @@
 import Konva from 'konva';
 import { ComponentCommon } from '../../../store/boardStore/node/type';
-import stringImg from './string.svg';
-import numberImg from './number.svg';
-import unknownImg from './unknown.svg';
-import { NodeHeaderIcon } from '../header/NodeHeaderIcon';
-import { NodeBodyText } from '../body/NodeBodyText';
-import {
-  NODE_BODY_FILL_COLOR,
-  NODE_STROKE_COLOR,
-  NODE_WIDTH,
-  PIN_COLOR,
-  PIN_HEIGHT,
-} from '../../../constants/canvas';
+import stringImg from './icon/string.svg';
+import numberImg from './icon/number.svg';
+import unknownImg from './icon/unknown.svg';
+import { PIN_COLOR, PIN_HEIGHT } from '../../../constants/canvas';
+import { PinText } from './PinText';
+import { PinIcon } from './PinIcon';
+import { PinCircle } from './PinCircle';
 
 type PinProp = {
   textX: number;
@@ -27,7 +22,10 @@ export class PinUI extends Konva.Group {
     { align, circleX, iconX, nextY, textX }: PinProp,
     option: Konva.GroupConfig
   ) {
-    super(option);
+    super({
+      ...option,
+      id,
+    });
 
     const radius = (PIN_HEIGHT * 4.7) / 10;
 
@@ -45,34 +43,26 @@ export class PinUI extends Konva.Group {
         iconImg.src = unknownImg;
         break;
     }
+    const icon = new PinIcon(iconImg);
     const color = PIN_COLOR[type as string] ?? 'gray';
-    const icon = new NodeHeaderIcon(iconImg);
 
-    const text = new NodeBodyText(name, {
+    const text = new PinText(name, {
       x: textX,
       y: nextY,
-      height: PIN_HEIGHT,
-      width: NODE_WIDTH / 2,
       align,
-
-      verticalAlign: 'middle',
       fill: color,
-      fontSize: 15,
     });
 
     icon.setAttrs({
       x: iconX,
-      y: nextY + 3,
+      y: nextY + 4,
       scale: { x: 0.7, y: 0.7 },
     });
 
-    const circle = new Konva.Circle({
+    const circle = new PinCircle({
       x: circleX,
       y: nextY + radius,
       radius: radius,
-      fill: NODE_BODY_FILL_COLOR,
-      stroke: NODE_STROKE_COLOR,
-      strokeWidth: 1.4,
     });
 
     this.add(text, icon, circle);
