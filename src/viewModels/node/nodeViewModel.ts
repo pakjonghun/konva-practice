@@ -44,8 +44,15 @@ export class NodeViewModel {
       }
 
       this.view.moveTo(dragLayer);
+
+      // const nodeData = nodeStore.getTargetNodeData(this.nodeId);
+      // nodeData.nodeData.components.forEach(c=>{
+      //   c.id
+      // })
+
       tr.moveTo(dragLayer);
     });
+
     this.view.on('dragend', () => {
       const paintLayer = this.findByName(PAINT);
       const tr = this.findByName(TRANSFORMER_RECT);

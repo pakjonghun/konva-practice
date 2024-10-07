@@ -71,7 +71,7 @@ export class PaintLayerViewModel extends BaseViewModel {
         if (fromPos && toPos) {
           const color = fromPin.circle.stroke();
           const bezierLine = new Bezier({
-            id: 'done',
+            id: connectId(c),
             points: [0, 0, 0, 0, 0, 0, 0, 0],
             stroke: color,
           });
