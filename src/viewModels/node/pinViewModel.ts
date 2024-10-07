@@ -1,13 +1,23 @@
 import Konva from 'konva';
-import { DRAG, NODE_BODY_FILL_COLOR, NODE_TAG, PIN_COLOR } from '../../constants/canvas';
+import {
+  DRAG,
+  NODE_BODY_FILL_COLOR,
+  NODE_TAG,
+  PIN_COLOR,
+} from '../../constants/canvas';
 import { nodeStore } from '../../store/boardStore/node/nodeStore';
 import { PinUI } from '../../views/node/pin/PinUI';
+import { hexToRgba } from '../../utils/style';
 
 export class PinViewModel {
   dispose: () => void;
   dragging = false;
 
-  constructor(public layer: Konva.Layer, public pinId: string, public owner: string) {
+  constructor(
+    public layer: Konva.Layer,
+    public pinId: string,
+    public owner: string
+  ) {
     this.dispose = this.render();
   }
 
@@ -21,7 +31,9 @@ export class PinViewModel {
   }
 
   get pinData() {
-    const pinData = nodeStore.getTargetNodeData(this.owner).getPinById(this.pinId);
+    const pinData = nodeStore
+      .getTargetNodeData(this.owner)
+      .getPinById(this.pinId);
     if (!pinData) {
       throw new Error('핀 데이터가 존재하지 않습니다.');
     }
@@ -30,7 +42,7 @@ export class PinViewModel {
 
   get color() {
     const pinData = this.pinData;
-    const color = PIN_COLOR[pinData.properties.type as string] ?? 'gray';
+    const color = PIN_COLOR[pinData.properties.type as string] ?? '#808080';
     return color;
   }
 
@@ -38,14 +50,14 @@ export class PinViewModel {
     const pinUI = this.view;
 
     pinUI.on('mouseover', () => {
-      pinUI.circle.innerCircle.setAttrs({
-        fill: this.color,
+      pinUI.circle.setAttrs({
+        fill: hexToRgba(this.color, 0.5),
       });
     });
 
     pinUI.on('mouseleave', () => {
-      pinUI.circle.innerCircle.setAttrs({
-        fill: NODE_BODY_FILL_COLOR,
+      pinUI.circle.setAttrs({
+        fill: 'transparent',
       });
     });
 
@@ -57,9 +69,9 @@ export class PinViewModel {
         });
       });
 
-      const radius = pinUI.circle.outerCircle.radius();
-      const x = pinUI.circle.outerCircle.x() + radius * 2;
-      const y = pinUI.circle.outerCircle.y() + radius * 2;
+      const radius = pinUI.circle.radius();
+      const x = pinUI.circle.x() + radius * 2;
+      const y = pinUI.circle.y() + radius * 2;
 
       const bezierLine = new Konva.Line({
         points: [x, y, x, y, x, y, x, y],
@@ -100,7 +112,16 @@ export class PinViewModel {
           const controlX2 = pos.x - disX / 3;
           const controlY2 = pos.y - disY / 3 + waveHeight;
 
-          bezierLine.points([x, y, controlX1, controlY1, controlX2, controlY2, pos.x, pos.y]);
+          bezierLine.points([
+            x,
+            y,
+            controlX1,
+            controlY1,
+            controlX2,
+            controlY2,
+            pos.x,
+            pos.y,
+          ]);
         }
         const dragLayer = stage.findOne(`.${DRAG}`);
         bezierLine.moveTo(dragLayer);
