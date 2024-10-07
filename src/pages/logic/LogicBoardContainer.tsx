@@ -42,6 +42,7 @@ const LogicBoardContainer = () => {
 
     return () => {
       nodeStore.clearNode();
+      nodeStore.clearConnection();
     };
   }, [isFetching, res]);
 

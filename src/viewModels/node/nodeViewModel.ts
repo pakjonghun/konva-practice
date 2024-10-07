@@ -5,6 +5,8 @@ import { NodeUI } from '../../views/node/NodeUI';
 import { reaction } from 'mobx';
 import { nodeStore } from '../../store/boardStore/node/nodeStore';
 import { PinViewModel } from './pinViewModel';
+import { Bezier } from '../../views/node/line/bezier';
+import { Layer } from 'konva/lib/Layer';
 
 export class NodeViewModel {
   layer: Konva.Layer;
@@ -49,17 +51,40 @@ export class NodeViewModel {
       // nodeData.nodeData.components.forEach(c=>{
       //   c.id
       // })
+      const lines = this.layer.find('Line') as Bezier[];
 
+      lines.forEach((l) => {
+        l.moveTo(dragLayer);
+      });
       tr.moveTo(dragLayer);
     });
 
+    this.view.on('dragmove', () => {
+      const dragLayer = this.findByName(DRAG);
+
+      const lines = (dragLayer as Layer)?.find('Line') as Bezier[];
+      lines.forEach((l) => {
+        const pos = this.view.position();
+        l.updateBezierCurve(pos, {
+          x: pos.x - Math.random() * 100,
+          y: pos.y - Math.random() * 100,
+        });
+      });
+    });
+
     this.view.on('dragend', () => {
+      const dragLayer = this.findByName(DRAG);
       const paintLayer = this.findByName(PAINT);
       const tr = this.findByName(TRANSFORMER_RECT);
       if (!paintLayer || !tr) {
         return;
       }
+
+      const lines = (dragLayer as Layer)?.find('Line') as Bezier[];
       this.view.moveTo(paintLayer);
+      lines.forEach((l) => {
+        l.moveTo(paintLayer);
+      });
       tr.moveTo(paintLayer);
 
       nodeStore.nodeItemStore.setPosition(this.nodeId, this.view.position());

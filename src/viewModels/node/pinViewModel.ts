@@ -90,7 +90,7 @@ export class PinViewModel {
         const startPos = this.layer.getAbsoluteTransform().copy().invert().point(circlePos);
 
         const bezier = new LineViewModel(bezierLine);
-        bezier.updateBezierCurve(startPos, endPos);
+        bezier.view.updateBezierCurve(startPos, endPos);
 
         const dragLayer = stage.findOne(`.${DRAG}`);
         bezierLine.moveTo(dragLayer);

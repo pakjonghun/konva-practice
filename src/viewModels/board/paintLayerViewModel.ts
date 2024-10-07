@@ -79,7 +79,7 @@ export class PaintLayerViewModel extends BaseViewModel {
           bezierLine.moveToTop();
           const lintVM = new LineViewModel(bezierLine);
 
-          lintVM.updateBezierCurve(fromPos, toPos);
+          lintVM.view.updateBezierCurve(fromPos, toPos);
         }
       });
       nodeStore.batchBindConnection(connectionList.map((c) => connectId(c)));
