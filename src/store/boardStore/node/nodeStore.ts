@@ -29,13 +29,17 @@ class NodeStore {
     return this.nodeItemStore.getTargetNodeData(nodeId);
   };
 
-  clear = () => {
+  clearNode = () => {
     this.nodeById.clear();
+  };
+
+  clearConnection = () => {
+    this.connectionById.clear();
   };
 
   initConnection = (connections: Array<Connection>) => {
     runInAction(() => {
-      this.clear();
+      this.clearConnection();
       for (const connection of connections) {
         this.connectionById.set(connectId(connection), {
           hasView: false,
@@ -69,7 +73,7 @@ class NodeStore {
 
   initNode = (nodeDataList: Array<NodeData>) => {
     runInAction(() => {
-      this.clear();
+      this.clearNode();
       for (const nodeData of nodeDataList) {
         this.nodeById.set(nodeData.id, {
           hasView: false,

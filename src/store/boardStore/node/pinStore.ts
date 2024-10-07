@@ -1,10 +1,10 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, ObservableMap } from 'mobx';
 import { ComponentCommon, NodeBinding } from './type';
 import { setPin } from './utils';
 
 export class PinStore {
-  nodeById: Map<string, NodeBinding>;
-  constructor(nodeById: Map<string, NodeBinding>) {
+  nodeById: ObservableMap<string, NodeBinding>;
+  constructor(nodeById: ObservableMap<string, NodeBinding>) {
     this.nodeById = nodeById;
     makeAutoObservable(this);
   }

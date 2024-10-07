@@ -1,9 +1,9 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, ObservableMap } from 'mobx';
 import { NodeBinding, Position } from './type';
 
 export class NodeItemStore {
-  nodeById: Map<string, NodeBinding>;
-  constructor(nodeById: Map<string, NodeBinding>) {
+  nodeById: ObservableMap<string, NodeBinding>;
+  constructor(nodeById: ObservableMap<string, NodeBinding>) {
     this.nodeById = nodeById;
     makeAutoObservable(this);
   }

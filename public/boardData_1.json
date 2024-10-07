@@ -210,12 +210,20 @@
     ],
     "connection": [
       {
-        "from": "p-13",
-        "to": "p-1"
+        "from": "p-10",
+        "to": "p-6"
       },
       {
-        "from": "p-3",
-        "to": "p-4"
+        "from": "p-11",
+        "to": "p-6"
+      },
+      {
+        "from": "p-7",
+        "to": "p-2"
+      },
+      {
+        "from": "p-8",
+        "to": "p-2"
       }
     ],
     "localType": []

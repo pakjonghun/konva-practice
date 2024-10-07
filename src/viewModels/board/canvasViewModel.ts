@@ -2,16 +2,11 @@ import { BaseViewModel } from '../base/baseViewModel';
 import { Layer } from 'konva/lib/Layer';
 import { Stage } from 'konva/lib/Stage';
 import { BgViewModel } from './bgLayerViewModel';
-import {
-  DRAG,
-  ZOOM_MAX_SCALE,
-  ZOOM_MIN_SCALE,
-  ZOOM_SPEED,
-} from '../../constants/canvas';
+import { DRAG, ZOOM_MAX_SCALE, ZOOM_MIN_SCALE, ZOOM_SPEED } from '../../constants/canvas';
 import { SelectRectViewModel } from './selectRectViewModel';
 import Konva from 'konva';
 import { PaintLayerViewModel } from './paintLayerViewModel';
-import { BaseStage } from '../../views/base/BaseStage';
+import { BaseStage } from '../../views/base/baseStage';
 import { Size } from '../../store/boardStore/node/type';
 
 export class CanvasViewModel extends BaseViewModel {
@@ -22,12 +17,7 @@ export class CanvasViewModel extends BaseViewModel {
   private selectRectViewModel: SelectRectViewModel;
   dispose: () => void;
 
-  constructor({
-    id,
-    container,
-    width,
-    height,
-  }: Size & { container: HTMLDivElement; id: string }) {
+  constructor({ id, container, width, height }: Size & { container: HTMLDivElement; id: string }) {
     super();
     const stage = new BaseStage({
       id,
@@ -51,12 +41,8 @@ export class CanvasViewModel extends BaseViewModel {
       width,
       height,
     }));
-    const selectRectViewModel = (this.selectRectViewModel =
-      new SelectRectViewModel(stage));
-    paintViewModel.paintLayer.add(
-      selectRectViewModel.selectRect,
-      selectRectViewModel.transformer
-    );
+    const selectRectViewModel = (this.selectRectViewModel = new SelectRectViewModel(stage));
+    paintViewModel.paintLayer.add(selectRectViewModel.selectRect, selectRectViewModel.transformer);
     stage.add(bgViewModel.bgLayer, paintViewModel.paintLayer, dragLayer);
 
     this.stage = stage;

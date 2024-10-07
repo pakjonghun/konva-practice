@@ -36,12 +36,12 @@ const LogicBoardContainer = () => {
       // }
       // nodeStore.initNode(manyNodeList);
       nodeStore.initNode(nodeList);
-      // nodeStore.initConnection(connectionList);
+      nodeStore.initConnection(connectionList);
       setIsBoardReady(true);
     }
 
     return () => {
-      nodeStore.clear();
+      nodeStore.clearNode();
     };
   }, [isFetching, res]);
 

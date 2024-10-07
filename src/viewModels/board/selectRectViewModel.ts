@@ -1,6 +1,6 @@
 import { BaseViewModel } from '../base/baseViewModel';
 import { SelectRect } from '../../views/board/selectRect';
-import { BaseStage } from '../../views/base/BaseStage';
+import { BaseStage } from '../../views/base/baseStage';
 import { BaseRect } from '../../views/base/BaseRect';
 import {
   BACKGROUND,

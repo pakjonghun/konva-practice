@@ -1,9 +1,5 @@
 import Konva from 'konva';
-import {
-  NODE_BODY_FILL_COLOR,
-  NODE_STROKE_COLOR,
-} from '../../../constants/canvas';
-import { BaseCircle } from '../../base/BaseCircle';
+import { NODE_BODY_FILL_COLOR, NODE_STROKE_COLOR } from '../../../constants/canvas';
 
 export class PinCircle extends Konva.Circle {
   // outerCircle: BaseCircle;

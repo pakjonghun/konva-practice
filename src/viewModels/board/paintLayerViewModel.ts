@@ -1,4 +1,4 @@
-import { BaseLayer } from '../../views/base/BaseLayer';
+import { BaseLayer } from '../../views/base/baseLayer';
 import { NodeViewModel } from '../node/nodeViewModel';
 import { BaseViewModel } from '../base/baseViewModel';
 import { Layer } from 'konva/lib/Layer';
@@ -11,6 +11,7 @@ import { PinViewModel } from '../node/pinViewModel';
 import { connectId } from '../../store/boardStore/node/utils';
 import { Bezier } from '../../views/node/line/bezier';
 import { LineViewModel } from '../node/lineViewModel';
+import { PinUI } from '../../views/node/pin/PinUI';
 
 export class PaintLayerViewModel extends BaseViewModel {
   private view: Layer;
@@ -59,27 +60,33 @@ export class PaintLayerViewModel extends BaseViewModel {
       nodeStore.batchBindNode(nodeList.map((node) => node.id));
     });
 
-    // const connectionDispose = autorun(() => {
-    //   const connectionList = nodeStore.requireConnectionUIList;
-    //   console.log('connectionList : ', connectionList);
-    //   connectionList.forEach((c) => {
-    //     // const bezierLine = new Bezier({
-    //     //   id: 'trying',
-    //     //   points: [0, 0, 0, 0, 0, 0, 0, 0],
-    //     //   stroke: '#000',
-    //     // });
-    //     // this.paintLayer.add(bezierLine);
-    //     // bezierLine.moveToTop();
-    //     // const lintVM = new LineViewModel(bezierLine);
-    //     // const nodeViewModel = new NodeViewModel(this.paintLayer, c);
-    //     // const nodeDispose = nodeViewModel.dispose;
-    //   });
-    //   // nodeStore.batchBindConnection(connectionList.map((c) => connectId(c)));
-    // });
+    const connectionDispose = autorun(() => {
+      const connectionList = nodeStore.requireConnectionUIList;
+      console.log('connectionList : ', connectionList);
+      connectionList.forEach((c) => {
+        const fromPin = this.paintLayer.findOne(`#${c.from}`) as PinUI;
+        const fromPos = fromPin.circle?.absolutePosition();
+        const toPin = this.paintLayer.findOne(`#${c.to}`) as PinUI;
+        const toPos = toPin.circle?.absolutePosition();
+        console.log(c.from, c.to, toPos, fromPos);
+        const bezierLine = new Bezier({
+          id: 'trying',
+          points: [0, 0, 0, 0, 0, 0, 0, 0],
+          stroke: '#000',
+        });
+        this.paintLayer.add(bezierLine);
+        bezierLine.moveToTop();
+        const lintVM = new LineViewModel(bezierLine);
+        if (fromPos && toPos) {
+          lintVM.updateBezierCurve(fromPos, toPos);
+        }
+      });
+      nodeStore.batchBindConnection(connectionList.map((c) => connectId(c)));
+    });
 
     return () => {
       nodeDispose();
-      // connectionDispose();
+      connectionDispose();
       nodeDisposeList.forEach((disposeFunc) => disposeFunc());
     };
   }
