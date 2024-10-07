@@ -100,13 +100,16 @@ export class PinViewModel {
         }
         const circlePos = this.view.circle.getAbsolutePosition();
 
-        const transform = stage.getAbsoluteTransform().copy().invert();
         const endPos = this.layer
           .getAbsoluteTransform()
           .copy()
           .invert()
           .point(pointerPos);
-        const startPos = transform.point(circlePos);
+        const startPos = this.layer
+          .getAbsoluteTransform()
+          .copy()
+          .invert()
+          .point(circlePos);
 
         updateBezierCurve(startPos, endPos);
 
