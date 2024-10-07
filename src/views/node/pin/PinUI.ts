@@ -56,7 +56,7 @@ export class PinUI extends Konva.Group {
     //     break;
     // }
     // const icon = new PinIcon(iconImg);
-    const color = PIN_COLOR[type as string] ?? '#808080';
+    const color = this.colorByType(type);
 
     const text = new PinText(name, {
       x: textX,
@@ -81,4 +81,9 @@ export class PinUI extends Konva.Group {
 
     this.add(text, this.circle);
   }
+
+  colorByType = (type: string) => {
+    const color = PIN_COLOR[type as string] ?? '#808080';
+    return color;
+  };
 }

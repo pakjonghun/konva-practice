@@ -1,5 +1,11 @@
 import { PinStore } from './pinStore';
-import { ComponentCommon, NodeData, NodeDataView, Position } from './type';
+import {
+  ComponentCommon,
+  ComponentCommonView,
+  NodeData,
+  NodeDataView,
+  Position,
+} from './type';
 import { makeAutoObservable } from 'mobx';
 
 export class NodeItemStore {
@@ -40,7 +46,7 @@ export class NodeItemStore {
     this.nodeData.initPosition = position;
   };
 
-  getPinById = (
+  getRawPinById = (
     pinId: string,
     components?: ComponentCommon[]
   ): null | ComponentCommon => {
@@ -51,7 +57,26 @@ export class NodeItemStore {
       if (comp.id === pinId) {
         return comp;
       }
-      target = this.getPinById(pinId, comp.children ?? []);
+      target = this.getRawPinById(pinId, comp.children ?? []);
+      if (target) {
+        return target;
+      }
+    }
+
+    return target;
+  };
+
+  getPinStoreById = (
+    pinId: string,
+    components?: PinStore[]
+  ): null | PinStore => {
+    let target: PinStore | null = null;
+    const targetComponents = components ?? this.nodeData.components;
+    for (const comp of targetComponents) {
+      if (comp.pinData.id === pinId) {
+        return comp;
+      }
+      target = this.getPinStoreById(pinId, comp.pinData.children ?? []);
       if (target) {
         return target;
       }

@@ -1,10 +1,5 @@
 import Konva from 'konva';
-import {
-  DRAG,
-  NODE_BODY_FILL_COLOR,
-  NODE_TAG,
-  PIN_COLOR,
-} from '../../constants/canvas';
+import { DRAG, NODE_TAG, PIN_COLOR } from '../../constants/canvas';
 import { nodeStore } from '../../store/boardStore/node/nodeStore';
 import { PinUI } from '../../views/node/pin/PinUI';
 import { hexToRgba } from '../../utils/style';
@@ -34,7 +29,7 @@ export class PinViewModel {
   get pinData() {
     const pinData = nodeStore
       .getTargetNodeData(this.owner)
-      .getPinById(this.pinId);
+      .getRawPinById(this.pinId);
     if (!pinData) {
       throw new Error('핀 데이터가 존재하지 않습니다.');
     }
@@ -159,7 +154,13 @@ export class PinViewModel {
       () => {
         return this.pinData.properties.type;
       },
-      (pinType) => console.log(pinType)
+      (pinType) => {
+        const view = this.view;
+        const newColor = view.colorByType(pinType);
+        view.circle.setAttrs({
+          stroke: newColor,
+        });
+      }
     );
 
     const eventDispose = this.addEventList();

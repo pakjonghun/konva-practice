@@ -1,5 +1,4 @@
 import { NodeItemStore } from './nodeItemStore';
-// import { nodeStore } from './nodeStore';
 import { NodeBindingView, NodeData } from './type';
 import { makeAutoObservable, observable, runInAction } from 'mobx';
 
@@ -9,6 +8,14 @@ class NodeStore {
   constructor() {
     makeAutoObservable(this);
   }
+
+  rawNodeDataById = (nodeId: string) => {
+    const targetNodeData = this.nodeById.get(nodeId)?.nodeData.rawNodeData;
+    if (!targetNodeData) {
+      throw new Error('해당 노드가 존재하지 않습니다.');
+    }
+    return targetNodeData;
+  };
 
   getTargetNodeData = (nodeId: string) => {
     const targetNodeData = this.nodeById.get(nodeId)?.nodeData;

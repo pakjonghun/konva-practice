@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite';
 import { inspectorStore } from '../../../store/boardStore/inspector/inspectorStore';
 import NodeTitle from './NodeTitle';
 import NodePosition from './NodePosition';
+import ChangePinType from './ChangePinType';
 
 const Inspector = () => {
   const selectedNodeIdList = inspectorStore.selectedNodeIdList;
@@ -18,6 +19,7 @@ const Inspector = () => {
           zIndex: 9999,
         }}
       >
+        <ChangePinType nodeId={selectedNodeIdList[0]} />
         <NodePosition nodeId={selectedNodeIdList[0]} />
         <NodeTitle nodeId={selectedNodeIdList[0]} />
       </div>
