@@ -23,7 +23,7 @@ export class NodeViewModel {
 
     reaction(
       () => {
-        return nodeStore.nodeAction.title(this.nodeId);
+        return nodeStore.nodeItemStore.title(this.nodeId);
       },
       (newTitle) => {
         this.updateTitle(newTitle);
@@ -55,7 +55,7 @@ export class NodeViewModel {
       this.view.moveTo(paintLayer);
       tr.moveTo(paintLayer);
 
-      nodeStore.nodeAction.setPosition(this.nodeId, this.view.position());
+      nodeStore.nodeItemStore.setPosition(this.nodeId, this.view.position());
     });
 
     return () => {

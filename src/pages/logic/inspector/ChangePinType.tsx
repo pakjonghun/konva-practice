@@ -11,7 +11,7 @@ interface Props {
 const ChangePinType: FC<Props> = ({ nodeId }) => {
   const components = nodeStore.getTargetNodeData(nodeId).nodeData.components;
   const setPinType = (pinId: string, type: string) => {
-    nodeStore.pinAction.setType(pinId, type);
+    nodeStore.pinStore.setType(pinId, type);
   };
 
   const selectTypeList = [

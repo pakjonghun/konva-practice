@@ -15,6 +15,7 @@ const LogicBoardContainer = () => {
   useEffect(() => {
     if (!isFetching && res?.data) {
       const nodeList = res.data.node;
+      const connectionList = res.data.connection;
       const manyNodeList: NodeData[] = [];
 
       // for (let i = 0; i < 10; i++) {
@@ -35,6 +36,7 @@ const LogicBoardContainer = () => {
       // }
       // nodeStore.initNode(manyNodeList);
       nodeStore.initNode(nodeList);
+      // nodeStore.initConnection(connectionList);
       setIsBoardReady(true);
     }
 

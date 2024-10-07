@@ -1,3 +1,4 @@
+import { Connection } from '../connection/type';
 import { ComponentCommon } from './type';
 
 export function setPin(pinData: ComponentCommon[], map: Map<string, ComponentCommon>) {
@@ -7,4 +8,8 @@ export function setPin(pinData: ComponentCommon[], map: Map<string, ComponentCom
       setPin(pin.children, map);
     }
   });
+}
+
+export function connectId({ from, to }: Connection) {
+  return `${from}_${to}`;
 }

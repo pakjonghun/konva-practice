@@ -8,6 +8,9 @@ import { Size } from '../../store/boardStore/node/type';
 import { autorun } from 'mobx';
 import { nodeStore } from '../../store/boardStore/node/nodeStore';
 import { PinViewModel } from '../node/pinViewModel';
+import { connectId } from '../../store/boardStore/node/utils';
+import { Bezier } from '../../views/node/line/bezier';
+import { LineViewModel } from '../node/lineViewModel';
 
 export class PaintLayerViewModel extends BaseViewModel {
   private view: Layer;
@@ -36,7 +39,7 @@ export class PaintLayerViewModel extends BaseViewModel {
     this.stage.batchDraw();
     const nodeDisposeList: (() => void)[] = [];
 
-    const dispose = autorun(() => {
+    const nodeDispose = autorun(() => {
       const nodeList = nodeStore.requireNodeUIList;
       nodeList.forEach((nodeData) => {
         const nodeViewModel = new NodeViewModel(this.paintLayer, nodeData);
@@ -55,8 +58,28 @@ export class PaintLayerViewModel extends BaseViewModel {
       });
       nodeStore.batchBindNode(nodeList.map((node) => node.id));
     });
+
+    // const connectionDispose = autorun(() => {
+    //   const connectionList = nodeStore.requireConnectionUIList;
+    //   console.log('connectionList : ', connectionList);
+    //   connectionList.forEach((c) => {
+    //     // const bezierLine = new Bezier({
+    //     //   id: 'trying',
+    //     //   points: [0, 0, 0, 0, 0, 0, 0, 0],
+    //     //   stroke: '#000',
+    //     // });
+    //     // this.paintLayer.add(bezierLine);
+    //     // bezierLine.moveToTop();
+    //     // const lintVM = new LineViewModel(bezierLine);
+    //     // const nodeViewModel = new NodeViewModel(this.paintLayer, c);
+    //     // const nodeDispose = nodeViewModel.dispose;
+    //   });
+    //   // nodeStore.batchBindConnection(connectionList.map((c) => connectId(c)));
+    // });
+
     return () => {
-      dispose();
+      nodeDispose();
+      // connectionDispose();
       nodeDisposeList.forEach((disposeFunc) => disposeFunc());
     };
   }

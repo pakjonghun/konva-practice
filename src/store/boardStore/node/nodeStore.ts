@@ -1,53 +1,92 @@
+import { Connection, ConnectionBinding } from './../connection/type';
 import { NodeItemStore } from './nodeItemStore';
 import { PinStore } from './pinStore';
 import { NodeBinding, NodeData } from './type';
-import { action, makeAutoObservable, observable } from 'mobx';
+import { makeAutoObservable, observable, runInAction } from 'mobx';
+import { connectId } from './utils';
 
 class NodeStore {
   nodeById = observable.map<string, NodeBinding>();
-  pinAction: PinStore;
-  nodeAction: NodeItemStore;
+  connectionById = observable.map<string, ConnectionBinding>();
+  pinStore: PinStore;
+  nodeItemStore: NodeItemStore;
 
   constructor() {
     makeAutoObservable(this);
-    this.pinAction = new PinStore(this.nodeById);
-    this.nodeAction = new NodeItemStore(this.nodeById);
+    this.pinStore = new PinStore(this.nodeById);
+    this.nodeItemStore = new NodeItemStore(this.nodeById);
   }
 
   getTargetPinData = (pinId: string) => {
-    return this.pinAction.getTargetPinData(pinId);
+    return this.pinStore.getTargetPinData(pinId);
   };
 
   tryConnect = (fromPinId: string, toPinId: string) => {
-    this.pinAction.tryConnect(fromPinId, toPinId);
+    this.pinStore.tryConnect(fromPinId, toPinId);
   };
 
   getTargetNodeData = (nodeId: string) => {
-    return this.nodeAction.getTargetNodeData(nodeId);
+    return this.nodeItemStore.getTargetNodeData(nodeId);
   };
 
   clear = () => {
     this.nodeById.clear();
   };
 
-  initNode = (nodeDataList: Array<NodeData>) => {
-    this.clear();
-    for (const nodeData of nodeDataList) {
-      this.nodeById.set(nodeData.id, {
-        hasView: false,
-        nodeData,
-      });
-    }
+  initConnection = (connections: Array<Connection>) => {
+    runInAction(() => {
+      this.clear();
+      for (const connection of connections) {
+        this.connectionById.set(connectId(connection), {
+          hasView: false,
+          connectionData: connection,
+        });
+      }
+    });
   };
 
-  //반복문으로 상태를 여러번 바꾸므로 1번만 랜더링이 확실히 되도록 @action 처리함(runinaction 도 가능)
-  @action
-  batchBindNode = (nodeIdList: string[]) => {
-    nodeIdList.forEach((nodeId) => {
-      const item = this.nodeById.get(nodeId);
-      if (item) {
-        item.hasView = true;
+  batchBindConnection = (connectionIdList: Array<string>) => {
+    runInAction(() => {
+      connectionIdList.forEach((id) => {
+        const connection = this.connectionById.get(id);
+        if (connection) {
+          connection.hasView = true;
+        }
+      });
+    });
+  };
+
+  get requireConnectionUIList() {
+    const notPaintedConnectionList: Connection[] = [];
+    this.connectionById.forEach((c) => {
+      if (!c.hasView) {
+        notPaintedConnectionList.push(c.connectionData);
       }
+    });
+
+    return notPaintedConnectionList;
+  }
+
+  initNode = (nodeDataList: Array<NodeData>) => {
+    runInAction(() => {
+      this.clear();
+      for (const nodeData of nodeDataList) {
+        this.nodeById.set(nodeData.id, {
+          hasView: false,
+          nodeData,
+        });
+      }
+    });
+  };
+
+  batchBindNode = (nodeIdList: string[]) => {
+    runInAction(() => {
+      nodeIdList.forEach((nodeId) => {
+        const item = this.nodeById.get(nodeId);
+        if (item) {
+          item.hasView = true;
+        }
+      });
     });
   };
 
