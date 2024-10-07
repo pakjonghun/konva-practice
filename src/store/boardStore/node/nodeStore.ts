@@ -1,7 +1,7 @@
 import { NodeItemStore } from './nodeItemStore';
 import { PinStore } from './pinStore';
 import { NodeBinding, NodeData } from './type';
-import { makeAutoObservable, observable, runInAction } from 'mobx';
+import { action, makeAutoObservable, observable } from 'mobx';
 
 class NodeStore {
   nodeById = observable.map<string, NodeBinding>();
@@ -19,7 +19,7 @@ class NodeStore {
   };
 
   tryConnect = (fromPinId: string, toPinId: string) => {
-    //
+    this.pinAction.tryConnect(fromPinId, toPinId);
   };
 
   getTargetNodeData = (nodeId: string) => {
@@ -40,14 +40,14 @@ class NodeStore {
     }
   };
 
+  //반복문으로 상태를 여러번 바꾸므로 1번만 랜더링이 확실히 되도록 @action 처리함(runinaction 도 가능)
+  @action
   batchBindNode = (nodeIdList: string[]) => {
-    runInAction(() => {
-      nodeIdList.forEach((nodeId) => {
-        const item = this.nodeById.get(nodeId);
-        if (item) {
-          item.hasView = true;
-        }
-      });
+    nodeIdList.forEach((nodeId) => {
+      const item = this.nodeById.get(nodeId);
+      if (item) {
+        item.hasView = true;
+      }
     });
   };
 

@@ -35,6 +35,9 @@ export class PinStore {
   };
 
   tryConnect = (fromPinId: string, toPinId: string) => {
-    //
+    const fromPin = this.getTargetPinData(fromPinId);
+    const toPin = this.getTargetPinData(toPinId);
+
+    return fromPin.properties.type === toPin.properties.type;
   };
 }
