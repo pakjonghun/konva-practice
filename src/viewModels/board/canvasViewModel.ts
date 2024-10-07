@@ -75,7 +75,6 @@ export class CanvasViewModel extends BaseViewModel {
     };
 
     this.stage.on('wheel', (event) => {
-      console.log('wheel', event.evt.ctrlKey, event.evt.metaKey);
       event.evt.preventDefault();
       //fix:데스크탑 과 맥북에서 작동 하는 것이 다름 키보드 이벤트 제한 관련 확인 필요
       if (!event.evt.ctrlKey && !event.evt.metaKey) {

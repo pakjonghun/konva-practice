@@ -1,5 +1,4 @@
 export function hexToRgba(hex: string, opacity = 1) {
-  console.log(hex);
   hex = hex.replace('#', '');
 
   if (hex.length === 3) {

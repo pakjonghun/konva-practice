@@ -8,6 +8,7 @@ import {
 import { nodeStore } from '../../store/boardStore/node/nodeStore';
 import { PinUI } from '../../views/node/pin/PinUI';
 import { hexToRgba } from '../../utils/style';
+import { reaction } from 'mobx';
 
 export class PinViewModel {
   dispose: () => void;
@@ -154,6 +155,13 @@ export class PinViewModel {
   }
 
   render() {
+    reaction(
+      () => {
+        return this.pinData.properties.type;
+      },
+      (pinType) => console.log(pinType)
+    );
+
     const eventDispose = this.addEventList();
     return eventDispose;
   }
