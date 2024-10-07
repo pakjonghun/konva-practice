@@ -3,8 +3,8 @@ export const GRID_SIZE = 70;
 export const ZOOM_MIN_SCALE = 0.2;
 export const ZOOM_MAX_SCALE = 1;
 export const ZOOM_SPEED = 1.1;
-export const BG_COLOR = '#1E1E1E';
-export const GRID_COLOR = '#2A2A2A';
+export const BG_COLOR = '#262626';
+export const GRID_COLOR = '#393939';
 export const SELECT_COLOR = 'rgba(0, 122, 204, 0.3)';
 export const SELECT_STROKE_COLOR = '#005A99';
 
@@ -40,6 +40,7 @@ export const PIN_GAP = 12;
 export const TEXT_PIN_GAP = 5;
 export const ICON_PIN_GAP = 2;
 export const PIN_HEIGHT = 20;
+export const PIN_TEXT_COLOR = '#262626';
 export const PIN_COLOR = {
   ['string' as string]: '#C0392B',
   number: '#2980B9',

@@ -15,9 +15,9 @@ const LogicBoardContainer = () => {
   useEffect(() => {
     if (!isFetching && res?.data) {
       const nodeList = res.data.node;
-      // const manyNodeList: NodeData[] = [];
+      const manyNodeList: NodeData[] = [];
 
-      // for (let i = 0; i < 100; i++) {
+      // for (let i = 0; i < 10; i++) {
       //   nodeList.forEach((n) => {
       //     const newId = v4();
       //     const newPosition = {

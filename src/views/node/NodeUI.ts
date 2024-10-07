@@ -66,21 +66,25 @@ export class NodeUI extends Konva.Group {
       if (placement === 'Input') {
         this.hasInput = true;
         nextY = inputY;
-        textX = PIN_GAP * 2;
+        textX = PIN_GAP;
         iconX = PIN_GAP / 2;
         circleX = 0 - radius - TEXT_PIN_GAP;
         inputY += PIN_HEIGHT + PIN_GAP;
         align = 'left';
       } else {
         nextY = outputY;
-        textX = NODE_WIDTH / 2 - PIN_GAP * 2;
+        textX = NODE_WIDTH / 2 - PIN_GAP;
         iconX = NODE_WIDTH - PIN_GAP * 1.7;
         circleX = NODE_WIDTH + TEXT_PIN_GAP + radius;
         outputY += PIN_HEIGHT + PIN_GAP;
         align = 'right';
       }
 
-      const pinUI = new PinUI(component, { align, circleX, iconX, nextY, textX }, { id });
+      const pinUI = new PinUI(
+        component,
+        { align, circleX, iconX, nextY, textX },
+        { id }
+      );
       pins.push(pinUI);
     });
     const maxBodyHeight = Math.max(inputY, outputY);

@@ -1,5 +1,8 @@
 import Konva from 'konva';
-import { NODE_BODY_FILL_COLOR, NODE_STROKE_COLOR } from '../../../constants/canvas';
+import {
+  NODE_BODY_FILL_COLOR,
+  NODE_STROKE_COLOR,
+} from '../../../constants/canvas';
 import { BaseCircle } from '../../base/BaseCircle';
 
 export class PinCircle extends Konva.Group {
@@ -13,8 +16,8 @@ export class PinCircle extends Konva.Group {
       ...options,
       hitStrokeWidth: 20,
       fill: NODE_BODY_FILL_COLOR,
-      stroke: NODE_STROKE_COLOR,
-      strokeWidth: 1.8,
+      stroke: options.color,
+      strokeWidth: 20,
     });
     const outerRadius = options?.radius ?? 0;
     const innerRadius = outerRadius * 0.6;
