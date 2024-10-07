@@ -22,13 +22,15 @@ const DropDown: FC<Props> = ({ trigger, menuList, onClickMenu }) => {
 		</Button> */}
         {trigger}
       </DropdownMenu.Trigger>
-      {menuList.map((menu) => {
-        return (
-          <DropdownMenu.Item onClick={() => onClickMenu(menu)} key={menu.id}>
-            {menu.label}
-          </DropdownMenu.Item>
-        );
-      })}
+      <DropdownMenu.Content>
+        {menuList.map((menu) => {
+          return (
+            <DropdownMenu.Item onClick={() => onClickMenu(menu)} key={menu.id}>
+              {menu.label}
+            </DropdownMenu.Item>
+          );
+        })}
+      </DropdownMenu.Content>
     </DropdownMenu.Root>
   );
 };
