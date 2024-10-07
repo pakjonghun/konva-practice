@@ -1,4 +1,5 @@
 import { NodeItemStore } from './nodeItemStore';
+import { PinStore } from './pinStore';
 import { NodeBindingView, NodeData } from './type';
 import { makeAutoObservable, observable, runInAction } from 'mobx';
 
@@ -7,6 +8,28 @@ class NodeStore {
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  tryConnect = (fromPinId: string, toPinId: string) => {
+    //
+  };
+
+  get pinStoreById() {
+    const pinStoreById = new Map<string, PinStore>();
+
+    this.nodeById.forEach((nodeData) => {
+      nodeData.nodeData.nodeData.components.forEach((c) => {
+        pinStoreById.set(c.rawPinData.id, c);
+
+        if (c.pinData.children?.length) {
+          c.pinData.children.forEach((ic) => {
+            pinStoreById.set(ic.pinData.id, ic);
+          });
+        }
+      });
+    });
+
+    return pinStoreById;
   }
 
   rawNodeDataById = (nodeId: string) => {

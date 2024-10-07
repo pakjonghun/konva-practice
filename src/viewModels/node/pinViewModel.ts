@@ -6,6 +6,8 @@ import { hexToRgba } from '../../utils/style';
 import { reaction } from 'mobx';
 import { Position } from '../../store/boardStore/node/type';
 import { KonvaEventObject } from 'konva/lib/Node';
+import { Bezier } from '../../views/node/line/bezier';
+import { LineViewModel } from './lineViewModel';
 
 export class PinViewModel {
   dispose: () => void;
@@ -69,21 +71,14 @@ export class PinViewModel {
           draggable: false,
         });
       });
-
       const radius = pinUI.circle.radius();
       const x = pinUI.circle.x() + radius;
       const y = pinUI.circle.y() + radius * 2;
-
-      const bezierLine = new Konva.Line({
+      const bezierLine = new Bezier({
+        id: 'trying',
         points: [x, y, x, y, x, y, x, y],
         stroke: this.color,
-        strokeWidth: 2,
-        lineCap: 'round',
-        lineJoin: 'round',
-        tension: 0, // tension을 0으로 설정하여 제어점 직접 사용
-        bezier: true, // 베지에 곡선 사용
       });
-
       this.layer.add(bezierLine);
       bezierLine.moveToTop();
 
@@ -111,35 +106,36 @@ export class PinViewModel {
           .invert()
           .point(circlePos);
 
-        updateBezierCurve(startPos, endPos);
+        const bezier = new LineViewModel(bezierLine);
+        bezier.updateBezierCurve(startPos, endPos);
 
-        function updateBezierCurve(
-          startPos: Position,
-          endPos: Position,
-          waveHeight = 50
-        ) {
-          // 제어점 위치 조정 (파도 높이 포함)
-          const disX = endPos.x - startPos.x;
-          const disY = endPos.y - startPos.y;
+        // function updateBezierCurve(
+        //   startPos: Position,
+        //   endPos: Position,
+        //   waveHeight = 50
+        // ) {
+        //   // 제어점 위치 조정 (파도 높이 포함)
+        //   const disX = endPos.x - startPos.x;
+        //   const disY = endPos.y - startPos.y;
 
-          // 파도 높이 조정 (중간 제어점의 Y 값을 파도 높이로 조정)
-          const controlX1 = startPos.x + disX / 3;
-          const controlY1 = startPos.y + disY / 3 - waveHeight;
+        //   // 파도 높이 조정 (중간 제어점의 Y 값을 파도 높이로 조정)
+        //   const controlX1 = startPos.x + disX / 3;
+        //   const controlY1 = startPos.y + disY / 3 - waveHeight;
 
-          const controlX2 = endPos.x - disX / 3;
-          const controlY2 = endPos.y - disY / 3 + waveHeight;
+        //   const controlX2 = endPos.x - disX / 3;
+        //   const controlY2 = endPos.y - disY / 3 + waveHeight;
 
-          bezierLine.points([
-            startPos.x,
-            startPos.y,
-            controlX1,
-            controlY1,
-            controlX2,
-            controlY2,
-            endPos.x,
-            endPos.y,
-          ]);
-        }
+        //   bezierLine.points([
+        //     startPos.x,
+        //     startPos.y,
+        //     controlX1,
+        //     controlY1,
+        //     controlX2,
+        //     controlY2,
+        //     endPos.x,
+        //     endPos.y,
+        //   ]);
+        // }
         const dragLayer = stage.findOne(`.${DRAG}`);
         bezierLine.moveTo(dragLayer);
         this.layer.batchDraw();

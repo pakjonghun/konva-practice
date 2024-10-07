@@ -1,6 +1,11 @@
 import Konva from 'konva';
 import { NodeData } from '../../store/boardStore/node/type';
-import { DRAG, NODE_TAG, PAINT, TRANSFORMER_RECT } from '../../constants/canvas';
+import {
+  DRAG,
+  NODE_TAG,
+  PAINT,
+  TRANSFORMER_RECT,
+} from '../../constants/canvas';
 import { NodeUI } from '../../views/node/NodeUI';
 import { reaction } from 'mobx';
 import { nodeStore } from '../../store/boardStore/node/nodeStore';
