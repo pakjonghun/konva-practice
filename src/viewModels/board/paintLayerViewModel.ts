@@ -62,22 +62,23 @@ export class PaintLayerViewModel extends BaseViewModel {
 
     const connectionDispose = autorun(() => {
       const connectionList = nodeStore.requireConnectionUIList;
-      console.log('connectionList : ', connectionList);
       connectionList.forEach((c) => {
         const fromPin = this.paintLayer.findOne(`#${c.from}`) as PinUI;
         const fromPos = fromPin.circle?.absolutePosition();
         const toPin = this.paintLayer.findOne(`#${c.to}`) as PinUI;
         const toPos = toPin.circle?.absolutePosition();
-        console.log(c.from, c.to, toPos, fromPos);
-        const bezierLine = new Bezier({
-          id: 'trying',
-          points: [0, 0, 0, 0, 0, 0, 0, 0],
-          stroke: '#000',
-        });
-        this.paintLayer.add(bezierLine);
-        bezierLine.moveToTop();
-        const lintVM = new LineViewModel(bezierLine);
+
         if (fromPos && toPos) {
+          const color = fromPin.circle.stroke();
+          const bezierLine = new Bezier({
+            id: 'done',
+            points: [0, 0, 0, 0, 0, 0, 0, 0],
+            stroke: color,
+          });
+          this.paintLayer.add(bezierLine);
+          bezierLine.moveToTop();
+          const lintVM = new LineViewModel(bezierLine);
+
           lintVM.updateBezierCurve(fromPos, toPos);
         }
       });
