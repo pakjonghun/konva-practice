@@ -1,51 +1,29 @@
 import { NodeItemStore } from './nodeItemStore';
 import { PinStore } from './pinStore';
-import { NodeBindingView, NodeData } from './type';
+import { NodeBinding, NodeData } from './type';
 import { makeAutoObservable, observable, runInAction } from 'mobx';
 
 class NodeStore {
-  nodeById = observable.map<string, NodeBindingView>();
+  nodeById = observable.map<string, NodeBinding>();
+  pinAction: PinStore;
+  nodeAction: NodeItemStore;
 
   constructor() {
     makeAutoObservable(this);
+    this.pinAction = new PinStore(this.nodeById);
+    this.nodeAction = new NodeItemStore(this.nodeById);
   }
+
+  getTargetPinData = (pinId: string) => {
+    return this.pinAction.getTargetPinData(pinId);
+  };
 
   tryConnect = (fromPinId: string, toPinId: string) => {
     //
   };
 
-  get pinStoreById() {
-    const pinStoreById = new Map<string, PinStore>();
-
-    this.nodeById.forEach((nodeData) => {
-      nodeData.nodeData.nodeData.components.forEach((c) => {
-        pinStoreById.set(c.rawPinData.id, c);
-
-        if (c.pinData.children?.length) {
-          c.pinData.children.forEach((ic) => {
-            pinStoreById.set(ic.pinData.id, ic);
-          });
-        }
-      });
-    });
-
-    return pinStoreById;
-  }
-
-  rawNodeDataById = (nodeId: string) => {
-    const targetNodeData = this.nodeById.get(nodeId)?.nodeData.rawNodeData;
-    if (!targetNodeData) {
-      throw new Error('해당 노드가 존재하지 않습니다.');
-    }
-    return targetNodeData;
-  };
-
   getTargetNodeData = (nodeId: string) => {
-    const targetNodeData = this.nodeById.get(nodeId)?.nodeData;
-    if (!targetNodeData) {
-      throw new Error('해당 노드가 존재하지 않습니다.');
-    }
-    return targetNodeData;
+    return this.nodeAction.getTargetNodeData(nodeId);
   };
 
   clear = () => {
@@ -55,10 +33,9 @@ class NodeStore {
   initNode = (nodeDataList: Array<NodeData>) => {
     this.clear();
     for (const nodeData of nodeDataList) {
-      const nodeItemStore = new NodeItemStore(nodeData);
       this.nodeById.set(nodeData.id, {
         hasView: false,
-        nodeData: nodeItemStore,
+        nodeData,
       });
     }
   };
@@ -78,7 +55,7 @@ class NodeStore {
     const notPaintedNodeList: NodeData[] = [];
     this.nodeById.forEach((node) => {
       if (!node.hasView) {
-        notPaintedNodeList.push(node.nodeData.rawNodeData);
+        notPaintedNodeList.push(node.nodeData);
       }
     });
 

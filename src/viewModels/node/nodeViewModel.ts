@@ -1,11 +1,6 @@
 import Konva from 'konva';
 import { NodeData } from '../../store/boardStore/node/type';
-import {
-  DRAG,
-  NODE_TAG,
-  PAINT,
-  TRANSFORMER_RECT,
-} from '../../constants/canvas';
+import { DRAG, NODE_TAG, PAINT, TRANSFORMER_RECT } from '../../constants/canvas';
 import { NodeUI } from '../../views/node/NodeUI';
 import { reaction } from 'mobx';
 import { nodeStore } from '../../store/boardStore/node/nodeStore';
@@ -28,7 +23,7 @@ export class NodeViewModel {
 
     reaction(
       () => {
-        return nodeStore.getTargetNodeData(nodeData.id).title;
+        return nodeStore.nodeAction.title(this.nodeId);
       },
       (newTitle) => {
         this.updateTitle(newTitle);
@@ -60,8 +55,7 @@ export class NodeViewModel {
       this.view.moveTo(paintLayer);
       tr.moveTo(paintLayer);
 
-      const nodeItemStore = nodeStore.getTargetNodeData(this.nodeId);
-      nodeItemStore.setPosition(this.view.position());
+      nodeStore.nodeAction.setPosition(this.nodeId, this.view.position());
     });
 
     return () => {

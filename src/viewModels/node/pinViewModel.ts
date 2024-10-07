@@ -13,11 +13,7 @@ export class PinViewModel {
   dispose: () => void;
   dragging = false;
 
-  constructor(
-    public layer: Konva.Layer,
-    public pinId: string,
-    public owner: string
-  ) {
+  constructor(public layer: Konva.Layer, public pinId: string, public owner: string) {
     this.dispose = this.render();
   }
 
@@ -31,12 +27,7 @@ export class PinViewModel {
   }
 
   get pinData() {
-    const pinData = nodeStore
-      .getTargetNodeData(this.owner)
-      .getRawPinById(this.pinId);
-    if (!pinData) {
-      throw new Error('핀 데이터가 존재하지 않습니다.');
-    }
+    const pinData = nodeStore.getTargetPinData(this.pinId);
     return pinData;
   }
 
@@ -95,16 +86,8 @@ export class PinViewModel {
         }
         const circlePos = this.view.circle.getAbsolutePosition();
 
-        const endPos = this.layer
-          .getAbsoluteTransform()
-          .copy()
-          .invert()
-          .point(pointerPos);
-        const startPos = this.layer
-          .getAbsoluteTransform()
-          .copy()
-          .invert()
-          .point(circlePos);
+        const endPos = this.layer.getAbsoluteTransform().copy().invert().point(pointerPos);
+        const startPos = this.layer.getAbsoluteTransform().copy().invert().point(circlePos);
 
         const bezier = new LineViewModel(bezierLine);
         bezier.updateBezierCurve(startPos, endPos);

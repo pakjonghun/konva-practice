@@ -7,9 +7,8 @@ interface Props {
 }
 
 const NodeTitle: FC<Props> = ({ nodeId }) => {
-  const targetNode = nodeStore.getTargetNodeData(nodeId);
-  const nodeName = targetNode.title;
-  const setNodeName = (newName: string) => targetNode.setTitle(newName);
+  const nodeName = nodeStore.nodeAction.title(nodeId);
+  const setNodeName = (newName: string) => nodeStore.nodeAction.setTitle(nodeId, newName);
 
   return (
     <input

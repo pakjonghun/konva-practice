@@ -1,87 +1,34 @@
-import { PinStore } from './pinStore';
-import {
-  ComponentCommon,
-  ComponentCommonView,
-  NodeData,
-  NodeDataView,
-  Position,
-} from './type';
 import { makeAutoObservable } from 'mobx';
+import { NodeBinding, Position } from './type';
 
 export class NodeItemStore {
-  nodeData: NodeDataView;
-
-  constructor(nodeData: NodeData) {
+  nodeById: Map<string, NodeBinding>;
+  constructor(nodeById: Map<string, NodeBinding>) {
+    this.nodeById = nodeById;
     makeAutoObservable(this);
-    this.nodeData = this.initNodeData(nodeData);
   }
 
-  initNodeData = (initNodeData: NodeData) => {
-    return {
-      ...initNodeData,
-      components: initNodeData.components.map((c) => new PinStore(c)),
-    };
-  };
-
-  get rawNodeData() {
-    return {
-      ...this.nodeData,
-      components: this.nodeData.components.map((c) => c.rawPinData),
-    };
-  }
-
-  get title() {
-    return this.nodeData.name;
-  }
-
-  setTitle = (newTitle: string) => {
-    this.nodeData.name = newTitle;
-  };
-
-  get position() {
-    return this.nodeData.initPosition;
-  }
-
-  setPosition = (position: Position) => {
-    this.nodeData.initPosition = position;
-  };
-
-  getRawPinById = (
-    pinId: string,
-    components?: ComponentCommon[]
-  ): null | ComponentCommon => {
-    let target: ComponentCommon | null = null;
-    const targetComponents =
-      components ?? this.nodeData.components.map((c) => c.rawPinData);
-    for (const comp of targetComponents) {
-      if (comp.id === pinId) {
-        return comp;
-      }
-      target = this.getRawPinById(pinId, comp.children ?? []);
-      if (target) {
-        return target;
-      }
+  getTargetNodeData = (nodeId: string) => {
+    const targetNodeData = this.nodeById.get(nodeId);
+    if (!targetNodeData) {
+      throw new Error('해당 노드가 존재하지 않습니다.');
     }
-
-    return target;
+    return targetNodeData;
   };
 
-  getPinStoreById = (
-    pinId: string,
-    components?: PinStore[]
-  ): null | PinStore => {
-    let target: PinStore | null = null;
-    const targetComponents = components ?? this.nodeData.components;
-    for (const comp of targetComponents) {
-      if (comp.pinData.id === pinId) {
-        return comp;
-      }
-      target = this.getPinStoreById(pinId, comp.pinData.children ?? []);
-      if (target) {
-        return target;
-      }
-    }
+  title = (nodeId: string) => {
+    return this.getTargetNodeData(nodeId).nodeData.name;
+  };
 
-    return target;
+  setTitle = (nodeId: string, newTitle: string) => {
+    this.getTargetNodeData(nodeId).nodeData.name = newTitle;
+  };
+
+  position = (nodeId: string) => {
+    return this.getTargetNodeData(nodeId).nodeData.initPosition;
+  };
+
+  setPosition = (nodeId: string, position: Position) => {
+    this.getTargetNodeData(nodeId).nodeData.initPosition = position;
   };
 }

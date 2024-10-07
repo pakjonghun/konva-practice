@@ -1,6 +1,3 @@
-import { NodeItemStore } from './nodeItemStore';
-import { PinStore } from './pinStore';
-
 export type Direction = 'Input' | 'Output';
 export type TPinType = 'Parameter' | 'Flow';
 
@@ -52,21 +49,4 @@ export type PinData = {
 };
 
 //뷰를 위한 데이터 구조
-export type NodeBindingView = { hasView: boolean; nodeData: NodeItemStore };
-export type NodeDataView = {
-  id: string;
-  type: string;
-  name: string;
-  initPosition: Position;
-  components: Array<PinStore>;
-  category: Array<string>;
-  explain?: string;
-};
-export type ComponentCommonView = {
-  id: string;
-  owner: string;
-  class: string;
-  placement: Direction;
-  children?: PinStore[];
-  properties: CommonProp;
-};
+export type NodeBinding = { hasView: boolean; nodeData: NodeData };

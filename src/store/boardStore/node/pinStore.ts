@@ -1,44 +1,40 @@
 import { makeAutoObservable } from 'mobx';
-import { ComponentCommon, ComponentCommonView } from './type';
+import { ComponentCommon, NodeBinding } from './type';
+import { setPin } from './utils';
 
 export class PinStore {
-  pinData: ComponentCommonView;
-  constructor(pinData: ComponentCommon) {
-    this.pinData = this.initPinData(pinData);
+  nodeById: Map<string, NodeBinding>;
+  constructor(nodeById: Map<string, NodeBinding>) {
+    this.nodeById = nodeById;
     makeAutoObservable(this);
   }
 
-  get rawPinData() {
-    return {
-      ...this.pinData,
-      children: this.rawChildren,
-    };
+  get pinById() {
+    const pinById = new Map<string, ComponentCommon>();
+    this.nodeById.forEach((node) => {
+      setPin(node.nodeData.components, pinById);
+    });
+    return pinById;
   }
 
-  get rawChildren(): ComponentCommon[] {
-    return this.pinData.children?.map((c) => c.rawPinData) ?? [];
-  }
-
-  initPinData = (pinData: ComponentCommon) => {
-    return {
-      ...pinData,
-      children: pinData.children?.map((c) => new PinStore(c)),
-    };
+  type = (pinId: string) => {
+    return this.getTargetPinData(pinId).properties.type;
   };
 
-  get type() {
-    return this.pinData.properties.type;
-  }
-
-  setType = (newType: string) => {
-    this.pinData.properties.type = newType;
+  setType = (pinId: string, type: string) => {
+    this.getTargetPinData(pinId).properties.type = type;
   };
 
-  get name() {
-    return this.pinData.properties.name;
-  }
+  getTargetPinData = (pinId: string) => {
+    const pinData = this.pinById.get(pinId);
+    if (!pinData) {
+      throw new Error('핀데이터가 존재하지 않습니다.');
+    }
 
-  setName = (newName: string) => {
-    this.pinData.properties.name = newName;
+    return pinData;
+  };
+
+  tryConnect = (fromPinId: string, toPinId: string) => {
+    //
   };
 }

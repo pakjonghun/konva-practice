@@ -9,9 +9,9 @@ interface Props {
 }
 
 const ChangePinType: FC<Props> = ({ nodeId }) => {
-  const nodeItemStore = nodeStore.getTargetNodeData(nodeId);
+  const components = nodeStore.getTargetNodeData(nodeId).nodeData.components;
   const setPinType = (pinId: string, type: string) => {
-    nodeItemStore.getPinStoreById(pinId)?.setType(type);
+    nodeStore.pinAction.setType(pinId, type);
   };
 
   const selectTypeList = [
@@ -24,7 +24,7 @@ const ChangePinType: FC<Props> = ({ nodeId }) => {
 
   return (
     <Flex direction="column" gap={'2'} className="ml-3">
-      {nodeItemStore.rawNodeData.components.map((c) => {
+      {components.map((c) => {
         return (
           <Flex key={c.id} gap={'2'}>
             <Text>{c.properties.name}</Text>

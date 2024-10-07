@@ -7,8 +7,7 @@ interface Props {
 }
 
 const NodePosition: FC<Props> = ({ nodeId }) => {
-  const targetNode = nodeStore.getTargetNodeData(nodeId);
-  const { x, y } = targetNode.position;
+  const { x, y } = nodeStore.nodeAction.position(nodeId);
 
   return <span>{`x : ${x}, y : ${y}`}</span>;
 };
