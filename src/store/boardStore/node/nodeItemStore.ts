@@ -1,12 +1,27 @@
-import { ComponentCommon, NodeData, Position } from './type';
+import { PinStore } from './pinStore';
+import { ComponentCommon, NodeData, NodeDataView, Position } from './type';
 import { makeAutoObservable } from 'mobx';
 
 export class NodeItemStore {
-  nodeData: NodeData;
+  nodeData: NodeDataView;
 
-  constructor(initNodeData: NodeData) {
+  constructor(nodeData: NodeData) {
     makeAutoObservable(this);
-    this.nodeData = initNodeData;
+    this.nodeData = this.initNodeData(nodeData);
+  }
+
+  initNodeData = (initNodeData: NodeData) => {
+    return {
+      ...initNodeData,
+      components: initNodeData.components.map((c) => new PinStore(c)),
+    };
+  };
+
+  get rawNodeData() {
+    return {
+      ...this.nodeData,
+      components: this.nodeData.components.map((c) => c.rawPinData),
+    };
   }
 
   get title() {
@@ -25,9 +40,13 @@ export class NodeItemStore {
     this.nodeData.initPosition = position;
   };
 
-  getPinById = (pinId: string, components?: ComponentCommon[]): null | ComponentCommon => {
+  getPinById = (
+    pinId: string,
+    components?: ComponentCommon[]
+  ): null | ComponentCommon => {
     let target: ComponentCommon | null = null;
-    const targetComponents = components ?? this.nodeData.components;
+    const targetComponents =
+      components ?? this.nodeData.components.map((c) => c.rawPinData);
     for (const comp of targetComponents) {
       if (comp.id === pinId) {
         return comp;

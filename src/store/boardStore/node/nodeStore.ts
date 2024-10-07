@@ -1,10 +1,10 @@
 import { NodeItemStore } from './nodeItemStore';
 // import { nodeStore } from './nodeStore';
-import { NodeBinding, NodeData } from './type';
+import { NodeBindingView, NodeData } from './type';
 import { makeAutoObservable, observable, runInAction } from 'mobx';
 
 class NodeStore {
-  nodeById = observable.map<string, NodeBinding>();
+  nodeById = observable.map<string, NodeBindingView>();
 
   constructor() {
     makeAutoObservable(this);
@@ -26,7 +26,10 @@ class NodeStore {
     this.clear();
     for (const nodeData of nodeDataList) {
       const nodeItemStore = new NodeItemStore(nodeData);
-      this.nodeById.set(nodeData.id, { hasView: false, nodeData: nodeItemStore });
+      this.nodeById.set(nodeData.id, {
+        hasView: false,
+        nodeData: nodeItemStore,
+      });
     }
   };
 
@@ -45,7 +48,7 @@ class NodeStore {
     const notPaintedNodeList: NodeData[] = [];
     this.nodeById.forEach((node) => {
       if (!node.hasView) {
-        notPaintedNodeList.push(node.nodeData.nodeData);
+        notPaintedNodeList.push(node.nodeData.rawNodeData);
       }
     });
 
