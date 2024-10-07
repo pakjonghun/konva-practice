@@ -2,7 +2,12 @@ import { BaseViewModel } from '../base/baseViewModel';
 import { Layer } from 'konva/lib/Layer';
 import { Stage } from 'konva/lib/Stage';
 import { BgViewModel } from './bgLayerViewModel';
-import { DRAG, ZOOM_MAX_SCALE, ZOOM_MIN_SCALE, ZOOM_SPEED } from '../../constants/canvas';
+import {
+  DRAG,
+  ZOOM_MAX_SCALE,
+  ZOOM_MIN_SCALE,
+  ZOOM_SPEED,
+} from '../../constants/canvas';
 import { SelectRectViewModel } from './selectRectViewModel';
 import Konva from 'konva';
 import { PaintLayerViewModel } from './paintLayerViewModel';
@@ -17,7 +22,12 @@ export class CanvasViewModel extends BaseViewModel {
   private selectRectViewModel: SelectRectViewModel;
   dispose: () => void;
 
-  constructor({ id, container, width, height }: Size & { container: HTMLDivElement; id: string }) {
+  constructor({
+    id,
+    container,
+    width,
+    height,
+  }: Size & { container: HTMLDivElement; id: string }) {
     super();
     const stage = new BaseStage({
       id,
@@ -41,8 +51,12 @@ export class CanvasViewModel extends BaseViewModel {
       width,
       height,
     }));
-    const selectRectViewModel = (this.selectRectViewModel = new SelectRectViewModel(stage));
-    paintViewModel.paintLayer.add(selectRectViewModel.selectRect, selectRectViewModel.transformer);
+    const selectRectViewModel = (this.selectRectViewModel =
+      new SelectRectViewModel(stage));
+    paintViewModel.paintLayer.add(
+      selectRectViewModel.selectRect,
+      selectRectViewModel.transformer
+    );
     stage.add(bgViewModel.bgLayer, paintViewModel.paintLayer, dragLayer);
 
     this.stage = stage;
@@ -61,8 +75,10 @@ export class CanvasViewModel extends BaseViewModel {
     };
 
     this.stage.on('wheel', (event) => {
+      console.log('wheel', event.evt.ctrlKey, event.evt.metaKey);
       event.evt.preventDefault();
-      if (!event.evt.ctrlKey || !event.evt.metaKey) {
+      //fix:데스크탑 과 맥북에서 작동 하는 것이 다름 키보드 이벤트 제한 관련 확인 필요
+      if (!event.evt.ctrlKey && !event.evt.metaKey) {
         return;
       }
 
