@@ -4,6 +4,8 @@ import { nodeStore } from '../../store/boardStore/node/nodeStore';
 import { PinUI } from '../../views/node/pin/PinUI';
 import { hexToRgba } from '../../utils/style';
 import { reaction } from 'mobx';
+import { Position } from '../../store/boardStore/node/type';
+import { KonvaEventObject } from 'konva/lib/Node';
 
 export class PinViewModel {
   dispose: () => void;
@@ -52,6 +54,9 @@ export class PinViewModel {
     });
 
     pinUI.on('mouseleave', () => {
+      if (this.dragging) {
+        return;
+      }
       pinUI.circle.setAttrs({
         fill: 'transparent',
       });
@@ -66,7 +71,7 @@ export class PinViewModel {
       });
 
       const radius = pinUI.circle.radius();
-      const x = pinUI.circle.x() + radius * 2;
+      const x = pinUI.circle.x() + radius;
       const y = pinUI.circle.y() + radius * 2;
 
       const bezierLine = new Konva.Line({
@@ -84,7 +89,8 @@ export class PinViewModel {
 
       const stage = event.target.getStage();
 
-      const mouseMoveHandler = () => {
+      const mouseMoveHandler = (e: KonvaEventObject<MouseEvent>) => {
+        const stage = e.target.getStage();
         if (!this.dragging || !stage) {
           return;
         }
@@ -92,21 +98,21 @@ export class PinViewModel {
         if (!pos) {
           return;
         }
+        // const transform = stage.getAbsoluteTransform().copy().invert();
+        // const localPos = transform.point(pos);
 
-        updateBezierCurve();
-        function updateBezierCurve(waveHeight = 50) {
-          if (!pos) return;
-
+        updateBezierCurve(pos);
+        function updateBezierCurve(localPos: Position, waveHeight = 50) {
           // 제어점 위치 조정 (파도 높이 포함)
-          const disX = pos.x - x;
-          const disY = pos.y - y;
+          const disX = localPos.x - x;
+          const disY = localPos.y - y;
 
           // 파도 높이 조정 (중간 제어점의 Y 값을 파도 높이로 조정)
           const controlX1 = x + disX / 3;
           const controlY1 = y + disY / 3 - waveHeight;
 
-          const controlX2 = pos.x - disX / 3;
-          const controlY2 = pos.y - disY / 3 + waveHeight;
+          const controlX2 = localPos.x - disX / 3;
+          const controlY2 = localPos.y - disY / 3 + waveHeight;
 
           bezierLine.points([
             x,
@@ -115,8 +121,8 @@ export class PinViewModel {
             controlY1,
             controlX2,
             controlY2,
-            pos.x,
-            pos.y,
+            localPos.x,
+            localPos.y,
           ]);
         }
         const dragLayer = stage.findOne(`.${DRAG}`);
@@ -128,6 +134,9 @@ export class PinViewModel {
 
       const mouseUpHandler = () => {
         this.dragging = false;
+        pinUI.circle.setAttrs({
+          fill: 'transparent',
+        });
         this.layer.find(`.${NODE_TAG}`).forEach((node) => {
           node.setAttrs({
             draggable: true,
