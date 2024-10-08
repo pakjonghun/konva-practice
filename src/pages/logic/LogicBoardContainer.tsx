@@ -7,6 +7,8 @@ import { nodeStore } from '../../store/boardStore/node/nodeStore';
 import { NodeData } from '../../store/boardStore/node/type';
 import { v4 } from 'uuid';
 import Inspector from './inspector/Inspector';
+import { Connection } from '../../store/boardStore/connection/type';
+import { toJS } from 'mobx';
 
 const LogicBoardContainer = () => {
   const { boardId } = useParams<{ boardId: string }>();
@@ -17,26 +19,51 @@ const LogicBoardContainer = () => {
       const nodeList = res.data.node;
       const connectionList = res.data.connection;
       const manyNodeList: NodeData[] = [];
+      const manyConnection: Connection[] = [];
 
-      // for (let i = 0; i < 10; i++) {
-      //   nodeList.forEach((n) => {
-      //     const newId = v4();
-      //     const newPosition = {
-      //       x: Math.random() * 800,
-      //       y: Math.random() * 800,
-      //     };
-      //     const newNode = {
-      //       ...n,
-      //       id: newId,
-      //       initPosition: newPosition,
-      //     };
+      for (let i = 0; i < 400; i++) {
+        nodeList.forEach((n) => {
+          const newId = v4();
+          const newPosition = {
+            x: Math.random() * 800,
+            y: Math.random() * 800,
+          };
 
-      //     manyNodeList.push(newNode);
-      //   });
-      // }
-      // nodeStore.initNode(manyNodeList);
-      nodeStore.initNode(nodeList);
-      nodeStore.initConnection(connectionList);
+          let inputId = '';
+          let outputId = '';
+          n.components = n.components.map((c) => {
+            const isInput = c.placement === 'Input';
+
+            if (isInput) {
+              inputId = v4();
+            } else {
+              outputId = v4();
+            }
+
+            const id = isInput ? inputId : outputId;
+            return {
+              ...c,
+              id,
+              owner: newId,
+            };
+          });
+          const newNode = {
+            ...n,
+            id: newId,
+            initPosition: newPosition,
+          };
+
+          manyConnection.push({ from: outputId, to: inputId });
+          manyNodeList.push(newNode);
+        });
+      }
+      console.log('manyConnection : ', toJS(manyConnection));
+      console.log('node', toJS(manyNodeList.length));
+      nodeStore.initNode(manyNodeList);
+      nodeStore.initConnection(manyConnection);
+      // nodeStore.initNode(nodeList);
+      // nodeStore.initConnection(connectionList);
+
       setIsBoardReady(true);
     }
 

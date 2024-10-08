@@ -2,7 +2,11 @@ import Konva from 'konva';
 import { Position } from '../../../store/boardStore/node/type';
 
 export class Bezier extends Konva.Line {
-  constructor(options?: Konva.LineConfig) {
+  constructor(
+    public inputNodeId?: string,
+    public outputNodeId?: string,
+    options?: Konva.LineConfig
+  ) {
     super({
       strokeWidth: 2,
       lineCap: 'round',
@@ -14,7 +18,11 @@ export class Bezier extends Konva.Line {
     });
   }
 
-  updateBezierCurve = (startPos: Position, endPos: Position, waveHeight = 50) => {
+  updateBezierCurve = (
+    startPos: Position,
+    endPos: Position,
+    waveHeight = 50
+  ) => {
     // 제어점 위치 조정 (파도 높이 포함)
     const disX = endPos.x - startPos.x;
     const disY = endPos.y - startPos.y;

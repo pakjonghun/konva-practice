@@ -1,167 +1,92 @@
 {
   "data": {
-    "variable": [],
     "node": [
       {
-        "id": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330",
-        "name": "Start",
-        "type": "Start",
-        "components": [
-          {
-            "id": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330_Output_bbdb58e5-9e2f-11ee-b9ce-c19b79c60330",
-            "class": "Pin",
-            "placement": "Output",
-            "owner": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330",
-            "properties": {
-              "canBeNull": true,
-              "isCallback": false,
-              "name": "",
-              "uses": "Flow",
-              "type": "dW5rbm93bg=="
-            }
-          },
-          {
-            "id": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330_Output_bbdb58e6-9e2f-11ee-b9ce-c19b79c60330",
-            "class": "PinList",
-            "placement": "Output",
-            "owner": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330",
-            "properties": {
-              "listPlaceholder": "시작 파라메터",
-              "pinUses": "Parameter"
-            },
-            "children": []
-          }
-        ],
-        "initPosition": {
-          "x": 798,
-          "y": 668
-        },
-        "category": ["필수"]
-      },
-      {
-        "id": "bbdba690-9e2f-11ee-b9ce-c19b79c60330",
-        "name": "End",
-        "type": "End",
-        "components": [
-          {
-            "id": "bbdba690-9e2f-11ee-b9ce-c19b79c60330_Input_bbdba691-9e2f-11ee-b9ce-c19b79c60330",
-            "class": "Pin",
-            "placement": "Input",
-            "owner": "bbdba690-9e2f-11ee-b9ce-c19b79c60330",
-            "properties": {
-              "canBeNull": true,
-              "isCallback": false,
-              "name": "",
-              "uses": "Flow",
-              "type": "dW5rbm93bg=="
-            }
-          },
-          {
-            "id": "bbdba690-9e2f-11ee-b9ce-c19b79c60330_Input_bbdba692-9e2f-11ee-b9ce-c19b79c60330",
-            "class": "PinList",
-            "placement": "Input",
-            "owner": "bbdba690-9e2f-11ee-b9ce-c19b79c60330",
-            "properties": {
-              "listPlaceholder": "반환값",
-              "pinUses": "Parameter"
-            },
-            "children": [
-              {
-                "class": "Pin",
-                "id": "bbdba690-9e2f-11ee-b9ce-c19b79c60330_Input_c50673d0-9e2f-11ee-b9ce-c19b79c60330",
-                "owner": "bbdba690-9e2f-11ee-b9ce-c19b79c60330",
-                "placement": "Input",
-                "children": [],
-                "properties": {
-                  "canBeNull": true,
-                  "name": "result",
-                  "uses": "Parameter",
-                  "type": "c3RyaW5n"
-                }
-              }
-            ]
-          }
-        ],
-        "initPosition": {
-          "x": 1439,
-          "y": 869
-        },
-        "category": ["필수"]
-      },
-      {
-        "id": "c2089d20-9e2f-11ee-b9ce-c19b79c60330",
-        "name": "ip",
+        "id": "ac349132-8553-11ef-8a0e-26118869cd4b",
+        "name": "Node 1",
         "type": "Module",
         "components": [
           {
-            "id": "c2089d20-9e2f-11ee-b9ce-c19b79c60330_Input_c2089d21-9e2f-11ee-b9ce-c19b79c60330",
+            "id": "i-1",
             "class": "Pin",
             "placement": "Input",
-            "owner": "c2089d20-9e2f-11ee-b9ce-c19b79c60330",
+            "owner": "ac349132-8553-11ef-8a0e-26118869cd4b",
             "properties": {
               "canBeNull": true,
               "isCallback": false,
-              "name": "",
-              "uses": "Flow",
-              "type": "dW5rbm93bg=="
-            }
-          },
-          {
-            "id": "c2089d20-9e2f-11ee-b9ce-c19b79c60330_Output_c2089d22-9e2f-11ee-b9ce-c19b79c60330",
-            "class": "Pin",
-            "placement": "Output",
-            "owner": "c2089d20-9e2f-11ee-b9ce-c19b79c60330",
-            "properties": {
-              "canBeNull": true,
-              "isCallback": false,
-              "name": "",
-              "uses": "Flow",
-              "type": "dW5rbm93bg=="
-            }
-          },
-          {
-            "class": "Pin",
-            "id": "c2089d23-9e2f-11ee-b9ce-c19b79c60330",
-            "owner": "c2089d20-9e2f-11ee-b9ce-c19b79c60330",
-            "placement": "Output",
-            "properties": {
-              "canBeNull": true,
-              "name": "result",
+              "name": "Input Name 1",
               "uses": "Parameter",
-              "type": "c3RyaW5n",
-              "editable": false,
-              "staticValue": ""
+              "type": "string"
+            }
+          },
+          {
+            "id": "o-1",
+            "class": "Pin",
+            "placement": "Output",
+            "owner": "ac349132-8553-11ef-8a0e-26118869cd4b",
+            "properties": {
+              "canBeNull": true,
+              "isCallback": false,
+              "name": "Output Name 1",
+              "uses": "Parameter",
+              "type": "string"
             }
           }
         ],
         "initPosition": {
-          "x": 1085,
-          "y": 870
+          "x": 493,
+          "y": 189
         },
-        "category": ["형태"],
-        "moduleId": "cmVxdWVzdC9pcA=="
+        "category": ["Custom"]
+      },
+      {
+        "id": "ac34b838-8553-11ef-8a0e-26118869cd4b",
+        "name": "Node 2",
+        "type": "Module",
+        "components": [
+          {
+            "id": "i-2",
+            "class": "Pin",
+            "placement": "Input",
+            "owner": "ac34b838-8553-11ef-8a0e-26118869cd4b",
+            "properties": {
+              "canBeNull": true,
+              "isCallback": false,
+              "name": "Input Name 2",
+              "uses": "Parameter",
+              "type": "string"
+            }
+          },
+          {
+            "id": "o-2",
+            "class": "Pin",
+            "placement": "Output",
+            "owner": "ac34b838-8553-11ef-8a0e-26118869cd4b",
+            "properties": {
+              "canBeNull": true,
+              "isCallback": false,
+              "name": "Output Name 2",
+              "uses": "Parameter",
+              "type": "string"
+            }
+          }
+        ],
+        "initPosition": {
+          "x": 361,
+          "y": 525
+        },
+        "category": ["Custom"]
       }
     ],
     "connection": [
       {
-        "from": "c2089d23-9e2f-11ee-b9ce-c19b79c60330",
-        "to": "bbdba690-9e2f-11ee-b9ce-c19b79c60330_Input_c50673d0-9e2f-11ee-b9ce-c19b79c60330",
-        "xFromMid": 0,
-        "midXRatio": 0.5
+        "from": "i-1",
+        "to": "o-2"
       },
       {
-        "from": "c2089d20-9e2f-11ee-b9ce-c19b79c60330_Output_c2089d22-9e2f-11ee-b9ce-c19b79c60330",
-        "to": "bbdba690-9e2f-11ee-b9ce-c19b79c60330_Input_bbdba691-9e2f-11ee-b9ce-c19b79c60330",
-        "xFromMid": 0,
-        "midXRatio": 0.5
-      },
-      {
-        "from": "bbdb58e4-9e2f-11ee-b9ce-c19b79c60330_Output_bbdb58e5-9e2f-11ee-b9ce-c19b79c60330",
-        "to": "c2089d20-9e2f-11ee-b9ce-c19b79c60330_Input_c2089d21-9e2f-11ee-b9ce-c19b79c60330",
-        "xFromMid": 0,
-        "midXRatio": 0.5
+        "from": "i-2",
+        "to": "o-1"
       }
-    ],
-    "localType": []
+    ]
   }
 }

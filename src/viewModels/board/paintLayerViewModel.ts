@@ -51,7 +51,11 @@ export class PaintLayerViewModel extends BaseViewModel {
           if (comp.properties.uses == 'Flow') {
             return;
           } else {
-            const pinViewModel = new PinViewModel(this.paintLayer, comp.id, nodeData.id);
+            const pinViewModel = new PinViewModel(
+              this.paintLayer,
+              comp.id,
+              nodeData.id
+            );
           }
         });
 
@@ -70,7 +74,10 @@ export class PaintLayerViewModel extends BaseViewModel {
 
         if (fromPos && toPos) {
           const color = fromPin.circle.stroke();
-          const bezierLine = new Bezier({
+          const outNodeId = nodeStore.nodeIdByInputPinId(c.from);
+          const inputNodeId = nodeStore.nodeIdByInputPinId(c.to);
+
+          const bezierLine = new Bezier(inputNodeId, outNodeId, {
             id: connectId(c),
             points: [0, 0, 0, 0, 0, 0, 0, 0],
             stroke: color,

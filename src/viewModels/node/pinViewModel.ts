@@ -8,12 +8,17 @@ import { Position } from '../../store/boardStore/node/type';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { Bezier } from '../../views/node/line/bezier';
 import { LineViewModel } from './lineViewModel';
+import { Layer } from 'konva/lib/Layer';
 
 export class PinViewModel {
   dispose: () => void;
   dragging = false;
 
-  constructor(public layer: Konva.Layer, public pinId: string, public owner: string) {
+  constructor(
+    public layer: Konva.Layer,
+    public pinId: string,
+    public owner: string
+  ) {
     this.dispose = this.render();
   }
 
@@ -65,18 +70,21 @@ export class PinViewModel {
       const radius = pinUI.circle.radius();
       const x = pinUI.circle.x() + radius;
       const y = pinUI.circle.y() + radius * 2;
-      const bezierLine = new Bezier({
+      const bezierLine = new Bezier(this.pinData.owner, '', {
         id: 'trying',
         points: [x, y, x, y, x, y, x, y],
         stroke: this.color,
       });
-      this.layer.add(bezierLine);
-      bezierLine.moveToTop();
-
       const stage = event.target.getStage();
+      const dragLayer = stage?.findOne(`.${DRAG}`) as Layer;
+      dragLayer.add(bezierLine);
+      bezierLine.moveToTop();
 
       const mouseMoveHandler = (e: KonvaEventObject<MouseEvent>) => {
         const stage = e.target.getStage();
+        const dr = stage?.findOne(`.${DRAG}`) as Layer;
+        if (!dr) return;
+
         if (!this.dragging || !stage) {
           return;
         }
@@ -86,15 +94,19 @@ export class PinViewModel {
         }
         const circlePos = this.view.circle.getAbsolutePosition();
 
-        const endPos = this.layer.getAbsoluteTransform().copy().invert().point(pointerPos);
-        const startPos = this.layer.getAbsoluteTransform().copy().invert().point(circlePos);
+        const endPos = dr
+          .getAbsoluteTransform()
+          .copy()
+          .invert()
+          .point(pointerPos);
+        const startPos = dr
+          .getAbsoluteTransform()
+          .copy()
+          .invert()
+          .point(circlePos);
 
         const bezier = new LineViewModel(bezierLine);
         bezier.view.updateBezierCurve(startPos, endPos);
-
-        const dragLayer = stage.findOne(`.${DRAG}`);
-        bezierLine.moveTo(dragLayer);
-        this.layer.batchDraw();
       };
 
       stage?.on('mousemove', mouseMoveHandler);

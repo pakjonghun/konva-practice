@@ -1,6 +1,11 @@
 import Konva from 'konva';
 import { NodeData } from '../../store/boardStore/node/type';
-import { DRAG, NODE_TAG, PAINT, TRANSFORMER_RECT } from '../../constants/canvas';
+import {
+  DRAG,
+  NODE_TAG,
+  PAINT,
+  TRANSFORMER_RECT,
+} from '../../constants/canvas';
 import { NodeUI } from '../../views/node/NodeUI';
 import { reaction } from 'mobx';
 import { nodeStore } from '../../store/boardStore/node/nodeStore';
@@ -53,11 +58,26 @@ export class NodeViewModel {
       // nodeData.nodeData.components.forEach(c=>{
       //   c.id
       // })
-      const lines = this.layer.find('Line') as Bezier[];
 
-      lines.forEach((l) => {
-        l.moveTo(dragLayer);
-      });
+      //실제 움직이는 선만 드래그로 옮겨야 한다.
+      const lines = this.layer.find('Line') as Bezier[];
+      console.log(
+        'line from to',
+        lines.map((l) => ({
+          inputNodeId: l.inputNodeId,
+          outputNodeId: l.outputNodeId,
+        }))
+      );
+
+      console.log('real nodeId', this.nodeId);
+      lines
+        .filter(
+          (l) => l.inputNodeId == this.nodeId || l.outputNodeId == this.nodeId
+        )
+        .forEach((l) => {
+          console.log('find line', l);
+          l.moveTo(dragLayer);
+        });
       tr.moveTo(dragLayer);
     });
 
@@ -69,23 +89,27 @@ export class NodeViewModel {
       }
 
       const lines = (dragLayer as Layer)?.find('Line') as Bezier[];
-      lines.forEach((line) => {
-        const cId = line.id();
-        const { from, to } = pinIdByConnect(cId);
-        const fromPin = stage.findOne(`#${from}`) as PinUI;
-        const toPin = stage.findOne(`#${to}`) as PinUI;
+      lines
+        .filter(
+          (l) => l.inputNodeId == this.nodeId || l.outputNodeId == this.nodeId
+        )
+        .forEach((line) => {
+          const cId = line.id();
+          const { from, to } = pinIdByConnect(cId);
+          const fromPin = stage.findOne(`#${from}`) as PinUI;
+          const toPin = stage.findOne(`#${to}`) as PinUI;
 
-        if (!fromPin || !toPin) {
-          console.log('no pin found');
-          return;
-        }
+          if (!fromPin || !toPin) {
+            console.log('no pin found');
+            return;
+          }
 
-        const fromPos = fromPin.circle.getAbsolutePosition();
-        const toPos = toPin.circle.getAbsolutePosition();
-        if (!fromPos || !toPos) return;
+          const fromPos = fromPin.circle.getAbsolutePosition();
+          const toPos = toPin.circle.getAbsolutePosition();
+          if (!fromPos || !toPos) return;
 
-        line.updateBezierCurve(fromPos, toPos);
-      });
+          line.updateBezierCurve(fromPos, toPos);
+        });
     });
 
     this.view.on('dragend', () => {
@@ -98,9 +122,13 @@ export class NodeViewModel {
 
       const lines = (dragLayer as Layer)?.find('Line') as Bezier[];
       this.view.moveTo(paintLayer);
-      lines.forEach((l) => {
-        l.moveTo(paintLayer);
-      });
+      lines
+        .filter(
+          (l) => l.inputNodeId == this.nodeId || l.outputNodeId == this.nodeId
+        )
+        .forEach((l) => {
+          l.moveTo(paintLayer);
+        });
       tr.moveTo(paintLayer);
 
       nodeStore.nodeItemStore.setPosition(this.nodeId, this.view.position());
