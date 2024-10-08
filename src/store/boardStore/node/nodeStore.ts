@@ -17,6 +17,11 @@ class NodeStore {
     this.nodeItemStore = new NodeItemStore(this.nodeById);
   }
 
+  inputConnectionByNodeId = (nodeId: string) => {
+    const node = this.nodeItemStore.getTargetNodeData(nodeId);
+    return node.nodeData.components.filter((p) => p.placement === 'Input');
+  };
+
   getTargetPinData = (pinId: string) => {
     return this.pinStore.getTargetPinData(pinId);
   };

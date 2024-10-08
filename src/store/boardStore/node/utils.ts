@@ -13,3 +13,11 @@ export function setPin(pinData: ComponentCommon[], map: Map<string, ComponentCom
 export function connectId({ from, to }: Connection) {
   return `${from}_${to}`;
 }
+
+export function pinIdByConnect(id: string) {
+  const split = id.split('_');
+  return {
+    from: split[0],
+    to: split[1],
+  };
+}

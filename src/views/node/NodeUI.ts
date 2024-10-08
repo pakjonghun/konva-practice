@@ -79,12 +79,7 @@ export class NodeUI extends Konva.Group {
         outputY += PIN_HEIGHT + PIN_GAP;
         align = 'right';
       }
-
-      const pinUI = new PinUI(
-        component,
-        { align, circleX, iconX, nextY, textX },
-        { id }
-      );
+      const pinUI = new PinUI(component, { align, circleX, iconX, nextY, textX }, { id });
       pins.push(pinUI);
     });
     const maxBodyHeight = Math.max(inputY, outputY);

@@ -7,6 +7,8 @@ import { nodeStore } from '../../store/boardStore/node/nodeStore';
 import { PinViewModel } from './pinViewModel';
 import { Bezier } from '../../views/node/line/bezier';
 import { Layer } from 'konva/lib/Layer';
+import { pinIdByConnect } from '../../store/boardStore/node/utils';
+import { PinUI } from '../../views/node/pin/PinUI';
 
 export class NodeViewModel {
   layer: Konva.Layer;
@@ -59,16 +61,30 @@ export class NodeViewModel {
       tr.moveTo(dragLayer);
     });
 
-    this.view.on('dragmove', () => {
-      const dragLayer = this.findByName(DRAG);
+    this.view.on('dragmove', (event) => {
+      const dragLayer = this.findByName(DRAG) as Layer;
+      const stage = event.target.getStage();
+      if (!stage) {
+        return;
+      }
 
       const lines = (dragLayer as Layer)?.find('Line') as Bezier[];
-      lines.forEach((l) => {
-        const pos = this.view.position();
-        l.updateBezierCurve(pos, {
-          x: pos.x - Math.random() * 100,
-          y: pos.y - Math.random() * 100,
-        });
+      lines.forEach((line) => {
+        const cId = line.id();
+        const { from, to } = pinIdByConnect(cId);
+        const fromPin = stage.findOne(`#${from}`) as PinUI;
+        const toPin = stage.findOne(`#${to}`) as PinUI;
+
+        if (!fromPin || !toPin) {
+          console.log('no pin found');
+          return;
+        }
+
+        const fromPos = fromPin.circle.getAbsolutePosition();
+        const toPos = toPin.circle.getAbsolutePosition();
+        if (!fromPos || !toPos) return;
+
+        line.updateBezierCurve(fromPos, toPos);
       });
     });
 

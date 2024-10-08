@@ -6,7 +6,7 @@ import { DRAG, ZOOM_MAX_SCALE, ZOOM_MIN_SCALE, ZOOM_SPEED } from '../../constant
 import { SelectRectViewModel } from './selectRectViewModel';
 import Konva from 'konva';
 import { PaintLayerViewModel } from './paintLayerViewModel';
-import { BaseStage } from '../../views/base/baseStage';
+import { BaseStage } from '../../views/base/BaseStage';
 import { Size } from '../../store/boardStore/node/type';
 
 export class CanvasViewModel extends BaseViewModel {

@@ -1,6 +1,6 @@
 import Konva from 'konva';
 import { BACKGROUND, GRID_COLOR, GRID_SIZE } from '../../constants/canvas';
-import { BaseLayer } from '../base/baseLayer';
+import { BaseLayer } from '../base/BaseLayer';
 import { Size } from '../../store/boardStore/node/type';
 
 export class BackgroundLayer extends BaseLayer {
